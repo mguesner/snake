@@ -1,7 +1,12 @@
 #include "NCursesData.hpp"
 
-extern "C" Data	*init()
+Data	*init(int width, int height, std::list<int> *snake
+	, std::list<int> *objects)
 {
-	return new NCursesData();
+	return new NCursesData(width, height, snake, objects);
 }
 
+void	end(Data *data)
+{
+	delete data;
+}
