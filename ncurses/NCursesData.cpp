@@ -14,6 +14,7 @@ NCursesData::NCursesData(int width, int height, std::list<int> *snake
 	init_pair(2, COLOR_BLACK, COLOR_WHITE);
 	init_pair(3, COLOR_BLACK, COLOR_GREEN);
 	init_pair(4, COLOR_RED, COLOR_WHITE);
+	init_pair(5, COLOR_WHITE, COLOR_BLACK);
 	this->width = width;
 	this->height = height;
 	this->snake = snake;
@@ -41,6 +42,16 @@ void NCursesData::StartDisplay()
 	{
 		mutex.lock();
 		mutex.unlock();
+		getmaxyx(stdscr, yScreen, xScreen);
+		if (yScreen < height || xScreen < width)
+		{
+			clear();
+			attron(COLOR_PAIR(5));
+			mvprintw(yScreen / 2, xScreen / 2 - 9, "please resize term");
+			refresh();
+			continue;
+		}
+		clear();
 		auto i = 0;
 		attron(COLOR_PAIR(2));
 		while (i < width)
