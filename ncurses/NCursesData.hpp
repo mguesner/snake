@@ -19,6 +19,8 @@ private:
 	void StartInput();
 	std::thread display;
 	std::thread input;
+	int xScreen;
+	int yScreen;
 	bool over;
 };
 
