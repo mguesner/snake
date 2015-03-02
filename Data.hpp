@@ -13,6 +13,7 @@ public:
 	virtual int GetInput() = 0;
 
 protected:
+	int keycode;
 	int width;
 	int height;
 	int value;
