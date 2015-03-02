@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <list>
+#include <mutex>
 
 class Data
 {
@@ -17,6 +18,7 @@ protected:
 	int width;
 	int height;
 	int value;
+	int score;
 	std::list<int> *snake;
 	std::list<int> *objects;
 	std::mutex mutex;

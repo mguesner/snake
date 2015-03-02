@@ -43,7 +43,7 @@ void NCursesData::StartDisplay()
 		mutex.lock();
 		mutex.unlock();
 		getmaxyx(stdscr, yScreen, xScreen);
-		if (yScreen < height || xScreen < width)
+		if (yScreen < height || xScreen < (width + 15))
 		{
 			clear();
 			attron(COLOR_PAIR(5));
@@ -89,6 +89,8 @@ void NCursesData::StartDisplay()
 			mvprintw(y % height, x % width,"#");
 			current2++;
 		}
+		attron(COLOR_PAIR(5));
+		mvprintw(0, width, "score:%d", score);
 		refresh();
 	}
 }
