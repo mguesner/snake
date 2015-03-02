@@ -1,11 +1,12 @@
 #include "NCursesData.hpp"
+
 NCursesData::NCursesData()
 {
-	test = 8;
+	width = 8;
 }
 
-int NCursesData::getTest()
+int NCursesData::getWidth()
 {
-	return test;
+	return width;
 }
 

@@ -1,13 +1,23 @@
 #ifndef DATA_HPP
 #define DATA_HPP
 
-class Data {
+#include <iostream>
+#include <list>
+
+class Data
+{
 public:
 	virtual ~Data(){}
-	virtual int getTest() = 0;
+	virtual void Draw() = 0;
 
 protected:
-	int test;
+	int width;
+	int height;
+	std::list<int, int> *snake;
+	std::list<int , int> *objects;
+	std::mutex mutex;
+
+
 };
 
 #endif

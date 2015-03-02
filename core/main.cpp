@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dlfcn.h>
-#include "Data.hpp"
+#include <Data.hpp>
 
 int main(int argc, char **argv)
 {
@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 	}
 
 	data = (*init)();
-	printf("%d\n", data->getTest());
+	printf("%d\n", data->getWidth());
 	dlclose(handle);
 	exit(EXIT_SUCCESS);
 }

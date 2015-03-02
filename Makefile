@@ -1,17 +1,21 @@
 NAME = nibbler
 
+DIR = core/
+
 NAME1 = libcurses.so
 
-SRC = main.cpp\
+DIR1 = ncurses/
 
-SRC1 = NCursesData.cpp\
-	init.cpp
+SRC = $(DIR)main.cpp\
+
+SRC1 = $(DIR1)NCursesData.cpp\
+	$(DIR1)init.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
 OBJ1 = $(SRC1:.cpp=.o)
 
-CC = clang++ -g -O3 -Wall -Wextra -Werror -std=c++11
+CC = clang++ -g -O3 -Wall -Wextra -Werror -std=c++11 -I .
 
 all: $(NAME) $(NAME1)
 
@@ -26,9 +30,11 @@ $(NAME1): $(OBJ1)
 
 clean:
 	rm -f $(OBJ)
+	rm -f $(OBJ1)
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f $(NAME1)
 
 re: fclean all
 

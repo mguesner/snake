@@ -1,7 +1,7 @@
 #ifndef NCURSESDATA_HPP
 #define NCURSESDATA_HPP
 
-#include "Data.hpp"
+#include <Data.hpp>
 
 // extern "C"
 // {
@@ -9,7 +9,7 @@ class NCursesData : public Data
 {
 public:
 	NCursesData();
-	int getTest();
+	int getWidth();
 };
 
 #endif
