@@ -9,8 +9,8 @@ class Data
 public:
 	virtual ~Data(){}
 	virtual void Draw() = 0;
-
 protected:
+	int keycode;
 	int width;
 	int height;
 	std::list<int, int> *snake;

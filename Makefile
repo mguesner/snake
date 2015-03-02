@@ -34,7 +34,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
-	rm -f $(NAME1)
+	rm - f $(NAME1)
 
 re: fclean all
 
