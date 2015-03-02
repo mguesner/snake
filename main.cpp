@@ -7,7 +7,6 @@ int main(int argc, char **argv)
 {
 	void *handle;
 	Data *data = NULL;
-	Data *data2 = NULL;
 	Data* (*init)();
 	char *error;
 
@@ -21,7 +20,6 @@ int main(int argc, char **argv)
 	}
 	dlerror();
 	*(void **) (&init) = dlsym(handle, "init");
-	*(void **)(&data2) = dlsym(handle, "Data");
 
 	if ((error = dlerror()) != NULL)
 	{
@@ -30,7 +28,7 @@ int main(int argc, char **argv)
 	}
 
 	data = (*init)();
-	//printf("%d\n", (data2)data->getTest());
+	printf("%d\n", data->getTest());
 	dlclose(handle);
 	exit(EXIT_SUCCESS);
 }

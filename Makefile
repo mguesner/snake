@@ -4,7 +4,7 @@ NAME1 = libcurses.so
 
 SRC = main.cpp\
 
-SRC1 = Data.cpp\
+SRC1 = NCursesData.cpp\
 	init.cpp
 
 OBJ = $(SRC:.cpp=.o)

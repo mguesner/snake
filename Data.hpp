@@ -1,17 +1,12 @@
 #ifndef DATA_HPP
 #define DATA_HPP
 
-// extern "C"
-// {
-class Data
-{
+class Data {
 public:
-	Data();
-	Data(Data const & src);
-	Data& operator=(Data const & rhs);
-	~Data();
-	int getTest();
-private:
+	virtual ~Data(){}
+	virtual int getTest() = 0;
+
+protected:
 	int test;
 };
 

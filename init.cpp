@@ -1,7 +1,7 @@
-#include "Data.hpp"
-extern "C"{
-Data	*init()
+#include "NCursesData.hpp"
+
+extern "C" Data	*init()
 {
-	return new Data();
+	return new NCursesData();
 }
-}
+
