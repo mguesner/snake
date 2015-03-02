@@ -9,9 +9,15 @@ NCursesData::NCursesData(int width, int height, std::list<int> *snake
 	initscr();
 	curs_set(0);
 	noecho();
+	start_color();
+	init_pair(1, COLOR_BLACK, COLOR_RED);
+	init_pair(2, COLOR_BLACK, COLOR_WHITE);
+	init_pair(3, COLOR_BLACK, COLOR_GREEN);
+	init_pair(4, COLOR_RED, COLOR_WHITE);
 	this->width = width;
 	this->height = height;
 	this->snake = snake;
+	this->objects = objects;
 	over = false;
 	value = 0;
 	display = std::thread(&NCursesData::StartDisplay, this);
@@ -35,9 +41,18 @@ void NCursesData::StartDisplay()
 	{
 		mutex.lock();
 		mutex.unlock();
-		//clear();
 		auto i = 0;
-		while (i )
+		attron(COLOR_PAIR(2));
+		while (i < width)
+		{
+			auto j = 0;
+			while (j < height)
+			{
+				mvprintw(j, i," ");
+				j++;
+			}
+			i++;
+		}
 		auto current = snake->begin();
 		auto end = snake->end();
 		while(current != end)
@@ -46,12 +61,22 @@ void NCursesData::StartDisplay()
 			auto x = prout % 50;
 			auto y = prout / 50;
 			if (prout == snake->front())
-				mvprintw(y % height, x % width,"0");
-			else if (prout == snake->back())
-				mvprintw(y % height, x % width,"-");
+				attron(COLOR_PAIR(1));
 			else
-				mvprintw(y % height, x % width,"~");
+				attron(COLOR_PAIR(3));
+			mvprintw(y % height, x % width," ");
 			current++;
+		}
+		auto current2 = objects->begin();
+		auto end2 = objects->end();
+		while(current2 != end2)
+		{
+			auto prout2 = *current2;
+			auto x = prout2 % 50;
+			auto y = prout2 / 50;
+			attron(COLOR_PAIR(4));
+			mvprintw(y % height, x % width,"#");
+			current2++;
 		}
 		refresh();
 	}

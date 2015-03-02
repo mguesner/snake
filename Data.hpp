@@ -16,7 +16,6 @@ protected:
 	int width;
 	int height;
 	int value;
-	bool over;
 	std::list<int> *snake;
 	std::list<int> *objects;
 	std::mutex mutex;
