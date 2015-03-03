@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <dlfcn.h>
 #include "../Data.hpp"
+#include "GameObject.hpp"
 #include <iostream>
 
 class loader
@@ -21,7 +22,7 @@ private:
 	void *handle;
 	Data *data = NULL;
 	char *error;
-	Data* (*init)(int , int , std::list<int> *snake, std::list<int> *object);
+	Data* (*init)(int, int, std::list<GameObject&> *object);
 	Data* (*close)(Data *);
 };
 

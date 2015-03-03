@@ -4,6 +4,7 @@
 #include "../Data.hpp"
 #include "loader.hpp"
 #include "Game.hpp"
+#include "GameObject.hpp"
 
 int main(int argc, char **argv)
 {
@@ -12,12 +13,11 @@ int main(int argc, char **argv)
 		std::cout << "Usage ./nibbler width height (4 min and 1000 max)" << std::endl;
 		return (EXIT_FAILURE);
 	}
-	std::list<int> snake(50);
-	std::list<int> obj(50);
 	std::string current("libcurses.so");
-	loader	*graphiclib = new loader("libcurses.so", 50, 50,&snake, &obj);
+	std::list<GameObject> obj;
+	loader	*graphiclib = new loader("libcurses.so", 50, 50, &obj);
 	Data	*gameData = graphiclib->GetData();
-	Game	*game = new Game(gameData, graphiclib, current, &snake, &obj, 50, 50);
+	Game	*game = new Game(gameData, graphiclib, current, 50, 50);
 	game->Launch();
 	int value = 1;
 
