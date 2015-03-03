@@ -5,6 +5,14 @@
 #include <list>
 #include <mutex>
 
+enum gameMode
+{
+	NM = 0,
+	EXIT
+};
+
+#define NBMODE 1
+
 class Data
 {
 public:
@@ -12,8 +20,11 @@ public:
 	virtual void Draw() = 0;
 	virtual void Lock() = 0;
 	virtual int GetInput() = 0;
+	virtual bool ShouldLeave() = 0;
 
 protected:
+	bool shouldLeave;
+	gameMode mode;
 	int keycode;
 	int width;
 	int height;

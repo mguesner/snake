@@ -12,6 +12,7 @@ public:
 	void Draw();
 	void Lock();
 	int GetInput();
+	bool ShouldLeave();
 	~NCursesData();
 
 private:

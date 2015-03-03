@@ -1,4 +1,5 @@
 #include "NCursesData.hpp"
+#include "Menu.hpp"
 #include <ncurses.h>
 #include <unistd.h>
 #include <time.h>
@@ -10,17 +11,22 @@ NCursesData::NCursesData(int width, int height, std::list<int> *snake
 	curs_set(0);
 	noecho();
 	start_color();
-	init_pair(1, COLOR_BLACK, COLOR_RED);
-	init_pair(2, COLOR_BLACK, COLOR_WHITE);
-	init_pair(3, COLOR_BLACK, COLOR_GREEN);
-	init_pair(4, COLOR_RED, COLOR_WHITE);
-	init_pair(5, COLOR_WHITE, COLOR_BLACK);
+	getmaxyx(stdscr, yScreen, xScreen);
+	init_pair(NORMAL, COLOR_WHITE, COLOR_BLACK);
+	init_pair(SELECTED, COLOR_BLACK, COLOR_WHITE);
+	init_pair(BACKGROUND, COLOR_BLACK, COLOR_WHITE);
+	init_pair(SNAKEHEAD, COLOR_WHITE, COLOR_RED);
+	init_pair(SNAKEBODY, COLOR_BLACK, COLOR_GREEN);
+	init_pair(FOOD, COLOR_RED, COLOR_WHITE);
 	this->width = width;
 	this->height = height;
 	this->snake = snake;
 	this->objects = objects;
 	over = false;
 	value = 0;
+	Menu menu(xScreen, yScreen);
+	mode = menu.Display();
+	shouldLeave = (mode == NBMODE);
 	display = std::thread(&NCursesData::StartDisplay, this);
 	input = std::thread(&NCursesData::StartInput, this);
 }
@@ -46,14 +52,14 @@ void NCursesData::StartDisplay()
 		if (yScreen < height || xScreen < (width + 15))
 		{
 			clear();
-			attron(COLOR_PAIR(5));
+			attron(COLOR_PAIR(NORMAL));
 			mvprintw(yScreen / 2, xScreen / 2 - 9, "please resize term");
 			refresh();
 			continue;
 		}
 		clear();
 		auto i = 0;
-		attron(COLOR_PAIR(2));
+		attron(COLOR_PAIR(BACKGROUND));
 		while (i < width)
 		{
 			auto j = 0;
@@ -72,9 +78,9 @@ void NCursesData::StartDisplay()
 			auto x = prout % 50;
 			auto y = prout / 50;
 			if (prout == snake->front())
-				attron(COLOR_PAIR(1));
+				attron(COLOR_PAIR(SNAKEHEAD));
 			else
-				attron(COLOR_PAIR(3));
+				attron(COLOR_PAIR(SNAKEBODY));
 			mvprintw(y % height, x % width," ");
 			current++;
 		}
@@ -85,11 +91,11 @@ void NCursesData::StartDisplay()
 			auto prout2 = *current2;
 			auto x = prout2 % 50;
 			auto y = prout2 / 50;
-			attron(COLOR_PAIR(4));
+			attron(COLOR_PAIR(FOOD));
 			mvprintw(y % height, x % width,"#");
 			current2++;
 		}
-		attron(COLOR_PAIR(5));
+		attron(COLOR_PAIR(NORMAL));
 		mvprintw(0, width, "score:%d", score);
 		refresh();
 	}
@@ -97,7 +103,7 @@ void NCursesData::StartDisplay()
 
 void NCursesData::StartInput()
 {
-	while ((value = getch()))
+	while (!shouldLeave && (value = getch()))
 	{
 		if (value == 27)
 			break;
@@ -107,6 +113,11 @@ void NCursesData::StartInput()
 int NCursesData::GetInput()
 {
 	return value;
+}
+
+bool NCursesData::ShouldLeave()
+{
+	return shouldLeave;
 }
 
 NCursesData::~NCursesData()
