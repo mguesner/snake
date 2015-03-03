@@ -4,8 +4,7 @@
 #include <unistd.h>
 #include <time.h>
 
-NCursesData::NCursesData(int width, int height, std::list<int> *snake
-	, std::list<int> *objects)
+NCursesData::NCursesData(int width, int height, std::list<GameObject&> *objects)
 {
 	initscr();
 	curs_set(0);
@@ -20,7 +19,6 @@ NCursesData::NCursesData(int width, int height, std::list<int> *snake
 	init_pair(FOOD, COLOR_RED, COLOR_WHITE);
 	this->width = width;
 	this->height = height;
-	this->snake = snake;
 	this->objects = objects;
 	over = false;
 	value = NONE;
@@ -76,31 +74,31 @@ void NCursesData::StartDisplay()
 			}
 			i++;
 		}
-		auto current = snake->begin();
-		auto end = snake->end();
-		while(current != end)
-		{
-			auto prout = *current;
-			auto x = prout % 50;
-			auto y = prout / 50;
-			if (prout == snake->front())
-				attron(COLOR_PAIR(SNAKEHEAD));
-			else
-				attron(COLOR_PAIR(SNAKEBODY));
-			mvprintw(y % height, x % width," ");
-			current++;
-		}
-		auto current2 = objects->begin();
-		auto end2 = objects->end();
-		while(current2 != end2)
-		{
-			auto prout2 = *current2;
-			auto x = prout2 % 50;
-			auto y = prout2 / 50;
-			attron(COLOR_PAIR(FOOD));
-			mvprintw(y % height, x % width,"#");
-			current2++;
-		}
+		// auto current = objects->begin();
+		// auto end = objects->end();
+		// while(current != end)
+		// {
+		// 	auto prout = *current;
+		// 	auto x = current-> 50;
+		// 	auto y = prout / 50;
+		// 	if (prout == snake->front())
+		// 		attron(COLOR_PAIR(SNAKEHEAD));
+		// 	else
+		// 		attron(COLOR_PAIR(SNAKEBODY));
+		// 	mvprintw(y % height, x % width," ");
+		// 	current++;
+		// }
+		// auto current2 = objects->begin();
+		// auto end2 = objects->end();
+		// while(current2 != end2)
+		// {
+		// 	auto prout2 = *current2;
+		// 	auto x = prout2 % 50;
+		// 	auto y = prout2 / 50;
+		// 	attron(COLOR_PAIR(FOOD));
+		// 	mvprintw(y % height, x % width,"#");
+		// 	current2++;
+		// }
 		attron(COLOR_PAIR(NORMAL));
 		mvprintw(0, width, "player:%s", player.c_str());
 		mvprintw(1, width, "score:%d",score);
@@ -113,7 +111,11 @@ void NCursesData::StartInput()
 	int ch;
 	timeout(100);
 	while (!shouldLeave && (ch = getch()))
+	{
 		value = inputs[ch];
+		pause.lock();
+		pause.unlock();
+	}
 }
 
 int NCursesData::GetInput()
@@ -128,8 +130,12 @@ bool NCursesData::ShouldLeave()
 
 void NCursesData::Pause()
 {
+	pause.lock();
 	Menu menu(xScreen, yScreen);
-	menu.Pause();
+	auto res = menu.Pause();
+	if (res == EXIT2)
+		shouldLeave = true;
+	pause.unlock();
 }
 
 NCursesData::~NCursesData()

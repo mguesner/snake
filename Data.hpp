@@ -4,9 +4,8 @@
 #include <iostream>
 #include <list>
 #include <mutex>
-#include "core/GameObject.hpp"
 
-#define NBMODE 1
+class GameObject;
 
 enum ObjectType
 {
@@ -53,7 +52,6 @@ protected:
 	int width;
 	int height;
 	eInput value;
-	int value;
 	std::list<GameObject&> *objects;
 	int score;
 	std::string player;
