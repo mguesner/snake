@@ -26,7 +26,8 @@ NCursesData::NCursesData(int width, int height, std::list<int> *snake
 	value = 0;
 	Menu menu(xScreen, yScreen);
 	mode = menu.Display();
-	shouldLeave = (mode == NBMODE);
+	if(!(shouldLeave = (mode == NBMODE)))
+		player = menu.Name();
 	display = std::thread(&NCursesData::StartDisplay, this);
 	input = std::thread(&NCursesData::StartInput, this);
 }
@@ -96,7 +97,8 @@ void NCursesData::StartDisplay()
 			current2++;
 		}
 		attron(COLOR_PAIR(NORMAL));
-		mvprintw(0, width, "score:%d", score);
+		mvprintw(0, width, "player:%s", player.c_str());
+		mvprintw(1, width, "score:%d",score);
 		refresh();
 	}
 }

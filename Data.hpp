@@ -30,6 +30,7 @@ protected:
 	int height;
 	int value;
 	int score;
+	std::string player;
 	std::list<int> *snake;
 	std::list<int> *objects;
 	std::mutex mutex;

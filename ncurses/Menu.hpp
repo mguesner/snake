@@ -15,6 +15,7 @@ class Menu
 public:
 	Menu(int, int);
 	gameMode Display();
+	std::string Name();
 	~Menu();
 
 private:
