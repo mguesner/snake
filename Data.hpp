@@ -4,6 +4,16 @@
 #include <iostream>
 #include <list>
 #include <mutex>
+#include "core/GameObject.hpp"
+
+#define NBMODE 1
+
+enum ObjectType
+{
+	SNAKE = 0,
+	FOOD
+};
+
 
 enum eGameMode
 {
@@ -23,6 +33,8 @@ enum eInput
 
 #define NBMODE 2
 
+
+
 class Data
 {
 public:
@@ -30,6 +42,7 @@ public:
 	virtual void Draw() = 0;
 	virtual void Lock() = 0;
 	virtual int GetInput() = 0;
+	std::mutex pause;
 	virtual bool ShouldLeave() = 0;
 	virtual void Pause() = 0;
 
@@ -40,10 +53,10 @@ protected:
 	int width;
 	int height;
 	eInput value;
+	int value;
+	std::list<GameObject&> *objects;
 	int score;
 	std::string player;
-	std::list<int> *snake;
-	std::list<int> *objects;
 	std::mutex mutex;
 };
 

@@ -4,7 +4,7 @@ loader::loader()
 {
 }
 
-loader::loader(std::string name, int width, int height, std::list<int> *snake, std::list<int> *object)
+loader::loader(std::string name, int width, int height, std::list<GameObject&> *object)
 {
 
 	handle = dlopen(name.c_str() , RTLD_LAZY);

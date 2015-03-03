@@ -15,15 +15,14 @@ Game& Game::operator=(Game const & src)
 	return *this;
 }
 
-Game::Game(Data* data, loader* lib, std::string cur, std::list<int> *snk, std::list<int> *obj, int width, int height)
+Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std::list<GameObject>* obj)
 {
 	this->width = width;
 	this->height = height;
+	object = obj;
 	gameData = data;
 	this->lib = lib;
 	cur_lib = cur;
-	snake = snk;
-	object = obj;
 	x_direction = 1;
 	y_direction = 0;
 }
@@ -34,16 +33,7 @@ Game::~Game()
 
 void	Game::Update(int value)
 {
-	if (value == 1)
-	{
-		y_direction = 1;
-		x_direction = 0;
-	}
-	else if (value == 2)
-	{
-		y_direction = 0;
-		x_direction = 1;
-	}
+
 }
 
 void Game::Launch()
@@ -53,11 +43,17 @@ void Game::Launch()
 	{
 		value = gameData->GetInput();
 		std::cout << value << " KEYCODE !" << std::endl;
-		if (value == 'f' && cur_lib != "libcurses.so")
+		if (value == 'P')
+		{
+			gameData->pause.lock();
+			gameData->pause.unlock();
+			continue;
+		}
+		else if (value == 'f' && cur_lib != "libcurses.so")
 		{
 			lib->Close();
 			delete lib;
-			lib = new loader("libcurses.so", 50, 50, snake, object);
+			lib = new loader("libcurses.so", 50, 50, object);
 		}
 		else if (value == '2' && cur_lib != "libopengl.so")
 		{
