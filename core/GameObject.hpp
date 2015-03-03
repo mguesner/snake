@@ -4,6 +4,7 @@
 #include "Point.hpp"
 #include "../Data.hpp"
 
+
 class GameObject
 {
 public:
@@ -11,7 +12,9 @@ public:
 	GameObject(GameObject const & src);
 	GameObject& operator=(GameObject const & rhs);
 	~GameObject();
+
 protected:
+
 	Point position;
 	ObjectType type;
 };

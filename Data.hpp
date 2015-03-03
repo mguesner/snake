@@ -4,9 +4,8 @@
 #include <iostream>
 #include <list>
 #include <mutex>
-#include "core/GameObject.hpp"
 
-#define NBMODE 1
+class GameObject;
 
 enum ObjectType
 {
@@ -15,12 +14,23 @@ enum ObjectType
 };
 
 
-enum gameMode
+enum eGameMode
 {
 	NM = 0,
 	EXIT
 };
 
+enum eInput
+{
+	NONE = 0,
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT,
+	PAUSE
+};
+
+#define NBMODE 2
 
 
 
@@ -33,14 +43,15 @@ public:
 	virtual int GetInput() = 0;
 	std::mutex pause;
 	virtual bool ShouldLeave() = 0;
+	virtual void Pause() = 0;
 
 protected:
 	bool shouldLeave;
-	gameMode mode;
+	eGameMode mode;
 	int keycode;
 	int width;
 	int height;
-	int value;
+	eInput value;
 	std::list<GameObject&> *objects;
 	int score;
 	std::string player;
