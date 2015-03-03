@@ -9,6 +9,13 @@ Menu::Menu(int x, int y): x(x), y(y)
 eGameMode Menu::Display()
 {
 	int choice = 0;
+	attron(COLOR_PAIR(NORMAL));
+	mvprintw((y / 2) - (NBMODE + 9), x / 2 - 20, " _______ __    _ _______ ___   _ _______");
+	mvprintw((y / 2) - (NBMODE + 8), x / 2 - 20, "|  _____|  |  | |   _   |   |_| |    ___|");
+	mvprintw((y / 2) - (NBMODE + 7), x / 2 - 20, "| |_____|   |_| |  |_|  |      _|   |___");
+	mvprintw((y / 2) - (NBMODE + 6), x / 2 - 20, "|_____  |  _    |       |     |_|    ___|");
+	mvprintw((y / 2) - (NBMODE + 5), x / 2 - 20, " _____| | | |   |   _   |    _  |   |___");
+	mvprintw((y / 2) - (NBMODE + 4), x / 2 - 20, "|_______|_|  |__|__| |__|___| |_|_______|");
 	for (int i = 0; i < NBMODE; ++i)
 	{
 		if (i == choice)
@@ -23,6 +30,13 @@ eGameMode Menu::Display()
 	{
 		clear();
 		getmaxyx(stdscr, y, x);
+		attron(COLOR_PAIR(NORMAL));
+		mvprintw((y / 2) - (NBMODE + 9), x / 2 - 20, " _______ __    _ _______ ___   _ _______");
+		mvprintw((y / 2) - (NBMODE + 8), x / 2 - 20, "|  _____|  |  | |   _   |   |_| |    ___|");
+		mvprintw((y / 2) - (NBMODE + 7), x / 2 - 20, "| |_____|   |_| |  |_|  |      _|   |___");
+		mvprintw((y / 2) - (NBMODE + 6), x / 2 - 20, "|_____  |  _    |       |     |_|    ___|");
+		mvprintw((y / 2) - (NBMODE + 5), x / 2 - 20, " _____| | | |   |   _   |    _  |   |___");
+		mvprintw((y / 2) - (NBMODE + 4), x / 2 - 20, "|_______|_|  |__|__| |__|___| |_|_______|");
 		if (ch == 'w')
 			choice  = (choice - 1) < 0 ? NBMODE + (choice - 1) : (choice - 1);
 		else if (ch == '\n')
@@ -62,6 +76,14 @@ eActionPause Menu::Pause()
 {
 	int choice = 0;
 
+	clear();
+	attron(COLOR_PAIR(NORMAL));
+	mvprintw((y / 2) - (NBACTIONPAUSE + 9), x / 2 - 20, " _______ _______ __   __ _______ _______ ");
+	mvprintw((y / 2) - (NBACTIONPAUSE + 8), x / 2 - 20, "|    _  |   _   |  | |  |  _____|    ___|");
+	mvprintw((y / 2) - (NBACTIONPAUSE + 7), x / 2 - 20, "|   |_| |  |_|  |  | |  | |_____|   |___ ");
+	mvprintw((y / 2) - (NBACTIONPAUSE + 6), x / 2 - 20, "|    ___|       |  |_|  |_____  |    ___|");
+	mvprintw((y / 2) - (NBACTIONPAUSE + 5), x / 2 - 20, "|   |   |   _   |       |_____| |   |___ ");
+	mvprintw((y / 2) - (NBACTIONPAUSE + 4), x / 2 - 20, "|___|   |__| |__|_______|_______|_______|");
 	for (int i = 0; i < NBACTIONPAUSE; ++i)
 	{
 		if (i == choice)
@@ -76,6 +98,13 @@ eActionPause Menu::Pause()
 	{
 		clear();
 		getmaxyx(stdscr, y, x);
+		attron(COLOR_PAIR(NORMAL));
+		mvprintw((y / 2) - (NBACTIONPAUSE + 9), x / 2 - 20, " _______ _______ __   __ _______ _______ ");
+		mvprintw((y / 2) - (NBACTIONPAUSE + 8), x / 2 - 20, "|    _  |   _   |  | |  |  _____|    ___|");
+		mvprintw((y / 2) - (NBACTIONPAUSE + 7), x / 2 - 20, "|   |_| |  |_|  |  | |  | |_____|   |___ ");
+		mvprintw((y / 2) - (NBACTIONPAUSE + 6), x / 2 - 20, "|    ___|       |  |_|  |_____  |    ___|");
+		mvprintw((y / 2) - (NBACTIONPAUSE + 5), x / 2 - 20, "|   |   |   _   |       |_____| |   |___ ");
+		mvprintw((y / 2) - (NBACTIONPAUSE + 4), x / 2 - 20, "|___|   |__| |__|_______|_______|_______|");
 		if (ch == 'w')
 			choice  = (choice - 1) < 0 ? NBACTIONPAUSE + (choice - 1) : (choice - 1);
 		else if (ch == '\n')

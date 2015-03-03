@@ -109,10 +109,11 @@ void NCursesData::StartDisplay()
 void NCursesData::StartInput()
 {
 	int ch;
-	timeout(100);
+	timeout(200);
 	while (!shouldLeave && (ch = getch()))
 	{
 		value = inputs[ch];
+		//mvprintw(0,0,"%d", value);
 		pause.lock();
 		pause.unlock();
 	}
