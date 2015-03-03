@@ -6,10 +6,10 @@ Menu::Menu(int x, int y): x(x), y(y)
 {
 }
 
-gameMode Menu::Display()
+eGameMode Menu::Display()
 {
 	int choice = 0;
-	for (int i = 0; i < NBMODE + 1; ++i)
+	for (int i = 0; i < NBMODE; ++i)
 	{
 		if (i == choice)
 			attron(COLOR_PAIR(SELECTED));
@@ -24,10 +24,10 @@ gameMode Menu::Display()
 		clear();
 		getmaxyx(stdscr, y, x);
 		if (ch == 'w')
-			choice  = (choice - 1) < 0 ? NBMODE + 1 + (choice - 1) : (choice - 1);
+			choice  = (choice - 1) < 0 ? NBMODE + (choice - 1) : (choice - 1);
 		else if (ch == '\n')
 			break;
-		for (int i = 0; i < NBMODE + 1; ++i)
+		for (int i = 0; i < NBMODE; ++i)
 		{
 			if (i == choice)
 				attron(COLOR_PAIR(SELECTED));
@@ -37,7 +37,7 @@ gameMode Menu::Display()
 		}
 		refresh();
 	}
-	return (gameMode)choice;
+	return (eGameMode)choice;
 }
 
 std::string Menu::Name()
@@ -56,6 +56,42 @@ std::string Menu::Name()
 	curs_set(0);
 	noecho();
 	return std::string(str);
+}
+
+eActionPause Menu::Pause()
+{
+	int choice = 0;
+
+	for (int i = 0; i < NBACTIONPAUSE; ++i)
+	{
+		if (i == choice)
+			attron(COLOR_PAIR(SELECTED));
+		else
+			attron(COLOR_PAIR(NORMAL));
+		mvprintw((y / 2) - (NBACTIONPAUSE - i * 2), x / 2 - pause[i].size() / 2, pause[i].c_str());
+	}
+	refresh();
+	int ch;
+	while ((ch = getch()))
+	{
+		clear();
+		getmaxyx(stdscr, y, x);
+		if (ch == 'w')
+			choice  = (choice - 1) < 0 ? NBACTIONPAUSE + (choice - 1) : (choice - 1);
+		else if (ch == '\n')
+			break;
+		for (int i = 0; i < NBACTIONPAUSE; ++i)
+		{
+			if (i == choice)
+				attron(COLOR_PAIR(SELECTED));
+			else
+				attron(COLOR_PAIR(NORMAL));
+			mvprintw((y / 2) - (NBACTIONPAUSE - i * 2), x / 2 - pause[i].size() / 2, pause[i].c_str());
+		}
+		mvprintw(0, 0, "%d", choice);
+		refresh();
+	}
+	return (eActionPause)choice;
 }
 
 Menu::~Menu()

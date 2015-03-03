@@ -23,11 +23,16 @@ NCursesData::NCursesData(int width, int height, std::list<int> *snake
 	this->snake = snake;
 	this->objects = objects;
 	over = false;
-	value = 0;
+	value = NONE;
 	Menu menu(xScreen, yScreen);
 	mode = menu.Display();
-	if(!(shouldLeave = (mode == NBMODE)))
+	if(!(shouldLeave = (mode == NBMODE - 1)))
 		player = menu.Name();
+	inputs['w'] = UP;
+	inputs['s'] = DOWN;
+	inputs['a'] = LEFT;
+	inputs['d'] = RIGHT;
+	inputs['p'] = PAUSE;
 	display = std::thread(&NCursesData::StartDisplay, this);
 	input = std::thread(&NCursesData::StartInput, this);
 }
@@ -105,11 +110,10 @@ void NCursesData::StartDisplay()
 
 void NCursesData::StartInput()
 {
-	while (!shouldLeave && (value = getch()))
-	{
-		if (value == 27)
-			break;
-	}
+	int ch;
+	timeout(100);
+	while (!shouldLeave && (ch = getch()))
+		value = inputs[ch];
 }
 
 int NCursesData::GetInput()
@@ -122,12 +126,19 @@ bool NCursesData::ShouldLeave()
 	return shouldLeave;
 }
 
+void NCursesData::Pause()
+{
+	Menu menu(xScreen, yScreen);
+	menu.Pause();
+}
+
 NCursesData::~NCursesData()
 {
+	shouldLeave = true;
 	mutex.unlock();
-	curs_set(1);
 	over = true;
 	display.join();
 	input.join();
+	curs_set(1);
 	endwin();
 }

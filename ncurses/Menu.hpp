@@ -1,7 +1,7 @@
 #ifndef MENU_HPP
 #define MENU_HPP
 
-#include "Data.hpp"
+#include "NcursesData.hpp"
 
 #define NORMAL 1
 #define SELECTED 2
@@ -14,14 +14,16 @@ class Menu
 {
 public:
 	Menu(int, int);
-	gameMode Display();
+	eGameMode Display();
 	std::string Name();
+	eActionPause Pause();
 	~Menu();
 
 private:
 	int x;
 	int y;
-	std::string menu[NBMODE + 1] = {"new game", "quit"};
+	std::string menu[NBMODE] = {"new game", "quit"};
+	std::string pause[NBACTIONPAUSE] = {"continue", "restart", "exit"};
 };
 
 #endif

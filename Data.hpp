@@ -5,13 +5,23 @@
 #include <list>
 #include <mutex>
 
-enum gameMode
+enum eGameMode
 {
 	NM = 0,
 	EXIT
 };
 
-#define NBMODE 1
+enum eInput
+{
+	NONE = 0,
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT,
+	PAUSE
+};
+
+#define NBMODE 2
 
 class Data
 {
@@ -21,14 +31,15 @@ public:
 	virtual void Lock() = 0;
 	virtual int GetInput() = 0;
 	virtual bool ShouldLeave() = 0;
+	virtual void Pause() = 0;
 
 protected:
 	bool shouldLeave;
-	gameMode mode;
+	eGameMode mode;
 	int keycode;
 	int width;
 	int height;
-	int value;
+	eInput value;
 	int score;
 	std::string player;
 	std::list<int> *snake;

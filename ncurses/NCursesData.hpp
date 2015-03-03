@@ -3,6 +3,16 @@
 
 #include <Data.hpp>
 #include <thread>
+#include <map>
+
+enum eActionPause
+{
+	CONTINUE = 0,
+	RESTART,
+	EXIT2
+};
+
+#define NBACTIONPAUSE 3
 
 class NCursesData : public Data
 {
@@ -13,6 +23,7 @@ public:
 	void Lock();
 	int GetInput();
 	bool ShouldLeave();
+	void Pause();
 	~NCursesData();
 
 private:
@@ -23,6 +34,7 @@ private:
 	int xScreen;
 	int yScreen;
 	bool over;
+	std::map<int, eInput> inputs;
 };
 
 #endif
