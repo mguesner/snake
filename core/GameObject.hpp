@@ -2,7 +2,7 @@
 #define GAMEOBJECT_HPP
 
 #include "Point.hpp"
-#include "Data.hpp"
+#include "../Data.hpp"
 
 class GameObject
 {
@@ -11,7 +11,7 @@ public:
 	GameObject(GameObject const & src);
 	GameObject& operator=(GameObject const & rhs);
 	~GameObject();
-private:
+protected:
 	Point position;
 	ObjectType type;
 };

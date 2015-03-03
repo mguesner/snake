@@ -7,7 +7,7 @@ class Game
 {
 public:
 	Game();
-	Game(Data*, loader*, std::string, int , int , std::list<GameObject&>*);
+	Game(Data*, loader*, std::string, int , int , std::list<GameObject*>*);
 	Game(Game const & src);
 	Game& operator=(Game const & rhs);
 	void Update(int value);
@@ -19,7 +19,7 @@ private:
 	Data *gameData;
 	loader *lib;
 	std::string cur_lib;
-	std::list<GameObject&> *object;
+	std::list<GameObject*> *object;
 	int x_direction;
 	int y_direction;
 };

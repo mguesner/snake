@@ -14,10 +14,10 @@ int main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	std::string current("libcurses.so");
-	std::list<GameObject> obj;
+	std::list<GameObject*> obj;
 	loader	*graphiclib = new loader("libcurses.so", 50, 50, &obj);
 	Data	*gameData = graphiclib->GetData();
-	Game	*game = new Game(gameData, graphiclib, current, 50, 50);
+	Game	*game = new Game(gameData, graphiclib, current, 50, 50, &obj);
 	game->Launch();
 	int value = 1;
 

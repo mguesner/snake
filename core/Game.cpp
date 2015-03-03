@@ -15,7 +15,7 @@ Game& Game::operator=(Game const & src)
 	return *this;
 }
 
-Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std::list<GameObject>* obj)
+Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std::list<GameObject*> *obj)
 {
 	this->width = width;
 	this->height = height;
@@ -25,6 +25,7 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	cur_lib = cur;
 	x_direction = 1;
 	y_direction = 0;
+
 }
 
 Game::~Game()

@@ -12,7 +12,7 @@ class loader
 {
 public:
 	loader();
-	loader(std::string, int width, int height, std::list<int> *snake, std::list<int> *object);
+	loader(std::string, int width, int height, std::list<GameObject*> *);
 	loader(loader const & src);
 	loader& operator=(loader const & rhs);
 	void Close();
@@ -22,7 +22,7 @@ private:
 	void *handle;
 	Data *data = NULL;
 	char *error;
-	Data* (*init)(int, int, std::list<GameObject&> *object);
+	Data* (*init)(int, int, std::list<GameObject*> *object);
 	Data* (*close)(Data *);
 };
 
