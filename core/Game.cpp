@@ -23,8 +23,8 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	gameData = data;
 	this->lib = lib;
 	cur_lib = cur;
-	x_direction = 1;
-	y_direction = 0;
+	first = new Player();
+	(void)second;
 
 }
 
@@ -34,7 +34,7 @@ Game::~Game()
 
 void	Game::Update(int value)
 {
-
+	(void)value;
 }
 
 void Game::Launch()

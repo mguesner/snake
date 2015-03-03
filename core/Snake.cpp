@@ -9,10 +9,13 @@ Snake::Snake()
 
 Snake::Snake(Snake const & src)
 {
+	(void)src;
 }
 
-Snake& Snake::operator=(Snake const & rhs)
+Snake& Snake::operator=(Snake const & src)
 {
+	(void)src;
+	return *this;
 }
 
 Snake::~Snake()

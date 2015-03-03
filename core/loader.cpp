@@ -4,7 +4,7 @@ loader::loader()
 {
 }
 
-loader::loader(std::string name, int width, int height, std::list<GameObject&> *object)
+loader::loader(std::string name, int width, int height, std::list<GameObject*> *object)
 {
 
 	handle = dlopen(name.c_str() , RTLD_LAZY);
@@ -28,7 +28,7 @@ loader::loader(std::string name, int width, int height, std::list<GameObject&> *
 		fprintf(stderr, "%s\n", error);
 		exit(EXIT_FAILURE);
 	}
-	data = (*init)(width, height, snake, object);
+	data = (*init)(width, height,object);
 }
 
 loader::loader(loader const & src)

@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include "loader.hpp"
+#include "Player.hpp"
 
 class Game
 {
@@ -20,8 +21,8 @@ private:
 	loader *lib;
 	std::string cur_lib;
 	std::list<GameObject*> *object;
-	int x_direction;
-	int y_direction;
+	Player *first;
+	Player *second;
 };
 
 #endif

@@ -8,6 +8,7 @@
 
 int main(int argc, char **argv)
 {
+	(void)argv;
 	if (argc < 3)
 	{
 		std::cout << "Usage ./nibbler width height (4 min and 1000 max)" << std::endl;
@@ -19,6 +20,5 @@ int main(int argc, char **argv)
 	Data	*gameData = graphiclib->GetData();
 	Game	*game = new Game(gameData, graphiclib, current, 50, 50, &obj);
 	game->Launch();
-	int value = 1;
-
+	return (EXIT_SUCCESS);
 }

@@ -7,6 +7,13 @@ NAME1 = libcurses.so
 DIR1 = ncurses/
 
 SRC = $(DIR)main.cpp\
+	$(DIR)GameObject.cpp\
+	$(DIR)Game.cpp\
+	$(DIR)Food.cpp\
+	$(DIR)loader.cpp\
+	$(DIR)Player.cpp\
+	$(DIR)Point.cpp\
+	$(DIR)Snake.cpp\
 
 SRC1 = $(DIR1)NCursesData.cpp\
 	$(DIR1)init.cpp
@@ -34,7 +41,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
-	rm - f $(NAME1)
+	rm -f $(NAME1)
 
 re: fclean all
 
