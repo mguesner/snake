@@ -74,10 +74,10 @@ void NCursesData::StartDisplay()
 			}
 			i++;
 		}
-		// auto current = objects->begin();
-		// auto end = objects->end();
-		// while(current != end)
-		// {
+		auto current = objects->begin();
+		auto end = objects->end();
+		while(current != end)
+		{
 		// 	auto prout = *current;
 		// 	auto x = current-> 50;
 		// 	auto y = prout / 50;
@@ -98,7 +98,7 @@ void NCursesData::StartDisplay()
 		// 	attron(COLOR_PAIR(FOOD));
 		// 	mvprintw(y % height, x % width,"#");
 		// 	current2++;
-		// }
+		}
 		attron(COLOR_PAIR(NORMAL));
 		mvprintw(0, width, "player:%s", player.c_str());
 		mvprintw(1, width, "score:%d",score);
