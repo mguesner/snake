@@ -20,7 +20,7 @@ public:
 	NCursesData(int width, int height, std::list<GameObject*> *objects);
 	void Draw();
 	void Lock();
-	int GetInput();
+	eInput GetInput();
 	bool ShouldLeave();
 	void Pause();
 	~NCursesData();

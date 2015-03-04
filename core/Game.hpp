@@ -3,6 +3,7 @@
 
 #include "loader.hpp"
 #include "Player.hpp"
+#include "../Data.hpp"
 
 class Game
 {
@@ -11,7 +12,7 @@ public:
 	Game(Data*, loader*, std::string, int , int , std::list<GameObject*>*);
 	Game(Game const & src);
 	Game& operator=(Game const & rhs);
-	void Update(int value);
+	void Update(eInput value);
 	~Game();
 	void Launch();
 private:

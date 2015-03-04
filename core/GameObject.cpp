@@ -19,3 +19,7 @@ GameObject::~GameObject()
 {
 }
 
+int GameObject::getTest()
+{
+	return test;
+}

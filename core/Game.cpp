@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "unistd.h"
 
 Game::Game()
 {
@@ -23,7 +24,7 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	gameData = data;
 	this->lib = lib;
 	cur_lib = cur;
-	first = new Player();
+	first = new Player(object, width, height);
 	(void)second;
 
 }
@@ -32,38 +33,46 @@ Game::~Game()
 {
 }
 
-void	Game::Update(int value)
+void	Game::Update(eInput value)
 {
-	(void)value;
+
 }
 
 void Game::Launch()
 {
-	int value = 1;
-	while (value != 27)
+	eInput value = NONE;
+	gameData->Lock();
+	while (!gameData->ShouldLeave())
 	{
 		value = gameData->GetInput();
-		std::cout << value << " KEYCODE !" << std::endl;
-		if (value == 'P')
+		if (value != NONE)
 		{
-			gameData->pause.lock();
-			gameData->pause.unlock();
-			continue;
-		}
-		else if (value == 'f' && cur_lib != "libcurses.so")
-		{
-			lib->Close();
-			delete lib;
-			lib = new loader("libcurses.so", 50, 50, object);
-		}
-		else if (value == '2' && cur_lib != "libopengl.so")
-		{
+			if (value == PAUSE)
+			{
+				gameData->Pause();
+				gameData->Draw();
+				continue;
+			}
+			else if (value == F1)
+			{
+				lib->Close();
+				delete lib;
+				lib = new loader("libcurses.so", 50, 50, object);
+			}
+			else if (value == F2)
+			{
 
-		}
-		else if (value == '3' && cur_lib != "lib.so")
-		{
+			}
+			else if (value == F3)
+			{
 
+			}
 		}
 		Update(value);
+		gameData->Draw();
+		gameData->Lock();
+		usleep(200000);
 	}
+	lib->Close();
+	delete lib;
 }

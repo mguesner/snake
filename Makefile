@@ -17,13 +17,15 @@ SRC = $(DIR)main.cpp\
 
 SRC1 = $(DIR1)NCursesData.cpp\
 	$(DIR1)init.cpp \
-	$(DIR1)Menu.cpp
+	$(DIR1)Menu.cpp\
+	$(DIR)GameObject.cpp\
+	$(DIR)Point.cpp\
 
 OBJ = $(SRC:.cpp=.o)
 
 OBJ1 = $(SRC1:.cpp=.o)
 
-CC = clang++ -g -O3 -Wall -Wextra -Werror -std=c++11 -I . -lncurses
+CC = clang++ -g -O3 -Wall -Wextra -Werror -std=c++11 -I .
 
 all: $(NAME) $(NAME1)
 
@@ -34,7 +36,7 @@ $(NAME): $(OBJ)
 	$(CC) -o $(NAME) $(OBJ)
 
 $(NAME1): $(OBJ1)
-	$(CC) -dynamiclib -o $(NAME1) $(OBJ1)
+	$(CC) -dynamiclib -o $(NAME1) $(OBJ1) -lncurses
 
 clean:
 	rm -f $(OBJ)

@@ -1,5 +1,6 @@
 #include "NCursesData.hpp"
 #include "Menu.hpp"
+#include "../core/GameObject.hpp"
 #include <ncurses.h>
 #include <unistd.h>
 #include <time.h>
@@ -31,6 +32,9 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	inputs['a'] = LEFT;
 	inputs['d'] = RIGHT;
 	inputs['p'] = PAUSE;
+	inputs[80] = F1;
+	inputs[81] = F2;
+	inputs[82] = F3;
 	display = std::thread(&NCursesData::StartDisplay, this);
 	input = std::thread(&NCursesData::StartInput, this);
 }
@@ -78,26 +82,7 @@ void NCursesData::StartDisplay()
 		auto end = objects->end();
 		while(current != end)
 		{
-			// auto prout = *current;
-		// 	auto x = current-> 50;
-		// 	auto y = prout / 50;
-		// 	if (prout == snake->front())
-		// 		attron(COLOR_PAIR(SNAKEHEAD));
-		// 	else
-		// 		attron(COLOR_PAIR(SNAKEBODY));
-		// 	mvprintw(y % height, x % width," ");
-		// 	current++;
-		// }
-		// auto current2 = objects->begin();
-		// auto end2 = objects->end();
-		// while(current2 != end2)
-		// {
-		// 	auto prout2 = *current2;
-		// 	auto x = prout2 % 50;
-		// 	auto y = prout2 / 50;
-		// 	attron(COLOR_PAIR(FOOD));
-		// 	mvprintw(y % height, x % width,"#");
-		// 	current2++;
+			mvprintw(0, 0, "%d", (*current)->getTest());
 		}
 		attron(COLOR_PAIR(NORMAL));
 		mvprintw(0, width, "player:%s", player.c_str());
@@ -113,13 +98,13 @@ void NCursesData::StartInput()
 	while (!shouldLeave && (ch = getch()))
 	{
 		value = inputs[ch];
-		//mvprintw(0,0,"%d", value);
+		//mvprintw(0,0,"%d", ch);
 		pause.lock();
 		pause.unlock();
 	}
 }
 
-int NCursesData::GetInput()
+eInput NCursesData::GetInput()
 {
 	return value;
 }

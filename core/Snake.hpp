@@ -6,11 +6,12 @@
 class Snake : public GameObject
 {
 public:
-	Snake();
+	Snake(int, int);
 	Snake(Snake const & src);
 	Snake& operator=(Snake const & rhs);
 	~Snake();
 private:
+	Snake();
 	std::list<Point> snake;
 };
 

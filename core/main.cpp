@@ -1,5 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
+
+#include <cstdlib>
+#include <ctime>
 #include <dlfcn.h>
 #include "../Data.hpp"
 #include "loader.hpp"
@@ -14,6 +15,8 @@ int main(int argc, char **argv)
 		std::cout << "Usage ./nibbler width height (4 min and 1000 max)" << std::endl;
 		return (EXIT_FAILURE);
 	}
+	// RANDOM INITIALIZER
+	srand(time(NULL));
 	std::string current("libcurses.so");
 	std::list<GameObject*> obj;
 	loader	*graphiclib = new loader("libcurses.so", 50, 50, &obj);
