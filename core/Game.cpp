@@ -44,7 +44,10 @@ void	Game::Update(eInput value)
 	if (value >= UP && value <= RIGHT)
 		snk->SetDirection(value);
 	snk->Move();
-
+	if (snk->IsColliding())
+		;//game stat = loose
+	// if snk collide food move food add point
+	
 }
 
 void Game::Launch()
