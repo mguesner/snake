@@ -9,6 +9,7 @@ class Player
 public:
 	Player();
 	Player(int nb);
+	Player(std::list<GameObject*> *obj, int, int);
 	Player(Player const & src);
 	Player& operator=(Player const & rhs);
 	~Player();

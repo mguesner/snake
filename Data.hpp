@@ -20,6 +20,14 @@ enum eGameMode
 	EXIT
 };
 
+enum eGameState
+{
+	IG = 0,
+	MULTI,
+	MENU1,
+	MENU2
+};
+
 enum eInput
 {
 	NONE = 0,
@@ -28,6 +36,9 @@ enum eInput
 	LEFT,
 	RIGHT,
 	PAUSE,
+	F1,
+	F2,
+	F3,
 	VALIDATE
 };
 
@@ -41,7 +52,7 @@ public:
 	virtual ~Data(){}
 	virtual void Draw() = 0;
 	virtual void Lock() = 0;
-	virtual int GetInput() = 0;
+	virtual eInput GetInput() = 0;
 	std::mutex pause;
 	virtual bool ShouldLeave() = 0;
 	virtual bool ShouldReset() = 0;

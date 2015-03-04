@@ -12,11 +12,12 @@ public:
 	GameObject(GameObject const & src);
 	GameObject& operator=(GameObject const & rhs);
 	~GameObject();
-
+	int getTest();
 protected:
 
 	Point position;
 	ObjectType type;
+	int test;
 };
 
 #endif

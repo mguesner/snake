@@ -14,6 +14,14 @@ Player::Player(int nb)
 	speed = 1;
 }
 
+Player::Player(std::list<GameObject*> *obj, int width, int height)
+{
+	nb = 1;
+	snake = new Snake(width , height);
+	speed = 1;
+	obj->push_front(snake);
+}
+
 Player::Player(Player const & src)
 {
 	(void)src;
