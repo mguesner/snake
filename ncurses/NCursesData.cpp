@@ -79,7 +79,7 @@ void NCursesData::StartDisplay()
 		while(current != end)
 		{
 			// auto prout = *current;
-		// 	auto x = current-> 50;
+			// auto x = current-> 50;
 		// 	auto y = prout / 50;
 		// 	if (prout == snake->front())
 		// 		attron(COLOR_PAIR(SNAKEHEAD));

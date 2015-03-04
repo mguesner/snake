@@ -2,9 +2,7 @@ NAME = nibbler
 
 DIR = core/
 
-NAME1 = libcurses.so
-
-DIR1 = ncurses/
+DIRLCUR = ncurses/
 
 SRC = $(DIR)main.cpp\
 	$(DIR)GameObject.cpp\
@@ -15,17 +13,14 @@ SRC = $(DIR)main.cpp\
 	$(DIR)Point.cpp\
 	$(DIR)Snake.cpp\
 
-SRC1 = $(DIR1)NCursesData.cpp\
-	$(DIR1)init.cpp \
-	$(DIR1)Menu.cpp
-
 OBJ = $(SRC:.cpp=.o)
 
-OBJ1 = $(SRC1:.cpp=.o)
+CC = clang++ -g -O3 -Wall -Wextra -Werror -std=c++11 -I .
 
-CC = clang++ -g -O3 -Wall -Wextra -Werror -std=c++11 -I . -lncurses
+all: LCUR $(NAME)
 
-all: $(NAME) $(NAME1)
+LCUR:
+	make -C $(DIRLCUR)
 
 .cpp.o:
 	$(CC) -c -o $@ $<
@@ -33,16 +28,11 @@ all: $(NAME) $(NAME1)
 $(NAME): $(OBJ)
 	$(CC) -o $(NAME) $(OBJ)
 
-$(NAME1): $(OBJ1)
-	$(CC) -dynamiclib -o $(NAME1) $(OBJ1)
-
 clean:
 	rm -f $(OBJ)
-	rm -f $(OBJ1)
 
 fclean: clean
 	rm -f $(NAME)
-	rm -f $(NAME1)
 
 re: fclean all
 
