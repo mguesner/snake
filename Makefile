@@ -16,13 +16,14 @@ SRC = $(DIR)main.cpp\
 	$(DIR)Snake.cpp\
 
 SRC1 = $(DIR1)NCursesData.cpp\
-	$(DIR1)init.cpp
+	$(DIR1)init.cpp \
+	$(DIR1)Menu.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
 OBJ1 = $(SRC1:.cpp=.o)
 
-CC = clang++ -g -O3 -Wall -Wextra -Werror -std=c++11 -I .
+CC = clang++ -g -O3 -Wall -Wextra -Werror -std=c++11 -I . -lncurses
 
 all: $(NAME) $(NAME1)
 

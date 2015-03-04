@@ -52,7 +52,7 @@ protected:
 	int width;
 	int height;
 	eInput value;
-	std::list<GameObject&> *objects;
+	std::list<GameObject*> *objects;
 	int score;
 	std::string player;
 	std::mutex mutex;

@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <time.h>
 
-NCursesData::NCursesData(int width, int height, std::list<GameObject&> *objects)
+NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 {
 	initscr();
 	curs_set(0);
@@ -78,7 +78,7 @@ void NCursesData::StartDisplay()
 		auto end = objects->end();
 		while(current != end)
 		{
-		// 	auto prout = *current;
+			// auto prout = *current;
 		// 	auto x = current-> 50;
 		// 	auto y = prout / 50;
 		// 	if (prout == snake->front())
