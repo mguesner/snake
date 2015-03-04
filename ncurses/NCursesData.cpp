@@ -18,7 +18,8 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	init_pair(SNAKEHEAD, COLOR_WHITE, COLOR_RED);
 	init_pair(SNAKEBODY, COLOR_BLACK, COLOR_GREEN);
 	init_pair(FOOD, COLOR_RED, COLOR_WHITE);
-	funcs[0] = &NCursesData::DrawMainMenu;
+	funcs[(int)MAINMENU] = &NCursesData::DrawMainMenu;
+	funcs[(int)NM] = &NCursesData::DrawNormalMode;
 	this->width = width;
 	this->height = height;
 	this->objects = objects;
@@ -64,65 +65,8 @@ void NCursesData::StartDisplay()
 			continue;
 		}
 		clear();
-
-			//mvprintw(0, 0, "%d", (*current)->getTest());
-
-			// auto prout = *current;
-			// auto x = current-> 50;
-		// 	auto y = prout / 50;
-		// 	if (prout == snake->front())
-		// 		attron(COLOR_PAIR(SNAKEHEAD));
-		// 	else
-		// 		attron(COLOR_PAIR(SNAKEBODY));
-		// 	mvprintw(y % height, x % width," ");
-		// 	current++;
-		// }
-		// auto current2 = objects->begin();
-		// auto end2 = objects->end();
-		// while(current2 != end2)
-
-		(this->*funcs[0])();
-		// auto i = 0;
-		// attron(COLOR_PAIR(BACKGROUND));
-		// while (i < width)
-		// {
-		// 	auto j = 0;
-		// 	while (j < height)
-		// 	{
-		// 		mvprintw(j, i," ");
-		// 		j++;
-		// 	}
-		// 	i++;
-		// }
-		// // auto current = objects->begin();
-		// // auto end = objects->end();
-		// // while(current != end)
-		// // {
-		// 	// auto prout = *current;
-		// 	// auto x = current-> 50;
-		// // 	auto y = prout / 50;
-		// // 	if (prout == snake->front())
-		// // 		attron(COLOR_PAIR(SNAKEHEAD));
-		// // 	else
-		// // 		attron(COLOR_PAIR(SNAKEBODY));
-		// // 	mvprintw(y % height, x % width," ");
-		// // 	current++;
-		// // }
-		// // auto current2 = objects->begin();
-		// // auto end2 = objects->end();
-		// // while(current2 != end2)
-		// // {
-		// // 	auto prout2 = *current2;
-		// // 	auto x = prout2 % 50;
-		// // 	auto y = prout2 / 50;
-		// // 	attron(COLOR_PAIR(FOOD));
-		// // 	mvprintw(y % height, x % width,"#");
-		// // 	current2++;
-		// // }
-		// attron(COLOR_PAIR(NORMAL));
-		// mvprintw(0, width, "player:%s", player.c_str());
-		// mvprintw(1, width, "score:%d",score);
-		// refresh();
+		(this->*funcs[state])();
+	}
 }
 
 void NCursesData::StartInput()
@@ -158,6 +102,11 @@ void NCursesData::SetChoice(int choice)
 	this->choice = choice;
 }
 
+void NCursesData::SetState(eGameState state)
+{
+	this->state = state;
+}
+
 void NCursesData::Pause()
 {
 	pause.lock();
@@ -187,6 +136,26 @@ void NCursesData::DrawMainMenu()
 			attron(COLOR_PAIR(NORMAL));
 		mvprintw((yScreen / 2) - (NBMODE - i * 2), xScreen / 2 - mainMenu[i].size() / 2, mainMenu[i].c_str());
 	}
+	refresh();
+}
+
+void NCursesData::DrawNormalMode()
+{
+	auto i = 0;
+	attron(COLOR_PAIR(BACKGROUND));
+	while (i < width)
+	{
+		auto j = 0;
+		while (j < height)
+		{
+			mvprintw(j, i," ");
+			j++;
+		}
+		i++;
+	}
+	attron(COLOR_PAIR(NORMAL));
+	mvprintw(0, width, "player:%s", player.c_str());
+	mvprintw(1, width, "score:%d",score);
 	refresh();
 }
 

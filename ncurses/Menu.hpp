@@ -14,7 +14,7 @@ class Menu
 {
 public:
 	Menu(int, int);
-	eGameMode Display();
+	//eGameMode Display();
 	std::string Name();
 	eActionPause Pause();
 	void Option();

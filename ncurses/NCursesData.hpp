@@ -25,6 +25,7 @@ public:
 	bool ShouldLeave();
 	bool ShouldReset();
 	void SetChoice(int);
+	void SetState(eGameState);
 	void Pause();
 	~NCursesData();
 
@@ -32,6 +33,7 @@ private:
 	void StartDisplay();
 	void StartInput();
 	void DrawMainMenu();
+	void DrawNormalMode();
 	Func funcs[3];
 	std::thread display;
 	std::thread input;

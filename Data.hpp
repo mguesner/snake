@@ -13,19 +13,12 @@ enum ObjectType
 	FOOD
 };
 
-
-enum eGameMode
-{
-	NM = 0,
-	EXIT
-};
-
 enum eGameState
 {
-	IG = 0,
+	MAINMENU = 0,
+	NM,
 	MULTI,
-	MENU1,
-	MENU2
+	PAUSEMENU
 };
 
 enum eInput
@@ -57,12 +50,13 @@ public:
 	virtual bool ShouldLeave() = 0;
 	virtual bool ShouldReset() = 0;
 	virtual void SetChoice(int) = 0;
+	virtual void SetState(eGameState) = 0;
 	virtual void Pause() = 0;
 
 protected:
 	bool shouldLeave;
 	bool shouldReset;
-	eGameMode states;
+	eGameState state;
 	int keycode;
 	int width;
 	int height;
