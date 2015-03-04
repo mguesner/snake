@@ -17,6 +17,7 @@ public:
 	eGameMode Display();
 	std::string Name();
 	eActionPause Pause();
+	void Option();
 	~Menu();
 
 private:

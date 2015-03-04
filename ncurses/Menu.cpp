@@ -123,6 +123,11 @@ eActionPause Menu::Pause()
 	return (eActionPause)choice;
 }
 
+void Menu::Option()
+{
+
+}
+
 Menu::~Menu()
 {
 }
