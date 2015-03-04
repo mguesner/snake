@@ -11,13 +11,15 @@ public:
 	GameObject();
 	GameObject(GameObject const & src);
 	GameObject& operator=(GameObject const & rhs);
-	~GameObject();
-	int getTest();
+	virtual	bool IsColliding() = 0;
+	virtual ~GameObject();
+	bool IsPhysical();
 protected:
 
 	Point position;
 	ObjectType type;
 	int test;
+	bool	collider;
 };
 
 #endif

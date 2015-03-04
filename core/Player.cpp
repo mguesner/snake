@@ -3,14 +3,14 @@
 Player::Player()
 {
 	nb = 1;
-	snake = new Snake();
+	snake = new Snake(4, 4);
 	speed = 1;
 }
 
 Player::Player(int nb)
 {
 	this->nb = nb;
-	snake = new Snake();
+	snake = new Snake(4, 4);
 	speed = 1;
 }
 
@@ -38,3 +38,7 @@ Player::~Player()
 	delete snake;
 }
 
+Snake *Player::GetSnake()
+{
+	return snake;
+}

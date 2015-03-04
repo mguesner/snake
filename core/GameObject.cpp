@@ -2,6 +2,7 @@
 
 GameObject::GameObject()
 {
+	collider = false;
 }
 
 GameObject::GameObject(GameObject const & src)
@@ -19,7 +20,7 @@ GameObject::~GameObject()
 {
 }
 
-int GameObject::getTest()
+bool GameObject::IsPhysical()
 {
-	return test;
+	return collider;
 }

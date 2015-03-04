@@ -11,6 +11,7 @@ public:
 	Player(int nb);
 	Player(std::list<GameObject*> *obj, int, int);
 	Player(Player const & src);
+	Snake *GetSnake();
 	Player& operator=(Player const & rhs);
 	~Player();
 private:

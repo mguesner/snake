@@ -4,6 +4,7 @@
 #include "loader.hpp"
 #include "Player.hpp"
 #include "../Data.hpp"
+#include "Food.hpp"
 
 class Game
 {
@@ -24,6 +25,7 @@ private:
 	std::list<GameObject*> *object;
 	Player *first;
 	Player *second;
+	Food *food;
 };
 
 #endif
