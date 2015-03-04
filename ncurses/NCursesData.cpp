@@ -132,6 +132,11 @@ bool NCursesData::ShouldReset()
 	return shouldReset;
 }
 
+void NCursesData::SetChoice(int choice)
+{
+	this->choice = choice;
+}
+
 void NCursesData::Pause()
 {
 	pause.lock();

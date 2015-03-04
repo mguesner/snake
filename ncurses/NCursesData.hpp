@@ -24,6 +24,7 @@ public:
 	int GetInput();
 	bool ShouldLeave();
 	bool ShouldReset();
+	void SetChoice(int);
 	void Pause();
 	~NCursesData();
 
