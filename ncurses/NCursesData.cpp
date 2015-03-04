@@ -20,6 +20,7 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	init_pair(FOOD, COLOR_RED, COLOR_WHITE);
 	funcs[(int)MAINMENU] = &NCursesData::DrawMainMenu;
 	funcs[(int)NM] = &NCursesData::DrawNormalMode;
+	funcs[(int)PAUSEMENU] = &NCursesData::DrawPauseMenu;
 	this->width = width;
 	this->height = height;
 	this->objects = objects;
@@ -72,7 +73,7 @@ void NCursesData::StartDisplay()
 void NCursesData::StartInput()
 {
 	int ch;
-	timeout(200);
+	timeout(33);
 	while (!shouldLeave && (ch = getch()))
 	{
 		value = inputs[ch];
@@ -124,8 +125,8 @@ void NCursesData::DrawMainMenu()
 	attron(COLOR_PAIR(NORMAL));
 	mvprintw((yScreen / 2) - (NBMODE + 9), xScreen / 2 - 20, " _______ __    _ _______ ___   _ _______");
 	mvprintw((yScreen / 2) - (NBMODE + 8), xScreen / 2 - 20, "|  _____|  |  | |   _   |   |_| |    ___|");
-	mvprintw((yScreen / 2) - (NBMODE + 7), xScreen / 2 - 20, "| |_____|   |_| |  |_|  |      _|   |___");
-	mvprintw((yScreen / 2) - (NBMODE + 6), xScreen / 2 - 20, "|_____  |  _    |       |     |_|    ___|");
+	mvprintw((yScreen / 2) - (NBMODE + 7), xScreen / 2 - 20, "| |_____|   |_| |  |_|  |     __|   |___");
+	mvprintw((yScreen / 2) - (NBMODE + 6), xScreen / 2 - 20, "|_____  |  _    |       |    |__|    ___|");
 	mvprintw((yScreen / 2) - (NBMODE + 5), xScreen / 2 - 20, " _____| | | |   |   _   |    _  |   |___");
 	mvprintw((yScreen / 2) - (NBMODE + 4), xScreen / 2 - 20, "|_______|_|  |__|__| |__|___| |_|_______|");
 	for (int i = 0; i < NBMODE; ++i)
@@ -156,6 +157,26 @@ void NCursesData::DrawNormalMode()
 	attron(COLOR_PAIR(NORMAL));
 	mvprintw(0, width, "player:%s", player.c_str());
 	mvprintw(1, width, "score:%d",score);
+	refresh();
+}
+
+void NCursesData::DrawPauseMenu()
+{
+	attron(COLOR_PAIR(NORMAL));
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 9), xScreen / 2 - 20, " _______ _______ __   __ _______ _______ ");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 8), xScreen / 2 - 20, "|    _  |   _   |  | |  |  _____|    ___|");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 7), xScreen / 2 - 20, "|   |_| |  |_|  |  | |  | |_____|   |___ ");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 6), xScreen / 2 - 20, "|    ___|       |  |_|  |_____  |    ___|");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 5), xScreen / 2 - 20, "|   |   |   _   |       |_____| |   |___ ");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 4), xScreen / 2 - 20, "|___|   |__| |__|_______|_______|_______|");
+	for (int i = 0; i < NBACTIONPAUSE; ++i)
+	{
+		if (i == choice)
+			attron(COLOR_PAIR(SELECTED));
+		else
+			attron(COLOR_PAIR(NORMAL));
+		mvprintw((yScreen / 2) - (NBACTIONPAUSE - i * 2), xScreen / 2 - pauseMenu[i].size() / 2, pauseMenu[i].c_str());
+	}
 	refresh();
 }
 

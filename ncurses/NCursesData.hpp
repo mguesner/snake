@@ -34,7 +34,8 @@ private:
 	void StartInput();
 	void DrawMainMenu();
 	void DrawNormalMode();
-	Func funcs[3];
+	void DrawPauseMenu();
+	Func funcs[4];
 	std::thread display;
 	std::thread input;
 	int xScreen;
