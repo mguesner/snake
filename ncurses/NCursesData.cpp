@@ -82,7 +82,29 @@ void NCursesData::StartDisplay()
 		auto end = objects->end();
 		while(current != end)
 		{
-			mvprintw(0, 0, "%d", (*current)->getTest());
+
+			//mvprintw(0, 0, "%d", (*current)->getTest());
+
+			// auto prout = *current;
+			// auto x = current-> 50;
+		// 	auto y = prout / 50;
+		// 	if (prout == snake->front())
+		// 		attron(COLOR_PAIR(SNAKEHEAD));
+		// 	else
+		// 		attron(COLOR_PAIR(SNAKEBODY));
+		// 	mvprintw(y % height, x % width," ");
+		// 	current++;
+		// }
+		// auto current2 = objects->begin();
+		// auto end2 = objects->end();
+		// while(current2 != end2)
+		// {
+		// 	auto prout2 = *current2;
+		// 	auto x = prout2 % 50;
+		// 	auto y = prout2 / 50;
+		// 	attron(COLOR_PAIR(FOOD));
+		// 	mvprintw(y % height, x % width,"#");
+		// 	current2++;
 		}
 		attron(COLOR_PAIR(NORMAL));
 		mvprintw(0, width, "player:%s", player.c_str());
