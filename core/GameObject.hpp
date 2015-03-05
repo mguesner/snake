@@ -14,6 +14,7 @@ public:
 	virtual	bool IsColliding() = 0;
 	virtual ~GameObject();
 	bool IsPhysical();
+	ObjectType GetType();
 protected:
 
 	Point position;

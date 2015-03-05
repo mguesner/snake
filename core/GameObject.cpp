@@ -24,3 +24,8 @@ bool GameObject::IsPhysical()
 {
 	return collider;
 }
+
+ObjectType GameObject::GetType()
+{
+	return type;
+}
