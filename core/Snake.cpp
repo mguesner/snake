@@ -115,3 +115,8 @@ Point Snake::GetDirection()
 {
 	return direction;
 }
+
+std::list<Point> Snake::GetSnake()
+{
+	return snake;
+}

@@ -7,12 +7,16 @@ GameObject::GameObject()
 
 GameObject::GameObject(GameObject const & src)
 {
-	(void)src;
+	position = src.position;
+	type = src.type;
+	collider = src.collider;
 }
 
 GameObject& GameObject::operator=(GameObject const & src)
 {
-	(void)src;
+	position = src.position;
+	type = src.type;
+	collider = src.collider;
 	return *this;
 }
 

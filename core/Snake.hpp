@@ -12,6 +12,7 @@ public:
 	bool IsColliding();
 	void SetDirection(eInput);
 	Point GetDirection();
+	std::list<Point> GetSnake();
 	void SetSpeed(int);
 	void	Move();
 	~Snake();
