@@ -59,7 +59,6 @@ void Game::Launch()
 	gameData->SetState(NM);
 	while (!shouldLeave)
 	{
-		std::cout <<"prout" << std::endl;
 		timeval time;
 		 gettimeofday(&time, NULL);
 		auto start = time.tv_usec;
@@ -95,8 +94,9 @@ void Game::Launch()
 		gameData->Draw();
 		gameData->Lock();
 		gettimeofday(&time, NULL);
-		auto end = time.tv_usec;
-		usleep(start + 25 - end);
+		auto wait = start + 25 - time.tv_usec;
+		if (wait > 0)
+			usleep(wait);
 		//usleep(30000);
 	}
 	lib->Close();
