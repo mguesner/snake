@@ -53,8 +53,6 @@ public:
 	virtual void SetState(eGameState) = 0;
 
 protected:
-	bool shouldLeave;
-	bool shouldReset;
 	eGameState state;
 	int keycode;
 	int width;

@@ -30,6 +30,7 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	object->push_front(first->GetSnake());
 	food = new Food(width, height);
 	object->push_back(food);
+	shouldLeave = false;
 	(void)second;
 
 }
@@ -44,8 +45,8 @@ void	Game::Update(eInput value)
 	if (value >= UP && value <= RIGHT)
 		snk->SetDirection(value);
 	snk->Move();
-	if (snk->IsColliding())
-		;//game stat = loose
+	// if (snk->IsColliding())
+	// 	shouldLeave = true;//game stat = loose
 	// if snk collide food move food add point
 
 }
@@ -53,15 +54,14 @@ void	Game::Update(eInput value)
 void Game::Launch()
 {
 	eInput value = NONE;
+	state = MAINMENU;
 	gameData->Lock();
 	gameData->SetState(NM);
-		// gameData->Draw();
-		// gameData->Lock();
-		// while(1);
-	while (!gameData->ShouldLeave())
+	while (!shouldLeave)
 	{
+		std::cout <<"prout" << std::endl;
 		timeval time;
-		gettimeofday(&time, NULL);
+		 gettimeofday(&time, NULL);
 		auto start = time.tv_usec;
 		value = gameData->GetInput();
 		if (value != NONE)
@@ -91,12 +91,13 @@ void Game::Launch()
 				lib = new loader("libcurses.so", 50, 50, object);
 			}
 		}
-		//Update(value);
+		Update(value);
 		gameData->Draw();
 		gameData->Lock();
 		gettimeofday(&time, NULL);
 		auto end = time.tv_usec;
 		usleep(start + 25 - end);
+		//usleep(30000);
 	}
 	lib->Close();
 	delete lib;
