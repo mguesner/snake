@@ -40,6 +40,7 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	inputs['a'] = LEFT;
 	inputs['d'] = RIGHT;
 	inputs['p'] = PAUSE;
+	inputs[27] = PAUSE;
 	inputs[80] = F1;
 	inputs[81] = F2;
 	inputs[82] = F3;
