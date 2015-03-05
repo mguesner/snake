@@ -1,9 +1,9 @@
 #include "MLXData.hpp"
 
 
-/*extern "C"*/ Data	*init(int width, int height, std::list<int> *snake, std::list<int> *object)
+/*extern "C"*/ Data	*init(int width, int height, std::list<GameObject*> *objects)
 {
-	return new MLXData(width, height, snake, object);
+	return new MLXData(width, height, objects);
 }
 
 /*extern "C"*/ void	end(Data *data)

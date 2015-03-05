@@ -183,8 +183,8 @@ void NCursesData::DrawSnake(GameObject *it)
 
 void NCursesData::DrawFood(GameObject *it)
 {
-	(void)it;
-	// auto food =
+	attron(COLOR_PAIR(CFOOD));
+	mvprintw(it->GetPosition().getY(), it->GetPosition().getX(), "o");
 }
 
 NCursesData::~NCursesData()

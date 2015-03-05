@@ -14,22 +14,23 @@ extern"C"
 class MLXData : public Data
 {
 public:
-	MLXData(int width, int height, std::list<int> *snake
-	, std::list<int> *objects);
+	MLXData(int width, int height, std::list<GameObject*> *objects);
 	void Draw();
 	void Lock();
-	int GetInput();
+	eInput GetInput();
+	void SetChoice(int);
+	void SetState(eGameState);
+	char		*data;
+	void		*win;
+	void		*mlx;
+	void		*img_win;
 	~MLXData();
 
 private:
-	void		*mlx;
-	void		*win;
 	void		*img_mlx;
-	void		*img_win;
 	int			ptr;
 	int			size;
 	int			raf;
-	char		*data;
 	int			width;
 	int			height;
 };

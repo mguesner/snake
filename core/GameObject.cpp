@@ -29,6 +29,11 @@ bool GameObject::IsPhysical()
 	return collider;
 }
 
+Point GameObject::GetPosition()
+{
+	return position;
+}
+
 ObjectType GameObject::GetType()
 {
 	return type;
