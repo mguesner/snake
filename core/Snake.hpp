@@ -14,6 +14,8 @@ public:
 	Point GetDirection();
 	std::list<Point> GetSnake();
 	void SetSpeed(int);
+	void Collision();
+	void	Back();
 	void	Move();
 	~Snake();
 private:

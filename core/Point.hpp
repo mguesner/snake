@@ -16,6 +16,9 @@ class Point
 		int		getY();
 		int		getZ();
 
+		void	SetX(int value);
+		void	SetY(int value);
+		void	SetZ(int value);
 		void	UpdateX(double coef);
 		void	UpdateY(double coef);
 		void	UpdateZ(double coef);

@@ -13,11 +13,15 @@ public:
 	Game(Game const & src);
 	Game& operator=(Game const & rhs);
 	void Update(eInput value);
+	void MainMenu(eInput value);
+	void PauseMenu(eInput value);
+	ObjectType Collide();
 	~Game();
 	void Launch();
 private:
 	Game();
 	bool shouldLeave;
+	int entry;
 	int width;
 	int height;
 	eGameState state;

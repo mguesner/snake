@@ -27,28 +27,97 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	this->lib = lib;
 	cur_lib = cur;
 	first = new Player(object, width, height);
-	object->push_front(first->GetSnake());
 	food = new Food(width, height);
 	object->push_back(food);
 	shouldLeave = false;
+	entry = 0;
 	(void)second;
 
 }
 
 Game::~Game()
 {
+	delete first;
+	delete food;
+}
+
+ObjectType	Game::Collide()
+{
+	auto first = object->begin();
+	auto current = object->begin();
+	auto last = object->end();
+
+	while (current != last)
+	{
+		current++;
+		if (current == last)
+			break;
+		if ((*first)->GetPosition() == (*current)->GetPosition())
+			return (*current)->GetType();
+	}
+	return VOID;
 }
 
 void	Game::Update(eInput value)
 {
+	if (value == PAUSE)
+	{
+		state = PAUSEMENU;
+		return;
+	}
 	Snake *snk = first->GetSnake();
 	if (value >= UP && value <= RIGHT)
 		snk->SetDirection(value);
 	snk->Move();
-	// if (snk->IsColliding())
-	// 	shouldLeave = true;//game stat = loose
-	// if snk collide food move food add point
+	if (snk->IsColliding())
+	 	shouldLeave = true;//game stat = loose
+	ObjectType ret = Collide();
+	if (ret == VOID)
+		snk->Back();
+	else
+		food->Collision();
+}
 
+void Game::MainMenu(eInput value)
+{
+	(void)value;
+}
+
+void Game::PauseMenu(eInput value)
+{
+	if (value == VALIDATE)
+	{
+		if (entry == 0)
+			state = NM;
+		else if (entry == 1)
+			state = MAINMENU;
+		else if (entry == 2)
+			shouldLeave = true;
+		entry = 0;
+		gameData->SetChoice(0);
+	}
+	else if (value == UP)
+	{
+		if (entry == 0)
+			entry = 2;
+		else
+			entry--;
+		gameData->SetChoice(entry);
+	}
+	else if (value == DOWN)
+	{
+		if (entry == 2)
+			entry = 0;
+		else
+			entry++;
+		gameData->SetChoice(entry);
+	}
+	else if (value == PAUSE)
+	{
+		state = NM;
+		entry = 0;
+		gameData->SetChoice(0);
+	}
 }
 
 void Game::Launch()
@@ -63,39 +132,36 @@ void Game::Launch()
 		 gettimeofday(&time, NULL);
 		auto start = time.tv_usec;
 		value = gameData->GetInput();
-		if (value != NONE)
+		if (value == F1)
 		{
-			if (value == PAUSE)
-			{
-				if (state == NM)
-					state = PAUSEMENU;
-			}
-			else if (value == F1)
-			{
-				lib->Close();
-				delete lib;
-				lib = new loader("libcurses.so", 50, 50, object);
-			}
-			else if (value == F2)
-			{
-				lib->Close();
-				delete lib;
-				lib = new loader("libcurses.so", 50, 50, object);
-			}
-			else if (value == F3)
-			{
-				lib->Close();
-				delete lib;
-				lib = new loader("libcurses.so", 50, 50, object);
-			}
+			lib->Close();
+			delete lib;
+			lib = new loader("libcurses.so", 50, 50, object);
+		}
+		else if (value == F2)
+		{
+			lib->Close();
+			delete lib;
+			lib = new loader("libcurses.so", 50, 50, object);
+		}
+		else if (value == F3)
+		{
+			lib->Close();
+			delete lib;
+			lib = new loader("libcurses.so", 50, 50, object);
 		}
 		if (state == NM)
 			Update(value);
+		else if (state == PAUSEMENU)
+			PauseMenu(value);
+		else if (state == MAINMENU)
+			MainMenu(value);
 		gameData->SetState(state);
 		gameData->Draw();
 		gameData->Lock();
+		gameData->CleanInput();
 		gettimeofday(&time, NULL);
-		auto wait = start + 25 - time.tv_usec;
+		auto wait = start + 500000 - time.tv_usec;
 		if (wait > 0)
 			usleep(wait);
 	}

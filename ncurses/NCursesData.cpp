@@ -47,6 +47,9 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	inputs['\n'] = VALIDATE;
 	display = std::thread(&NCursesData::StartDisplay, this);
 	input = std::thread(&NCursesData::StartInput, this);
+	pauseMenu[0] =  "continue";
+	pauseMenu[1] = "restart";
+	pauseMenu[2] = "Quit";
 }
 
 void NCursesData::Lock()
@@ -81,13 +84,20 @@ void NCursesData::StartDisplay()
 void NCursesData::StartInput()
 {
 	int ch;
-	timeout(33);
+	// timeout(50);
 	while (!shouldLeave && (ch = getch()))
 	{
-		value = inputs[ch];
 		pause.lock();
+		value = inputs[ch];
 		pause.unlock();
 	}
+}
+
+void NCursesData::CleanInput()
+{
+	pause.lock();
+	value = NONE;
+	pause.unlock();
 }
 
 eInput NCursesData::GetInput()
@@ -158,7 +168,7 @@ void NCursesData::DrawPauseMenu()
 	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 6), xScreen / 2 - 20, "|    ___|       |  |_|  |_____  |    ___|");
 	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 5), xScreen / 2 - 20, "|   |   |   _   |       |_____| |   |___ ");
 	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 4), xScreen / 2 - 20, "|___|   |__| |__|_______|_______|_______|");
-	for (int i = 0; i < NBACTIONPAUSE; ++i)
+	for (int i = 0; i < NBACTIONPAUSE; i++)
 	{
 		if (i == choice)
 			attron(COLOR_PAIR(CSELECTED));
@@ -172,6 +182,7 @@ void NCursesData::DrawPauseMenu()
 void NCursesData::DrawSnake(GameObject *it)
 {
 	auto snake = dynamic_cast<Snake *>(it)->GetSnake();
+	
 	for (auto i = snake.begin(); i != snake.end(); ++i)
 	{
 		if (i == snake.begin())

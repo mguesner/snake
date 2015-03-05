@@ -9,14 +9,11 @@ public:
 	Food(int, int);
 	Food(Food const & src);
 	Food& operator=(Food const & rhs);
+	void Collision();
 	bool IsColliding();
 	~Food();
 private:
-	int xMax;
-	int yMax;
-
 	Food();
-	Point position;
 };
 
 #endif

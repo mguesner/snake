@@ -5,16 +5,19 @@ Snake::Snake()
 	Point test(25,25,0);
 	type = SNAKE;
 	collider = true;
-	snake.push_back(test);
+	snake.push_front(test);
 }
 
 Snake::Snake(int width , int height)
 {
 	bool isVertical = (rand() % 2) == 0;
+	xMax = width;
+	yMax = height;
 	Point test(width / 2, height / 2 ,0);
 	collider = true;
 	type = SNAKE;
-	snake.push_back(test);
+	snake.push_front(test);
+	position = test;
 	if (isVertical)
 	{
 		Point test2(width / 2,  height / 2 + 1 ,0);
@@ -37,20 +40,36 @@ Snake::Snake(int width , int height)
 		direction = Point(1, 0, 0);
 		current_dir = RIGHT;
 	}
-	up = Point(0, 1, 0);
-	down = Point(0, -1, 0);
+	up = Point(0, -1, 0);
+	down = Point(0, 1, 0);
 	left = Point(-1, 0, 0);
 	right = Point(1, 0, 0);
 }
 
 Snake::Snake(Snake const & src)
 {
-	(void)src;
+	snake = src.snake;
+	current_dir = src.current_dir;
+	up = src.up;
+	down = src.down;
+	right = src.right;
+	left = src.left;
+	direction = src.direction;
+	speed = src.speed;
+	position = src.position;
 }
 
 Snake& Snake::operator=(Snake const & src)
 {
-	(void)src;
+	snake = src.snake;
+	current_dir = src.current_dir;
+	up = src.up;
+	down = src.down;
+	right = src.right;
+	left = src.left;
+	direction = src.direction;
+	speed = src.speed;
+	position = src.position;
 	return *this;
 }
 
@@ -68,7 +87,9 @@ bool Snake::IsColliding()
 
 	while (current != last)
 	{
-		current++;
+		++current;
+		if (current == last)
+			break;
 		if (*first == *current)
 			return true;
 	}
@@ -106,14 +127,33 @@ void Snake::SetDirection(eInput dir)
 
 void	Snake::Move()
 {
-	snake.pop_back();
-	Point add = snake.front() + direction;
+	Point test = snake.front();
+	Point add = test + direction;
+	if (add.getX() == xMax)
+		add.UpdateX(0);
+	else if (add.getY() == yMax)
+		add.UpdateY(0);
+	else if (add.getX() == -1)
+		add.SetX(xMax - 1);
+	else if (add.getY() == -1)
+		add.SetY(yMax -1);
+	position = add;
 	snake.push_front(add);
+}
+
+void	Snake::Collision()
+{
+	;
 }
 
 Point Snake::GetDirection()
 {
 	return direction;
+}
+
+void	Snake::Back()
+{
+	snake.pop_back();
 }
 
 std::list<Point> Snake::GetSnake()

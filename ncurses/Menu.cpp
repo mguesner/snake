@@ -94,8 +94,8 @@ eActionPause Menu::Pause()
 	}
 	refresh();
 	int ch;
-	while ((ch = getch()))
-	{
+	//while ((ch = getch()))
+	//{
 		clear();
 		getmaxyx(stdscr, y, x);
 		attron(COLOR_PAIR(NORMAL));
@@ -119,7 +119,7 @@ eActionPause Menu::Pause()
 		}
 		mvprintw(0, 0, "%d", choice);
 		refresh();
-	}
+	//}
 	return (eActionPause)choice;
 }
 

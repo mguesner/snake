@@ -68,6 +68,21 @@ Point& Point::operator-(Point const & ref)
 Point::~Point() {
 }
 
+void	Point::SetX(int value)
+{
+	x = value;
+}
+
+void	Point::SetY(int value)
+{
+	y = value;
+}
+
+void	Point::SetZ(int value)
+{
+	z = value;
+}
+
 void	Point::UpdateZ(double coef)
 {
 	z *= coef;
@@ -83,15 +98,18 @@ void	Point::UpdateY(double coef)
 	y *= coef;
 }
 
-int			Point::getX() {
+int			Point::getX()
+{
 	return this->x;
 }
 
-int			Point::getY() {
+int			Point::getY()
+{
 	return this->y;
 }
 
-int			Point::getZ() {
+int			Point::getZ()
+{
 	return this->z;
 }
 

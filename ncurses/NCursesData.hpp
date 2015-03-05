@@ -13,6 +13,7 @@ enum eActionPause
 };
 
 #define NBACTIONPAUSE 3
+#define NBMODE 2
 
 class NCursesData : public Data
 {
@@ -23,6 +24,7 @@ public:
 	void Draw();
 	void Lock();
 	eInput GetInput();
+	void CleanInput();
 	void SetChoice(int);
 	void SetState(eGameState);
 	~NCursesData();
@@ -44,7 +46,7 @@ private:
 	int yScreen;
 	std::map<int, eInput> inputs;
 	std::string mainMenu[NBMODE] = {"new game", "quit"};
-	std::string pauseMenu[NBACTIONPAUSE] = {"continue", "restart", "exit"};
+	std::string pauseMenu[NBACTIONPAUSE];
 };
 
 #endif

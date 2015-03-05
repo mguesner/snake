@@ -10,7 +10,8 @@ class GameObject;
 enum ObjectType
 {
 	SNAKE = 0,
-	FOOD = 1
+	FOOD = 1,
+	VOID =2
 };
 
 enum eGameState
@@ -45,6 +46,7 @@ public:
 	virtual ~Data(){}
 	virtual void Draw() = 0;
 	virtual void Lock() = 0;
+	virtual void CleanInput() = 0;
 	virtual eInput GetInput() = 0;
 	std::mutex pause;
 	virtual void SetChoice(int) = 0;

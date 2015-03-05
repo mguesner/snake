@@ -11,6 +11,7 @@ public:
 	GameObject();
 	GameObject(GameObject const & src);
 	GameObject& operator=(GameObject const & rhs);
+	virtual void Collision() = 0;
 	virtual	bool IsColliding() = 0;
 	virtual ~GameObject();
 	bool IsPhysical();
@@ -20,6 +21,8 @@ protected:
 
 	Point position;
 	ObjectType type;
+	int xMax;
+	int yMax;
 	int test;
 	bool	collider;
 };
