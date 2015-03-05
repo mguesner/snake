@@ -33,7 +33,6 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	this->width = width;
 	this->height = height;
 	this->objects = objects;
-	shouldReset = false;
 	shouldLeave = false;
 	value = NONE;
 	inputs['w'] = UP;
@@ -93,16 +92,6 @@ void NCursesData::StartInput()
 eInput NCursesData::GetInput()
 {
 	return value;
-}
-
-bool NCursesData::ShouldLeave()
-{
-	return shouldLeave;
-}
-
-bool NCursesData::ShouldReset()
-{
-	return shouldReset;
 }
 
 void NCursesData::SetChoice(int choice)
@@ -181,7 +170,6 @@ void NCursesData::DrawPauseMenu()
 
 void NCursesData::DrawSnake(GameObject *it)
 {
-	int j = 0;
 	auto snake = dynamic_cast<Snake *>(it)->GetSnake();
 	for (auto i = snake.begin(); i != snake.end(); ++i)
 	{
@@ -190,13 +178,13 @@ void NCursesData::DrawSnake(GameObject *it)
 		else
 			attron(COLOR_PAIR(CSNAKEBODY));
 		mvprintw((*i).getY(), (*i).getX()," ");
-		j++;
 	}
 }
 
 void NCursesData::DrawFood(GameObject *it)
 {
 	(void)it;
+	// auto food =
 }
 
 NCursesData::~NCursesData()

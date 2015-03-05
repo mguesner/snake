@@ -47,8 +47,6 @@ public:
 	virtual void Lock() = 0;
 	virtual eInput GetInput() = 0;
 	std::mutex pause;
-	virtual bool ShouldLeave() = 0;
-	virtual bool ShouldReset() = 0;
 	virtual void SetChoice(int) = 0;
 	virtual void SetState(eGameState) = 0;
 

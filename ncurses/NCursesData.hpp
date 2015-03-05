@@ -23,13 +23,12 @@ public:
 	void Draw();
 	void Lock();
 	eInput GetInput();
-	bool ShouldLeave();
-	bool ShouldReset();
 	void SetChoice(int);
 	void SetState(eGameState);
 	~NCursesData();
 
 private:
+	bool shouldLeave;
 	void StartDisplay();
 	void StartInput();
 	void DrawMainMenu();
