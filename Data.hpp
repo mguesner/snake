@@ -54,8 +54,6 @@ public:
 	virtual void Pause() = 0;
 
 protected:
-	bool shouldLeave;
-	bool shouldReset;
 	eGameState state;
 	int keycode;
 	int width;

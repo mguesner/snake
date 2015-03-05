@@ -30,6 +30,7 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	object->push_front(first->GetSnake());
 	food = new Food(width, height);
 	object->push_back(food);
+	shouldLeave = false;
 	(void)second;
 
 }
@@ -45,16 +46,17 @@ void	Game::Update(eInput value)
 		snk->SetDirection(value);
 	snk->Move();
 	if (snk->IsColliding())
-		;//game stat = loose
+		shouldLeave = true;//game stat = loose
 	// if snk collide food move food add point
-	
+
 }
 
 void Game::Launch()
 {
 	eInput value = NONE;
+	state = MAINMENU;
 	gameData->Lock();
-	while (!gameData->ShouldLeave())
+	while (!shouldLeave)
 	{
 		timeval time;
 		gettimeofday(&time, NULL);
