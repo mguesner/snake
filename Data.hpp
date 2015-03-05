@@ -10,7 +10,7 @@ class GameObject;
 enum ObjectType
 {
 	SNAKE = 0,
-	FOOD
+	FOOD = 1
 };
 
 enum eGameState
@@ -51,7 +51,6 @@ public:
 	virtual bool ShouldReset() = 0;
 	virtual void SetChoice(int) = 0;
 	virtual void SetState(eGameState) = 0;
-	virtual void Pause() = 0;
 
 protected:
 	bool shouldLeave;

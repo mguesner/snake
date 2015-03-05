@@ -2,7 +2,9 @@ NAME = libcurses.so
 
 SRC = NCursesData.cpp\
 	init.cpp \
-	Menu.cpp
+	  ../core/GameObject.cpp \
+	  ../core/Point.cpp \
+	  ../core/Snake.cpp \
 
 OBJ = $(SRC:.cpp=.o)
 

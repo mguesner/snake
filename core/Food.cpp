@@ -4,6 +4,7 @@ Food::Food(int width, int height)
 {
 	xMax = width;
 	yMax = height;
+	type = FOOD;
 	int x = rand() % xMax;
 	int y = rand() % yMax;
 	position = Point(x, y, 0);

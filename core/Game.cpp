@@ -47,13 +47,17 @@ void	Game::Update(eInput value)
 	if (snk->IsColliding())
 		;//game stat = loose
 	// if snk collide food move food add point
-	
+
 }
 
 void Game::Launch()
 {
 	eInput value = NONE;
 	gameData->Lock();
+	gameData->SetState(NM);
+		// gameData->Draw();
+		// gameData->Lock();
+		// while(1);
 	while (!gameData->ShouldLeave())
 	{
 		timeval time;
@@ -64,7 +68,7 @@ void Game::Launch()
 		{
 			if (value == PAUSE)
 			{
-				gameData->Pause();
+				// gameData->Pause();
 				gameData->Draw();
 				continue;
 			}
@@ -87,7 +91,7 @@ void Game::Launch()
 				lib = new loader("libcurses.so", 50, 50, object);
 			}
 		}
-		Update(value);
+		//Update(value);
 		gameData->Draw();
 		gameData->Lock();
 		gettimeofday(&time, NULL);

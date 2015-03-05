@@ -11,15 +11,15 @@ Snake::Snake()
 Snake::Snake(int width , int height)
 {
 	bool isVertical = (rand() % 2) == 0;
-	Point test(width / 2,  height / 2 ,0);
+	Point test(width / 2, height / 2 ,0);
 	collider = true;
 	type = SNAKE;
 	snake.push_back(test);
 	if (isVertical)
 	{
 		Point test2(width / 2,  height / 2 + 1 ,0);
-		Point test3(width / 2,  height / 2 + 2,0);
-		Point test4(width / 2,  height / 2 + 3,0);
+		Point test3(width / 2,  height / 2 + 2 ,0);
+		Point test4(width / 2,  height / 2 + 3 ,0);
 		snake.push_back(test2);
 		snake.push_back(test3);
 		snake.push_back(test4);

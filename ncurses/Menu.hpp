@@ -3,12 +3,7 @@
 
 #include "NcursesData.hpp"
 
-#define NORMAL 1
-#define SELECTED 2
-#define BACKGROUND 3
-#define SNAKEHEAD 4
-#define SNAKEBODY 5
-#define FOOD 6
+
 
 class Menu
 {

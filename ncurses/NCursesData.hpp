@@ -17,6 +17,7 @@ enum eActionPause
 class NCursesData : public Data
 {
 	typedef void (NCursesData::*Func)();
+	typedef void (NCursesData::*Func2)(GameObject*);
 public:
 	NCursesData(int width, int height, std::list<GameObject*> *objects);
 	void Draw();
@@ -26,7 +27,6 @@ public:
 	bool ShouldReset();
 	void SetChoice(int);
 	void SetState(eGameState);
-	void Pause();
 	~NCursesData();
 
 private:
@@ -35,7 +35,10 @@ private:
 	void DrawMainMenu();
 	void DrawNormalMode();
 	void DrawPauseMenu();
+	void DrawSnake(GameObject*);
+	void DrawFood(GameObject*);
 	Func funcs[4];
+	Func2 funcs2[2];
 	std::thread display;
 	std::thread input;
 	int xScreen;
