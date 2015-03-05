@@ -54,9 +54,9 @@ void	Game::Update(eInput value)
 void Game::Launch()
 {
 	eInput value = NONE;
-	state = MAINMENU;
+	state = NM;
 	gameData->Lock();
-	gameData->SetState(NM);
+	gameData->SetState(state);
 	while (!shouldLeave)
 	{
 		timeval time;
@@ -67,9 +67,8 @@ void Game::Launch()
 		{
 			if (value == PAUSE)
 			{
-				// gameData->Pause();
-				gameData->Draw();
-				continue;
+				if (state == NM)
+					state = PAUSEMENU;
 			}
 			else if (value == F1)
 			{
@@ -90,14 +89,15 @@ void Game::Launch()
 				lib = new loader("libcurses.so", 50, 50, object);
 			}
 		}
-		Update(value);
+		if (state == NM)
+			Update(value);
+		gameData->SetState(state);
 		gameData->Draw();
 		gameData->Lock();
 		gettimeofday(&time, NULL);
 		auto wait = start + 25 - time.tv_usec;
 		if (wait > 0)
 			usleep(wait);
-		//usleep(30000);
 	}
 	lib->Close();
 	delete lib;
