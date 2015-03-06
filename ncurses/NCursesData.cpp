@@ -166,7 +166,7 @@ void NCursesData::DrawNormalMode()
 	}
 	attron(COLOR_PAIR(CNORMAL));
 	mvprintw(0, width, "player:%s", player.c_str());
-	mvprintw(1, width, "score:%d",score);
+	mvprintw(1, width, "score:%d", score);
 	refresh();
 }
 

@@ -141,7 +141,7 @@ void Game::Launch()
 		{
 			lib->Close();
 			delete lib;
-			lib = new loader("libcurses.so", 50, 50, object);
+			lib = new loader("mlx/libmlx.so", 50, 50, object);
 		}
 		else if (value == F3)
 		{

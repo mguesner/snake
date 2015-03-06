@@ -2,6 +2,7 @@
 #define MLXDATA_HPP
 
 #include <Data.hpp>
+#include <thread>
 extern"C"
 {
 	#include <mlx.h>
@@ -28,7 +29,9 @@ public:
 	~MLXData();
 
 private:
-	void		*img_mlx;
+	void caca();
+	// void		*img_mlx;
+	std::thread prout;
 	int			ptr;
 	int			size;
 	int			raf;

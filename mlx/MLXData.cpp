@@ -1,5 +1,6 @@
 #include "MLXData.hpp"
 
+
 MLXData::MLXData(int width, int height, std::list<GameObject*> *objects)
 {
 	if ((mlx = mlx_init()) == NULL)
@@ -8,23 +9,30 @@ MLXData::MLXData(int width, int height, std::list<GameObject*> *objects)
 	img_win = mlx_new_image(mlx, WIDTH, HEIGHT);
 	data = mlx_get_data_addr(img_win, &ptr, &size, &raf);
 	ft_handle_loop(win, mlx, this, 0);
-	int color = 0x0000FF;
-	int x = 0;
-	while (x < HEIGHT * WIDTH * 4)
-	{
-		std::memcpy(&data[x], &color, sizeof(int));
-		x += 4;
-	}
-	mlx_put_image_to_window(mlx, win, img_win, 0, 0);
-	mlx_loop(mlx);
+	prout = std::thread(&MLXData::caca, this);
+	// mlx_loop(mlx);
 	this->width = width;
 	this->height = height;
 	this->objects = objects;
 	value = NONE;
 }
+
+void MLXData::caca()
+{
+	mlx_loop(mlx);
+}
+
 void MLXData::Draw()
 {
-
+	std::cout << "fds" << std::endl;
+	// int color = 0x000000FF;
+	// for (int i = 0; i < 50 * 50; ++i)
+	// {
+	// 	for (int j = 0; j < 50 * 50; ++j)
+	// 	{
+	// 		std::memcpy(&data[((i / 50) + (j / 50)) * WIDTH * 4 + ((i % 50) + (j % 50)) * 4], &color, sizeof(int));
+	// 	}
+	// }
 }
 
 void MLXData::Lock()
@@ -54,4 +62,3 @@ void MLXData::SetState(eGameState set)
 MLXData::~MLXData()
 {
 }
-
