@@ -12,9 +12,7 @@ class NCursesData : public Data
 public:
 	NCursesData(int width, int height, std::list<GameObject*> *objects);
 	void Draw();
-	void Lock();
-	virtual void CleanInput();
-	virtual eInput GetInput();
+	eInput GetInput();
 	~NCursesData();
 
 private:
@@ -27,10 +25,8 @@ private:
 	void DrawEndMenu();
 	void DrawSnake(GameObject*);
 	void DrawFood(GameObject*);
-	Func funcs[4];
+	Func funcs[5];
 	Func2 funcs2[2];
-	std::thread display;
-	std::thread input;
 	int xScreen;
 	int yScreen;
 	std::map<int, eInput> inputs;

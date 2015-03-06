@@ -160,12 +160,11 @@ void Game::PauseMenu(eInput value)
 void Game::Launch()
 {
 	eInput value = NONE;
-	state = NM;
+	state = MAINMENU;
 	score = 1;
 	wall = true;
 	gameData->SetScore(score);
 	gameData->SetState(state);
-	gameData->Lock();
 	while (!shouldLeave)
 	{
 		timeval time;
