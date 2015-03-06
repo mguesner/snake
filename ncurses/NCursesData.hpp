@@ -24,6 +24,7 @@ private:
 	void DrawMainMenu();
 	void DrawNormalMode();
 	void DrawPauseMenu();
+	void DrawEndMenu();
 	void DrawSnake(GameObject*);
 	void DrawFood(GameObject*);
 	Func funcs[4];
@@ -33,7 +34,7 @@ private:
 	int xScreen;
 	int yScreen;
 	std::map<int, eInput> inputs;
-	std::string mainMenu[NBMODE] = {"new game", "quit"};
+	std::string mainMenu[NBMODE];
 	std::string pauseMenu[NBACTIONPAUSE];
 };
 

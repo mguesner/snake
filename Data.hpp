@@ -43,8 +43,8 @@ enum eActionPause
 	EXIT2
 };
 
-#define NBACTIONPAUSE 4
-#define NBMODE 2
+#define NBACTIONPAUSE 3
+#define NBMODE 3
 
 
 class Data
