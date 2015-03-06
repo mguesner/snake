@@ -57,6 +57,7 @@ public:
 	virtual void CleanInput() = 0;
 	virtual eInput GetInput() = 0;
 	void SetScore(int);
+	void SetWall(bool);
 	int GetScore();
 	std::mutex pause;
 	virtual void SetChoice(int);
@@ -68,6 +69,7 @@ protected:
 	int width;
 	int height;
 	int choice;
+	bool wall;
 	eInput value;
 	std::list<GameObject*> *objects;
 	int score;

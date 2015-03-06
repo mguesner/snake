@@ -24,3 +24,8 @@ void Data::SetState(eGameState state)
 {
 	this->state = state;
 }
+
+void Data::SetWall(bool value)
+{
+	wall = value;
+}

@@ -91,8 +91,11 @@ void Game::MainMenu(eInput value)
 		else if (entry == 1)
 			wall = !wall;
 		else if (entry == 2)
+		{
 			shouldLeave = true;
-		entry = 0;
+			entry = 0;
+			gameData->SetChoice(entry);
+		}
 	}
 	if (value == UP)
 	{
@@ -198,6 +201,7 @@ void Game::Launch()
 			MainMenu(value);
 		gameData->SetState(state);
 		gameData->SetScore(score);
+		gameData->SetWall(wall);
 		gameData->Draw();
 		//gameData->CleanInput();
 		gettimeofday(&time, NULL);
