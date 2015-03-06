@@ -20,6 +20,7 @@ public:
 	eInput GetInput();
 	void SetChoice(int);
 	void SetState(eGameState);
+	void CleanInput();
 	char		*data;
 	void		*win;
 	void		*mlx;

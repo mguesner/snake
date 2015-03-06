@@ -124,7 +124,6 @@ void Game::Launch()
 {
 	eInput value = NONE;
 	state = NM;
-	gameData->Lock();
 	gameData->SetState(state);
 	while (!shouldLeave)
 	{
@@ -158,10 +157,9 @@ void Game::Launch()
 			MainMenu(value);
 		gameData->SetState(state);
 		gameData->Draw();
-		gameData->Lock();
-		gameData->CleanInput();
+		//gameData->CleanInput();
 		gettimeofday(&time, NULL);
-		auto wait = start + 500000 - time.tv_usec;
+		auto wait = start + 100000 - time.tv_usec;
 		if (wait > 0)
 			usleep(wait);
 	}
