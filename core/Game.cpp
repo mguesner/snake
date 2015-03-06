@@ -68,9 +68,10 @@ void	Game::Update(eInput value)
 	Snake *snk = first->GetSnake();
 	if (value >= UP && value <= RIGHT)
 		snk->SetDirection(value);
-	snk->Move();
+	if (snk->Move(wall))
+		shouldLeave = true;
 	if (snk->IsColliding())
-	 	shouldLeave = true;//game stat = loose
+		shouldLeave = true;//game stat = loose
 	ObjectType ret = Collide();
 	if (ret == VOID)
 		snk->Back();
@@ -96,20 +97,22 @@ void Game::PauseMenu(eInput value)
 			state = MAINMENU;
 		else if (entry == 2)
 			shouldLeave = true;
+		else if (entry == 3)
+			wall = !wall;
 		entry = 0;
 		gameData->SetChoice(0);
 	}
 	else if (value == UP)
 	{
 		if (entry == 0)
-			entry = 2;
+			entry = NBACTIONPAUSE -1;
 		else
 			entry--;
 		gameData->SetChoice(entry);
 	}
 	else if (value == DOWN)
 	{
-		if (entry == 2)
+		if (entry == NBACTIONPAUSE -1)
 			entry = 0;
 		else
 			entry++;
@@ -126,8 +129,9 @@ void Game::PauseMenu(eInput value)
 void Game::Launch()
 {
 	eInput value = NONE;
-	state = NM;
+	state = MAINMENU;
 	score = 1;
+	wall = true;
 	gameData->SetScore(score);
 	gameData->SetState(state);
 	gameData->Lock();

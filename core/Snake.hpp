@@ -16,7 +16,7 @@ public:
 	void SetSpeed(int);
 	void Collision();
 	void	Back();
-	void	Move();
+	bool	Move(bool);
 	~Snake();
 private:
 	Snake();

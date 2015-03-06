@@ -50,6 +50,9 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	pauseMenu[0] =  "continue";
 	pauseMenu[1] = "restart";
 	pauseMenu[2] = "quit";
+	mainMenu[0] = "new game";
+	mainMenu[1] = "wall : ";
+	mainMenu[2] = "quit";
 }
 
 void NCursesData::Lock()
@@ -132,7 +135,7 @@ void NCursesData::DrawMainMenu()
 			attron(COLOR_PAIR(CSELECTED));
 		else
 			attron(COLOR_PAIR(CNORMAL));
-		mvprintw((yScreen / 2) - (NBMODE - i * 2), xScreen / 2 - mainMenu[i].size() / 2, mainMenu[i].c_str());
+		mvprintw((yScreen / 2) - (NBMODE - i * 2), xScreen / 2 - (mainMenu[i].size() / 2 + (i == 1 ? 1 : 0)), "%s%s", mainMenu[i].c_str(), i == 1 ? "ON" : "");
 	}
 	refresh();
 }
