@@ -33,6 +33,7 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	this->width = width;
 	this->height = height;
 	this->objects = objects;
+	keypad(stdscr, TRUE);
 	shouldLeave = false;
 	value = NONE;
 	inputs['w'] = UP;
@@ -40,6 +41,10 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	inputs['a'] = LEFT;
 	inputs['d'] = RIGHT;
 	inputs['p'] = PAUSE;
+	inputs[KEY_UP] = UP;
+	inputs[KEY_DOWN] = DOWN;
+	inputs[KEY_LEFT] = LEFT;
+	inputs[KEY_RIGHT] = RIGHT;
 	inputs[27] = PAUSE;
 	inputs[80] = F1;
 	inputs[81] = F2;

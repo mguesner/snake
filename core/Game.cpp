@@ -129,7 +129,7 @@ void Game::PauseMenu(eInput value)
 void Game::Launch()
 {
 	eInput value = NONE;
-	state = MAINMENU;
+	state = NM;
 	score = 1;
 	wall = true;
 	gameData->SetScore(score);
