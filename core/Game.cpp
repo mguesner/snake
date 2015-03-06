@@ -124,8 +124,8 @@ void Game::Launch()
 {
 	eInput value = NONE;
 	state = NM;
-	gameData->Lock();
 	gameData->SetState(state);
+	gameData->Lock();
 	while (!shouldLeave)
 	{
 		timeval time;

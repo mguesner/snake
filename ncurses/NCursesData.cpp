@@ -84,9 +84,11 @@ void NCursesData::StartDisplay()
 void NCursesData::StartInput()
 {
 	int ch;
-	// timeout(50);
+	timeout(5);
 	while (!shouldLeave && (ch = getch()))
 	{
+		if (ch == ERR)
+			continue;
 		pause.lock();
 		value = inputs[ch];
 		pause.unlock();
@@ -182,7 +184,7 @@ void NCursesData::DrawPauseMenu()
 void NCursesData::DrawSnake(GameObject *it)
 {
 	auto snake = dynamic_cast<Snake *>(it)->GetSnake();
-	
+
 	for (auto i = snake.begin(); i != snake.end(); ++i)
 	{
 		if (i == snake.begin())
