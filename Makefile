@@ -6,6 +6,7 @@ DIRLCUR = ncurses/
 
 SRC = $(DIR)main.cpp\
 	$(DIR)GameObject.cpp\
+	Data.cpp\
 	$(DIR)Game.cpp\
 	$(DIR)Food.cpp\
 	$(DIR)loader.cpp\

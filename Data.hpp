@@ -43,14 +43,17 @@ enum eInput
 class Data
 {
 public:
+	Data();
 	virtual ~Data(){}
 	virtual void Draw() = 0;
 	virtual void Lock() = 0;
-	virtual void CleanInput() = 0;
-	virtual eInput GetInput() = 0;
+	virtual void CleanInput();
+	virtual eInput GetInput();
+	void SetScore(int);
+	int GetScore();
 	std::mutex pause;
-	virtual void SetChoice(int) = 0;
-	virtual void SetState(eGameState) = 0;
+	virtual void SetChoice(int);
+	virtual void SetState(eGameState);
 
 protected:
 	eGameState state;

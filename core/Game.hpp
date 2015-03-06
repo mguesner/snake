@@ -21,6 +21,7 @@ public:
 private:
 	Game();
 	bool shouldLeave;
+	int score;
 	int entry;
 	int width;
 	int height;

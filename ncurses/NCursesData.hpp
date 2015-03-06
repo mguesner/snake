@@ -23,10 +23,6 @@ public:
 	NCursesData(int width, int height, std::list<GameObject*> *objects);
 	void Draw();
 	void Lock();
-	eInput GetInput();
-	void CleanInput();
-	void SetChoice(int);
-	void SetState(eGameState);
 	~NCursesData();
 
 private:

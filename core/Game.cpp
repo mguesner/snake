@@ -75,7 +75,10 @@ void	Game::Update(eInput value)
 	if (ret == VOID)
 		snk->Back();
 	else
+	{
 		food->Collision();
+		score *= 2;
+	}
 }
 
 void Game::MainMenu(eInput value)
@@ -124,6 +127,8 @@ void Game::Launch()
 {
 	eInput value = NONE;
 	state = NM;
+	score = 1;
+	gameData->SetScore(score);
 	gameData->SetState(state);
 	gameData->Lock();
 	while (!shouldLeave)
@@ -157,6 +162,7 @@ void Game::Launch()
 		else if (state == MAINMENU)
 			MainMenu(value);
 		gameData->SetState(state);
+		gameData->SetScore(score);
 		gameData->Draw();
 		gameData->Lock();
 		gameData->CleanInput();
