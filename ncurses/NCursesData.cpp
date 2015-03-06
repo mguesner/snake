@@ -50,6 +50,7 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	pauseMenu[0] =  "continue";
 	pauseMenu[1] = "restart";
 	pauseMenu[2] = "Quit";
+	//pauseMenu[3] = "WALL ON";
 }
 
 void NCursesData::Lock()

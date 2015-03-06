@@ -125,20 +125,31 @@ void Snake::SetDirection(eInput dir)
 	}
 }
 
-void	Snake::Move()
+bool	Snake::Move(bool wall)
 {
 	Point test = snake.front();
 	Point add = test + direction;
-	if (add.getX() == xMax)
-		add.UpdateX(0);
-	else if (add.getY() == yMax)
-		add.UpdateY(0);
-	else if (add.getX() == -1)
-		add.SetX(xMax - 1);
-	else if (add.getY() == -1)
-		add.SetY(yMax -1);
+	if (!wall)
+	{
+		if (add.getX() == xMax)
+			add.UpdateX(0);
+		else if (add.getY() == yMax)
+			add.UpdateY(0);
+		else if (add.getX() == -1)
+			add.SetX(xMax - 1);
+		else if (add.getY() == -1)
+			add.SetY(yMax -1);
+	}
+	else
+	{
+		int x = add.getX();
+		int y = add.getY();
+		if (x == xMax || x == -1 || y == yMax || y == -1)
+			return true;
+	}
 	position = add;
 	snake.push_front(add);
+	return false;
 }
 
 void	Snake::Collision()

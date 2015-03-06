@@ -5,16 +5,6 @@
 #include <thread>
 #include <map>
 
-enum eActionPause
-{
-	CONTINUE = 0,
-	RESTART,
-	EXIT2
-};
-
-#define NBACTIONPAUSE 3
-#define NBMODE 2
-
 class NCursesData : public Data
 {
 	typedef void (NCursesData::*Func)();

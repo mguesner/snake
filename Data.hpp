@@ -36,8 +36,15 @@ enum eInput
 	VALIDATE
 };
 
-#define NBMODE 2
+enum eActionPause
+{
+	CONTINUE = 0,
+	RESTART,
+	EXIT2
+};
 
+#define NBACTIONPAUSE 4
+#define NBMODE 2
 
 
 class Data
