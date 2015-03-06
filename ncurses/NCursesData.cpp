@@ -117,16 +117,6 @@ eInput NCursesData::GetInput()
 	return value;
 }
 
-void NCursesData::SetChoice(int choice)
-{
-	this->choice = choice;
-}
-
-void NCursesData::SetState(eGameState state)
-{
-	this->state = state;
-}
-
 void NCursesData::DrawMainMenu()
 {
 	attron(COLOR_PAIR(CNORMAL));

@@ -23,6 +23,8 @@ public:
 	NCursesData(int width, int height, std::list<GameObject*> *objects);
 	void Draw();
 	void Lock();
+	virtual void CleanInput();
+	virtual eInput GetInput();
 	~NCursesData();
 
 private:

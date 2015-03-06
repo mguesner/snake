@@ -47,8 +47,8 @@ public:
 	virtual ~Data(){}
 	virtual void Draw() = 0;
 	virtual void Lock() = 0;
-	virtual void CleanInput();
-	virtual eInput GetInput();
+	virtual void CleanInput() = 0;
+	virtual eInput GetInput() = 0;
 	void SetScore(int);
 	int GetScore();
 	std::mutex pause;
