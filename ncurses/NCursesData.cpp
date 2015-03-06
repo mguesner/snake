@@ -45,8 +45,8 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	inputs[81] = F2;
 	inputs[82] = F3;
 	inputs['\n'] = VALIDATE;
-	display = std::thread(&NCursesData::StartDisplay, this);
-	input = std::thread(&NCursesData::StartInput, this);
+	// display = std::thread(&NCursesData::StartDisplay, this);
+	// input = std::thread(&NCursesData::StartInput, this);
 	pauseMenu[0] =  "continue";
 	pauseMenu[1] = "restart";
 	pauseMenu[2] = "Quit";
@@ -59,7 +59,16 @@ void NCursesData::Lock()
 
 void NCursesData::Draw()
 {
-	mutex.unlock();
+	getmaxyx(stdscr, yScreen, xScreen);
+	clear();
+	if (yScreen < height || xScreen < (width + 15))
+	{
+		attron(COLOR_PAIR(CNORMAL));
+		mvprintw(yScreen / 2, xScreen / 2 - 9, "please resize term");
+		refresh();
+	}
+	else
+		(this->*funcs[state])();
 }
 
 void NCursesData::StartDisplay()
@@ -75,23 +84,20 @@ void NCursesData::StartDisplay()
 			attron(COLOR_PAIR(CNORMAL));
 			mvprintw(yScreen / 2, xScreen / 2 - 9, "please resize term");
 			refresh();
-			continue;
 		}
-		(this->*funcs[state])();
+		else
+			(this->*funcs[state])();
 	}
 }
 
 void NCursesData::StartInput()
 {
 	int ch;
-	timeout(5);
+
+	timeout(100);
 	while (!shouldLeave && (ch = getch()))
 	{
-		if (ch == ERR)
-			continue;
-		pause.lock();
 		value = inputs[ch];
-		pause.unlock();
 	}
 }
 
@@ -104,6 +110,10 @@ void NCursesData::CleanInput()
 
 eInput NCursesData::GetInput()
 {
+	int ch;
+	timeout(0);
+	ch = getch();
+	value = inputs[ch];
 	return value;
 }
 
@@ -157,7 +167,7 @@ void NCursesData::DrawNormalMode()
 	}
 	attron(COLOR_PAIR(CNORMAL));
 	mvprintw(0, width, "player:%s", player.c_str());
-	mvprintw(1, width, "score:%d",score);
+	mvprintw(1, width, "score:%d", score);
 	refresh();
 }
 
@@ -204,9 +214,9 @@ void NCursesData::DrawFood(GameObject *it)
 NCursesData::~NCursesData()
 {
 	shouldLeave = true;
-	mutex.unlock();
-	display.join();
-	input.join();
+	// mutex.unlock();
+	// display.join();
+	// input.join();
 	curs_set(1);
 	endwin();
 }

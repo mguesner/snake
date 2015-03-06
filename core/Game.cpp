@@ -147,7 +147,7 @@ void Game::Launch()
 		{
 			lib->Close();
 			delete lib;
-			lib = new loader("libcurses.so", 50, 50, object);
+			lib = new loader("mlx/libmlx.so", 50, 50, object);
 		}
 		else if (value == F3)
 		{
@@ -164,10 +164,9 @@ void Game::Launch()
 		gameData->SetState(state);
 		gameData->SetScore(score);
 		gameData->Draw();
-		gameData->Lock();
-		gameData->CleanInput();
+		//gameData->CleanInput();
 		gettimeofday(&time, NULL);
-		auto wait = start + 500000 - time.tv_usec;
+		auto wait = start + 100000 - time.tv_usec;
 		if (wait > 0)
 			usleep(wait);
 	}
