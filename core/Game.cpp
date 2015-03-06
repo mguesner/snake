@@ -84,7 +84,38 @@ void	Game::Update(eInput value)
 
 void Game::MainMenu(eInput value)
 {
-	(void)value;
+	if (value == VALIDATE)
+	{
+		if (entry == 0)
+			state = NM;
+		else if (entry == 1)
+			wall = !wall;
+		else if (entry == 2)
+			shouldLeave = true;
+		entry = 0;
+	}
+	if (value == UP)
+	{
+		if (entry == 0)
+			entry = NBMODE -1;
+		else
+			entry--;
+		gameData->SetChoice(entry);
+	}
+	else if (value == DOWN)
+	{
+		if (entry == NBMODE -1)
+			entry = 0;
+		else
+			entry++;
+		gameData->SetChoice(entry);
+	}
+	else if (value == PAUSE)
+	{
+		state = NM;
+		entry = 0;
+		gameData->SetChoice(0);
+	}
 }
 
 void Game::PauseMenu(eInput value)
