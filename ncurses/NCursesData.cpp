@@ -49,7 +49,7 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	// input = std::thread(&NCursesData::StartInput, this);
 	pauseMenu[0] =  "continue";
 	pauseMenu[1] = "restart";
-	pauseMenu[2] = "Quit";
+	pauseMenu[2] = "quit";
 }
 
 void NCursesData::Lock()
@@ -179,6 +179,28 @@ void NCursesData::DrawPauseMenu()
 		mvprintw((yScreen / 2) - (NBACTIONPAUSE - i * 2), xScreen / 2 - pauseMenu[i].size() / 2, pauseMenu[i].c_str());
 	}
 	refresh();
+}
+
+void NCursesData::DrawEndMenu()
+{
+	attron(COLOR_PAIR(CNORMAL));
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 9), xScreen / 2 - 20, " _______  _______  __   __  _______    _______  __   __  _______  ______   ");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 8), xScreen / 2 - 20, "|    ___||   _   ||  |_|  ||    ___|  |   _   ||  |_|  ||    ___||    _ |  ");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 7), xScreen / 2 - 20, "|   | __ |  |_|  ||       ||   |___   |  | |  ||       ||   |___ |   |_||_ ");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 6), xScreen / 2 - 20, "|   ||  ||       ||       ||    ___|  |  | |  ||       ||    ___||    __  |");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 5), xScreen / 2 - 20, "|   |_| ||   _   || ||_|| ||   |___   |  |_|  | |     | |   |___ |   |  | |");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 4), xScreen / 2 - 20, "|_______||__| |__||_|   |_||_______|  |_______|  |___|  |_______||___|  |_|");
+
+	for (int i = 0; i < NBACTIONPAUSE; i++)
+	{
+		if (i == choice)
+			attron(COLOR_PAIR(CSELECTED));
+		else
+			attron(COLOR_PAIR(CNORMAL));
+		mvprintw((yScreen / 2) - (NBACTIONPAUSE - i * 2), xScreen / 2 - pauseMenu[i].size() / 2, pauseMenu[i].c_str());
+	}
+	refresh();
+
 }
 
 void NCursesData::DrawSnake(GameObject *it)
