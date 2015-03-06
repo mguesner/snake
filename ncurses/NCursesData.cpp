@@ -28,11 +28,13 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	funcs[MAINMENU] = &NCursesData::DrawMainMenu;
 	funcs[NM] = &NCursesData::DrawNormalMode;
 	funcs[PAUSEMENU] = &NCursesData::DrawPauseMenu;
+	funcs[ENDMENU] = &NCursesData::DrawEndMenu;
 	funcs2[SNAKE] = &NCursesData::DrawSnake;
 	funcs2[FOOD] = &NCursesData::DrawFood;
 	this->width = width;
 	this->height = height;
 	this->objects = objects;
+	keypad(stdscr, TRUE);
 	shouldLeave = false;
 	value = NONE;
 	inputs['w'] = UP;
@@ -40,6 +42,10 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	inputs['a'] = LEFT;
 	inputs['d'] = RIGHT;
 	inputs['p'] = PAUSE;
+	inputs[KEY_UP] = UP;
+	inputs[KEY_DOWN] = DOWN;
+	inputs[KEY_LEFT] = LEFT;
+	inputs[KEY_RIGHT] = RIGHT;
 	inputs[27] = PAUSE;
 	inputs[80] = F1;
 	inputs[81] = F2;
@@ -55,11 +61,6 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	mainMenu[2] = "quit";
 }
 
-void NCursesData::Lock()
-{
-	mutex.lock();
-}
-
 void NCursesData::Draw()
 {
 	getmaxyx(stdscr, yScreen, xScreen);
@@ -72,43 +73,6 @@ void NCursesData::Draw()
 	}
 	else
 		(this->*funcs[state])();
-}
-
-void NCursesData::StartDisplay()
-{
-	while (!shouldLeave)
-	{
-		mutex.lock();
-		mutex.unlock();
-		getmaxyx(stdscr, yScreen, xScreen);
-		clear();
-		if (yScreen < height || xScreen < (width + 15))
-		{
-			attron(COLOR_PAIR(CNORMAL));
-			mvprintw(yScreen / 2, xScreen / 2 - 9, "please resize term");
-			refresh();
-		}
-		else
-			(this->*funcs[state])();
-	}
-}
-
-void NCursesData::StartInput()
-{
-	int ch;
-
-	timeout(100);
-	while (!shouldLeave && (ch = getch()))
-	{
-		value = inputs[ch];
-	}
-}
-
-void NCursesData::CleanInput()
-{
-	pause.lock();
-	value = NONE;
-	pause.unlock();
 }
 
 eInput NCursesData::GetInput()

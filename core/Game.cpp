@@ -168,7 +168,6 @@ void Game::Launch()
 	wall = true;
 	gameData->SetScore(score);
 	gameData->SetState(state);
-	gameData->Lock();
 	while (!shouldLeave)
 	{
 		timeval time;

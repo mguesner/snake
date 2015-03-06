@@ -19,7 +19,8 @@ enum eGameState
 	MAINMENU = 0,
 	NM,
 	MULTI,
-	PAUSEMENU
+	PAUSEMENU,
+	ENDMENU
 };
 
 enum eInput
@@ -53,13 +54,10 @@ public:
 	Data();
 	virtual ~Data(){}
 	virtual void Draw() = 0;
-	virtual void Lock() = 0;
-	virtual void CleanInput() = 0;
 	virtual eInput GetInput() = 0;
 	void SetScore(int);
 	void SetWall(bool);
 	int GetScore();
-	std::mutex pause;
 	virtual void SetChoice(int);
 	virtual void SetState(eGameState);
 
@@ -74,7 +72,6 @@ protected:
 	std::list<GameObject*> *objects;
 	int score;
 	std::string player;
-	std::mutex mutex;
 };
 
 #endif
