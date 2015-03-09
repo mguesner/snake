@@ -43,6 +43,7 @@ private:
 	std::map<int, eInput> inputs;
 	std::string mainMenu[NBMODE];
 	std::string pauseMenu[NBACTIONPAUSE];
+	std::string endMenu[NBACTIONEND];
 };
 
 #endif

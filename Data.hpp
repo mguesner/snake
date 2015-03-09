@@ -46,6 +46,7 @@ enum eActionPause
 };
 
 #define NBACTIONPAUSE 3
+#define NBACTIONEND 3
 #define NBMODE 3
 
 

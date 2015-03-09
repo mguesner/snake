@@ -15,6 +15,8 @@ public:
 	void Update(eInput value);
 	void MainMenu(eInput value);
 	void PauseMenu(eInput value);
+	void EndMenu(eInput value);
+	void Reset();
 	ObjectType Collide();
 	~Game();
 	void Launch();

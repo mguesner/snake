@@ -41,6 +41,16 @@ Game::~Game()
 	delete food;
 }
 
+void	Game::Reset()
+{
+	object->erase(object->begin(), object->end());
+	delete first;
+	delete food;
+	first = new Player(object, width, height);
+	food = new Food(width, height);
+	object->push_back(food);
+}
+
 ObjectType	Game::Collide()
 {
 	auto first = object->begin();
@@ -69,16 +79,22 @@ void	Game::Update(eInput value)
 	if (value >= UP && value <= RIGHT)
 		snk->SetDirection(value);
 	if (snk->Move(wall))
-		shouldLeave = true;
+	{
+		//shouldLeave = true;
+		state = ENDMENU;
+	}
 	if (snk->IsColliding())
-		shouldLeave = true;//game stat = loose
+	{
+		//shouldLeave = true;//game stat = loose
+		state = ENDMENU;
+	}
 	ObjectType ret = Collide();
 	if (ret == VOID)
 		snk->Back();
 	else
 	{
 		food->Collision();
-		score *= 2;
+		score += 1;
 	}
 }
 
@@ -93,17 +109,14 @@ void Game::MainMenu(eInput value)
 		else if (entry == 2)
 		{
 			shouldLeave = true;
-			entry = 0;
-			gameData->SetChoice(entry);
 		}
 	}
-	if (value == UP)
+	else if (value == UP)
 	{
 		if (entry == 0)
 			entry = NBMODE -1;
 		else
 			entry--;
-		gameData->SetChoice(entry);
 	}
 	else if (value == DOWN)
 	{
@@ -111,14 +124,13 @@ void Game::MainMenu(eInput value)
 			entry = 0;
 		else
 			entry++;
-		gameData->SetChoice(entry);
 	}
 	else if (value == PAUSE)
 	{
 		state = NM;
 		entry = 0;
-		gameData->SetChoice(0);
 	}
+	gameData->SetChoice(entry);
 }
 
 void Game::PauseMenu(eInput value)
@@ -128,11 +140,14 @@ void Game::PauseMenu(eInput value)
 		if (entry == 0)
 			state = NM;
 		else if (entry == 1)
-			state = MAINMENU;
+		{
+			Reset();
+			state = NM;
+		}
 		else if (entry == 2)
 			shouldLeave = true;
-		else if (entry == 3)
-			wall = !wall;
+		// else if (entry == 3)
+		// 	wall = !wall;
 		entry = 0;
 		gameData->SetChoice(0);
 	}
@@ -160,11 +175,52 @@ void Game::PauseMenu(eInput value)
 	}
 }
 
+void Game::EndMenu(eInput value)
+{
+	if (value == VALIDATE)
+	{
+		if (entry == 0)
+		{
+			Reset();
+			state = NM;
+		}
+		else if (entry == 1)
+		{
+			Reset();
+			state = MAINMENU;
+		}
+		else if (entry == 2)
+			shouldLeave = true;
+		entry = 0;
+		gameData->SetChoice(0);
+	}
+	else if (value == UP)
+	{
+		if (entry == 0)
+			entry = NBACTIONEND - 1;
+		else
+			entry--;
+		gameData->SetChoice(entry);
+	}
+	else if (value == DOWN)
+	{
+		if (entry == NBACTIONEND - 1)
+			entry = 0;
+		else
+			entry++;
+		gameData->SetChoice(entry);
+	}
+	else if (value == PAUSE)
+	{
+		shouldLeave = true;
+	}
+}
+
 void Game::Launch()
 {
 	eInput value = NONE;
 	state = MAINMENU;
-	score = 1;
+	score = 0;
 	wall = true;
 	gameData->SetScore(score);
 	gameData->SetState(state);
@@ -198,6 +254,8 @@ void Game::Launch()
 			PauseMenu(value);
 		else if (state == MAINMENU)
 			MainMenu(value);
+		else if (state == ENDMENU)
+			EndMenu(value);
 		gameData->SetState(state);
 		gameData->SetScore(score);
 		gameData->SetWall(wall);

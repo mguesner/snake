@@ -55,6 +55,9 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	mainMenu[0] = "new game";
 	mainMenu[1] = "wall : ";
 	mainMenu[2] = "quit";
+	endMenu[0] = "restart";
+	endMenu[1] = "main menu";
+	endMenu[2] = "quit";
 }
 
 void NCursesData::Draw()
@@ -176,12 +179,12 @@ void NCursesData::DrawPauseMenu()
 void NCursesData::DrawEndMenu()
 {
 	attron(COLOR_PAIR(CNORMAL));
-	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 9), xScreen / 2 - 20, " _______  _______  __   __  _______    _______  __   __  _______  ______   ");
-	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 8), xScreen / 2 - 20, "|    ___||   _   ||  |_|  ||    ___|  |   _   ||  |_|  ||    ___||    _ |  ");
-	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 7), xScreen / 2 - 20, "|   | __ |  |_|  ||       ||   |___   |  | |  ||       ||   |___ |   |_||_ ");
-	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 6), xScreen / 2 - 20, "|   ||  ||       ||       ||    ___|  |  | |  ||       ||    ___||    __  |");
-	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 5), xScreen / 2 - 20, "|   |_| ||   _   || ||_|| ||   |___   |  |_|  | |     | |   |___ |   |  | |");
-	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 4), xScreen / 2 - 20, "|_______||__| |__||_|   |_||_______|  |_______|  |___|  |_______||___|  |_|");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 9), xScreen / 2 - 38, " _______  _______  __   __  _______    _______  __   __  _______  ______   ");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 8), xScreen / 2 - 38, "|    ___||   _   ||  |_|  ||    ___|  |   _   ||  |_|  ||    ___||    _ |  ");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 7), xScreen / 2 - 38, "|   | __ |  |_|  ||       ||   |___   |  | |  ||       ||   |___ |   |_||_ ");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 6), xScreen / 2 - 38, "|   ||  ||       ||       ||    ___|  |  | |  ||       ||    ___||    __  |");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 5), xScreen / 2 - 38, "|   |_| ||   _   || ||_|| ||   |___   |  |_|  | |     | |   |___ |   |  | |");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 4), xScreen / 2 - 38, "|_______||__| |__||_|   |_||_______|  |_______|  |___|  |_______||___|  |_|");
 
 	for (int i = 0; i < NBACTIONPAUSE; i++)
 	{
@@ -189,7 +192,7 @@ void NCursesData::DrawEndMenu()
 			attron(COLOR_PAIR(CSELECTED));
 		else
 			attron(COLOR_PAIR(CNORMAL));
-		mvprintw((yScreen / 2) - (NBACTIONPAUSE - i * 2), xScreen / 2 - pauseMenu[i].size() / 2, pauseMenu[i].c_str());
+		mvprintw((yScreen / 2) - (NBACTIONPAUSE - i * 2), xScreen / 2 - endMenu[i].size() / 2, endMenu[i].c_str());
 	}
 	refresh();
 
