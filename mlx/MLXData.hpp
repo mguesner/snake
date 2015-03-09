@@ -3,6 +3,8 @@
 
 #include <Data.hpp>
 #include <thread>
+#include "windows.hpp"
+
 extern"C"
 {
 	#include <mlx.h>
@@ -22,19 +24,12 @@ public:
 	void SetChoice(int);
 	void SetState(eGameState);
 	void CleanInput();
-	char		*data;
-	void		*win;
-	void		*mlx;
-	void		*img_win;
+	Windows		*win;
+
 	~MLXData();
 
 private:
-	void caca();
-	// void		*img_mlx;
-	std::thread prout;
-	int			ptr;
-	int			size;
-	int			raf;
+
 	int			width;
 	int			height;
 };
