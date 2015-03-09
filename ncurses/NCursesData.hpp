@@ -30,12 +30,13 @@ private:
 	void StartDisplay();
 	void StartInput();
 	void DrawMainMenu();
+	void DrawPseudoMenu();
 	void DrawNormalMode();
 	void DrawPauseMenu();
 	void DrawEndMenu();
 	void DrawSnake(GameObject*);
 	void DrawFood(GameObject*);
-	Func funcs[5];
+	Func funcs[6];
 	Func2 funcs2[2];
 	int xScreen;
 	int yScreen;

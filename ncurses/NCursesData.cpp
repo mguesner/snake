@@ -21,6 +21,7 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	init_pair(CFOOD, COLOR_RED, COLOR_WHITE);
 	init_pair(CWALL, COLOR_WHITE, COLOR_MARRON);
 	funcs[MAINMENU] = &NCursesData::DrawMainMenu;
+	funcs[PSEUDOMENU] = &NCursesData::DrawPseudoMenu;
 	funcs[NM] = &NCursesData::DrawNormalMode;
 	funcs[PAUSEMENU] = &NCursesData::DrawPauseMenu;
 	funcs[ENDMENU] = &NCursesData::DrawEndMenu;
@@ -97,6 +98,20 @@ void NCursesData::DrawMainMenu()
 		mvprintw((yScreen / 2) - (NBMODE - i * 2), xScreen / 2 - (mainMenu[i].size() / 2 + (i == 1 ? 1 : 0)), "%s%s", mainMenu[i].c_str(), i == 1 ? (wall ? "ON" : "OFF") : "");
 	}
 	refresh();
+}
+
+void NCursesData::DrawPseudoMenu()
+{
+	char tmp[8];
+
+	attron(COLOR_PAIR(CNORMAL));
+	mvprintw((yScreen / 2), xScreen / 2 - 10, "player name : ");
+	curs_set(1);
+	echo();
+	getnstr(tmp, 8);
+	curs_set(0);
+	noecho();
+	player = tmp;
 }
 
 void NCursesData::DrawNormalMode()

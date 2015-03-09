@@ -171,7 +171,7 @@ void Game::Launch()
 	while (!shouldLeave)
 	{
 		timeval time;
-		 gettimeofday(&time, NULL);
+		gettimeofday(&time, NULL);
 		auto start = time.tv_usec;
 		value = gameData->GetInput();
 		if (value == F1)

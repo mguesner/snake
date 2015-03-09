@@ -11,12 +11,13 @@ enum ObjectType
 {
 	SNAKE = 0,
 	FOOD = 1,
-	VOID =2
+	VOID = 2
 };
 
 enum eGameState
 {
 	MAINMENU = 0,
+	PSEUDOMENU,
 	NM,
 	MULTI,
 	PAUSEMENU,
