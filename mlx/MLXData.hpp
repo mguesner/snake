@@ -5,14 +5,6 @@
 #include <thread>
 #include "windows.hpp"
 
-extern"C"
-{
-	#include <mlx.h>
-	#include "lib/easylibx.h"
-}
-
-#define WIDTH 1900
-#define HEIGHT 1080
 
 class MLXData : public Data
 {
@@ -20,7 +12,9 @@ public:
 	MLXData(int width, int height, std::list<GameObject*> *objects);
 	void Draw();
 	void Lock();
+	void Start();
 	eInput GetInput();
+	void SetInput(int);
 	void SetChoice(int);
 	void SetState(eGameState);
 	void CleanInput();

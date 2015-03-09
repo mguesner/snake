@@ -220,9 +220,36 @@ void Game::EndMenu(eInput value)
 	}
 }
 
-void Game::Launch()
+void	Game::Launch()
 {
-	eInput value = NONE;
+	core = std::thread(&Game::Logic, this);
+	while (!shouldLeave)
+	{
+		if (value == F1)
+		{
+			lib->Close();
+			delete lib;
+			lib = new loader("libcurses.so", width, height, object);
+		}
+		else if (value == F2)
+		{
+			lib->Close();
+			delete lib;
+			lib = new loader("mlx/libmlx.so", width, height, object);
+		}
+		else if (value == F3)
+		{
+			lib->Close();
+			delete lib;
+			lib = new loader("libcurses.so", width, height, object);
+		}
+		gameData->Start();
+	}
+}
+
+void Game::Logic()
+{
+	value = NONE;
 	state = MAINMENU;
 	score = 0;
 	wall = true;
@@ -234,24 +261,7 @@ void Game::Launch()
 		gettimeofday(&time, NULL);
 		auto start = time.tv_usec;
 		value = gameData->GetInput();
-		if (value == F1)
-		{
-			lib->Close();
-			delete lib;
-			lib = new loader("libcurses.so", 50, 50, object);
-		}
-		else if (value == F2)
-		{
-			lib->Close();
-			delete lib;
-			lib = new loader("mlx/libmlx.so", 50, 50, object);
-		}
-		else if (value == F3)
-		{
-			lib->Close();
-			delete lib;
-			lib = new loader("libcurses.so", 50, 50, object);
-		}
+		
 		if (state == NM)
 			Update(value);
 		else if (state == PAUSEMENU)
@@ -270,6 +280,5 @@ void Game::Launch()
 		if (wait > 0)
 			usleep(wait);
 	}
-	lib->Close();
-	delete lib;
+	exit(0);
 }

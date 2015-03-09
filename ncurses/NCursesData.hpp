@@ -3,7 +3,6 @@
 
 #include <Data.hpp>
 #include <thread>
-#include <map>
 
 #define CNORMAL 1
 #define CSELECTED 2
@@ -22,6 +21,7 @@ class NCursesData : public Data
 public:
 	NCursesData(int width, int height, std::list<GameObject*> *objects);
 	void Draw();
+	void Start();
 	eInput GetInput();
 	~NCursesData();
 
@@ -40,10 +40,6 @@ private:
 	Func2 funcs2[2];
 	int xScreen;
 	int yScreen;
-	std::map<int, eInput> inputs;
-	std::string mainMenu[NBMODE];
-	std::string pauseMenu[NBACTIONPAUSE];
-	std::string endMenu[NBACTIONEND];
 };
 
 #endif

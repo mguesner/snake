@@ -1,5 +1,5 @@
 #include "windows.hpp"
-
+#include "MLXData.hpp"
 void	mouse_event(int x, int y, void *e)
 {
 	(void)x;
@@ -9,7 +9,7 @@ void	mouse_event(int x, int y, void *e)
 
 void	expose_event(void *e)
 {
-	auto it = reinterpret_cast<Windows*>(e);
+	auto win = reinterpret_cast<Windows*>(e);
 	// int color = 0x00FF00;
 	// int x = 0;
 	// while (x < WIDTH * HEIGHT * 4)
@@ -17,12 +17,13 @@ void	expose_event(void *e)
 	// 	std::memcpy(&it->data[x], &color, sizeof(int));
 	// 	x += 4;
 	// }
-	mlx_put_image_to_window(it->getMlx(), it->getWin(), it->getImgWin(), 0, 0);
+	mlx_put_image_to_window(win->getMlx(), win->getWin(), win->getImgWin(), 0, 0);
 }
 
 void	redraw_event(void *e)
 {
-	(void) e;
+	auto win = reinterpret_cast<Windows*>(e);
+	mlx_put_image_to_window(win->getMlx(), win->getWin(), win->getImgWin(), 0, 0);
 	// auto it = reinterpret_cast<MLXData *>(e);
 	// int color = 0x00FF00;
 	// int x = 0;
@@ -36,8 +37,10 @@ void	redraw_event(void *e)
 
 void	keyboard_event(int keycode, void *e)
 {
-	(void)keycode;
-	(void)e;
+	auto win = reinterpret_cast<Windows*>(e);
+
+	std::cout << keycode << std::endl;
+	win->Pipe->SetInput(keycode);
 
 }
 
@@ -49,6 +52,21 @@ void	click_event(int code, int x, int y, void *e)
 	(void)e;
 }
 
+Windows::Windows(MLXData *mlxData)
+{
+	this->width = WIDTH;
+	this->height = HEIGHT;
+	IsAlive = true;
+	if ((mlx = mlx_init()) == NULL)
+		throw std::exception();
+	win = mlx_new_window(mlx, WIDTH, HEIGHT, (char*)"Snake");
+	if (win == NULL)
+		throw std::exception();
+	img_win = mlx_new_image(mlx, WIDTH, HEIGHT);
+	data = mlx_get_data_addr(img_win, &ptr, &size, &dude);
+	ft_handle_loop(win, mlx, this, 0);
+	Pipe = mlxData;
+}
 
 Windows::Windows()
 {

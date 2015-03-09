@@ -35,7 +35,8 @@ int main(int argc, char **argv)
 	srand(time(NULL));
 	std::string current("libcurses.so");
 	std::list<GameObject*> obj;
-	loader	*graphiclib = new loader("ncurses/libcurses.so", width, height, &obj);
+	//loader	*graphiclib = new loader("ncurses/libcurses.so", width, height, &obj);
+	loader	*graphiclib = new loader("mlx/libmlx.so", width, height, &obj);
 	Data	*gameData = graphiclib->GetData();
 	Game	*game = new Game(gameData, graphiclib, current, width, height, &obj);
 	game->Launch();

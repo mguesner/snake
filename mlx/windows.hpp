@@ -16,8 +16,8 @@ extern"C"
 #include <mutex>
 #include <list>
 
+class MLXData;
 
-class Terrain;
 #define WIDTH 1900
 #define HEIGHT 1080
 class Windows
@@ -26,6 +26,7 @@ public:
 	Windows();
 	Windows(std::string name, unsigned int width, unsigned int height);
 	Windows(std::string name);
+	Windows(MLXData *);
 
 
 	void	pixelToImg(int x, int y, int color);
@@ -39,7 +40,9 @@ public:
 	int		getHeight();
 	void	Destroy();
 
+	MLXData *Pipe;
 	std::mutex mtx;
+	std::mutex isLaunch;
 	bool	IsAlive;
 	~Windows();
 

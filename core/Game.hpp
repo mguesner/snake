@@ -5,6 +5,7 @@
 #include "Player.hpp"
 #include "../Data.hpp"
 #include "Food.hpp"
+#include <thread>
 
 class Game
 {
@@ -20,6 +21,7 @@ public:
 	ObjectType Collide();
 	~Game();
 	void Launch();
+	void Logic();
 private:
 	Game();
 	bool shouldLeave;
@@ -29,6 +31,7 @@ private:
 	int entry;
 	int width;
 	int height;
+	std::thread core;
 	eGameState state;
 	Data *gameData;
 	loader *lib;
@@ -37,6 +40,7 @@ private:
 	Player *first;
 	Player *second;
 	Food *food;
+	eInput value;
 };
 
 #endif

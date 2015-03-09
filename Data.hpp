@@ -4,6 +4,7 @@
 #include <iostream>
 #include <list>
 #include <mutex>
+#include <map>
 
 class GameObject;
 
@@ -55,6 +56,7 @@ class Data
 public:
 	Data();
 	virtual ~Data(){}
+	virtual void Start() = 0;
 	virtual void Draw() = 0;
 	virtual eInput GetInput() = 0;
 	void SetScore(int);
@@ -74,6 +76,10 @@ protected:
 	std::list<GameObject*> *objects;
 	int score;
 	std::string player;
+	std::map<int, eInput> inputs;
+	std::string mainMenu[NBMODE];
+	std::string pauseMenu[NBACTIONPAUSE];
+	std::string endMenu[NBACTIONEND];
 };
 
 #endif

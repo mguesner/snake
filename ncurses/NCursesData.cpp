@@ -60,6 +60,11 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	endMenu[2] = "quit";
 }
 
+void NCursesData::Start()
+{
+
+}
+
 void NCursesData::Draw()
 {
 	getmaxyx(stdscr, yScreen, xScreen);
@@ -221,9 +226,6 @@ void NCursesData::DrawFood(GameObject *it)
 NCursesData::~NCursesData()
 {
 	shouldLeave = true;
-	// mutex.unlock();
-	// display.join();
-	// input.join();
 	curs_set(1);
 	endwin();
 }
