@@ -5,6 +5,16 @@
 #include <thread>
 #include <map>
 
+#define CNORMAL 1
+#define CSELECTED 2
+#define CBACKGROUND 3
+#define CSNAKEHEAD 4
+#define CSNAKEBODY 5
+#define CFOOD 6
+#define CWALL 7
+
+#define COLOR_MARRON 20
+
 class NCursesData : public Data
 {
 	typedef void (NCursesData::*Func)();

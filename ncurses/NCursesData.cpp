@@ -5,13 +5,6 @@
 #include <unistd.h>
 #include <time.h>
 
-#define CNORMAL 1
-#define CSELECTED 2
-#define CBACKGROUND 3
-#define CSNAKEHEAD 4
-#define CSNAKEBODY 5
-#define CFOOD 6
-
 NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 {
 	initscr();
@@ -19,12 +12,14 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	noecho();
 	start_color();
 	getmaxyx(stdscr, yScreen, xScreen);
+	init_color(COLOR_MARRON, 255, 128, 0);
 	init_pair(CNORMAL, COLOR_WHITE, COLOR_BLACK);
 	init_pair(CSELECTED, COLOR_BLACK, COLOR_WHITE);
 	init_pair(CBACKGROUND, COLOR_BLACK, COLOR_WHITE);
 	init_pair(CSNAKEHEAD, COLOR_BLACK, COLOR_RED);
 	init_pair(CSNAKEBODY, COLOR_BLACK, COLOR_GREEN);
 	init_pair(CFOOD, COLOR_RED, COLOR_WHITE);
+	init_pair(CWALL, COLOR_WHITE, COLOR_MARRON);
 	funcs[MAINMENU] = &NCursesData::DrawMainMenu;
 	funcs[NM] = &NCursesData::DrawNormalMode;
 	funcs[PAUSEMENU] = &NCursesData::DrawPauseMenu;
@@ -99,7 +94,7 @@ void NCursesData::DrawMainMenu()
 			attron(COLOR_PAIR(CSELECTED));
 		else
 			attron(COLOR_PAIR(CNORMAL));
-		mvprintw((yScreen / 2) - (NBMODE - i * 2), xScreen / 2 - (mainMenu[i].size() / 2 + (i == 1 ? 1 : 0)), "%s%s", mainMenu[i].c_str(), i == 1 ? "ON" : "");
+		mvprintw((yScreen / 2) - (NBMODE - i * 2), xScreen / 2 - (mainMenu[i].size() / 2 + (i == 1 ? 1 : 0)), "%s%s", mainMenu[i].c_str(), i == 1 ? (wall ? "ON" : "OFF") : "");
 	}
 	refresh();
 }
@@ -107,13 +102,28 @@ void NCursesData::DrawMainMenu()
 void NCursesData::DrawNormalMode()
 {
 	auto i = 0;
+	attron(COLOR_PAIR(CWALL));
+	while (wall && i < height + 2)
+	{
+		mvprintw(i, 0, " ");
+		mvprintw(i, width + 1, " ");
+		i++;
+	}
+	i = 0;
+	while (wall && i < width + 1)
+	{
+		mvprintw(0, i, " ");
+		mvprintw(height + 1, i, " ");
+		i++;
+	}
+	i = 0;
 	attron(COLOR_PAIR(CBACKGROUND));
 	while (i < width)
 	{
 		auto j = 0;
 		while (j < height)
 		{
-			mvprintw(j, i," ");
+			mvprintw(j + (wall ? 1 : 0), i + (wall ? 1 : 0)," ");
 			j++;
 		}
 		i++;
@@ -123,8 +133,8 @@ void NCursesData::DrawNormalMode()
 		(this->*funcs2[(*i)->GetType()])(*i);
 	}
 	attron(COLOR_PAIR(CNORMAL));
-	mvprintw(0, width, "player:%s", player.c_str());
-	mvprintw(1, width, "score:%d", score);
+	mvprintw(0, width + 3, "player:%s", player.c_str());
+	mvprintw(1, width + 3, "score:%d", score);
 	refresh();
 }
 
@@ -180,14 +190,14 @@ void NCursesData::DrawSnake(GameObject *it)
 			attron(COLOR_PAIR(CSNAKEHEAD));
 		else
 			attron(COLOR_PAIR(CSNAKEBODY));
-		mvprintw((*i).getY(), (*i).getX()," ");
+		mvprintw((*i).getY() + (wall ? 1 : 0), (*i).getX() + (wall ? 1 : 0)," ");
 	}
 }
 
 void NCursesData::DrawFood(GameObject *it)
 {
 	attron(COLOR_PAIR(CFOOD));
-	mvprintw(it->GetPosition().getY(), it->GetPosition().getX(), "o");
+	mvprintw(it->GetPosition().getY() + (wall ? 1 : 0), it->GetPosition().getX() + (wall ? 1 : 0), "o");
 }
 
 NCursesData::~NCursesData()
