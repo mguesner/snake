@@ -1,0 +1,66 @@
+#ifndef WINDOWS_HPP
+# define WINDOWS_HPP
+
+
+extern"C"
+{
+	#include <mlx.h>
+	#include "lib/easylibx.h"
+}
+
+#include <iostream>
+#include <exception>
+#include <functional>
+#include <cstring>
+#include <thread>
+#include <mutex>
+#include <list>
+
+
+class Terrain;
+#define WIDTH 1900
+#define HEIGHT 1080
+class Windows
+{
+public:
+	Windows();
+	Windows(std::string name, unsigned int width, unsigned int height);
+	Windows(std::string name);
+
+
+	void	pixelToImg(int x, int y, int color);
+	void	clearImg();
+	void	Run();
+
+	void	*getMlx();
+	void	*getImgWin();
+	void	*getWin();
+	int		getWidth();
+	int		getHeight();
+	void	Destroy();
+
+	std::mutex mtx;
+	bool	IsAlive;
+	~Windows();
+
+private:
+	Windows(const Windows& src);
+	void		*mlx;
+	void		*win;
+	void		*img_mlx;
+	void		*img_win;
+	void		*terrain;
+	int			ptr;
+	int			size;
+	int			dude;
+	char		*data;
+	int			width;
+	int			height;
+};
+
+int key_hook(int keycode);
+int expose_hook();
+int redraw();
+int expose_hook(Windows *a);
+
+#endif

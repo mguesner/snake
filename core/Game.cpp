@@ -45,6 +45,7 @@ Game::~Game()
 void	Game::Reset()
 {
 	score = 0;
+	progress = 200000;
 	object->erase(object->begin(), object->end());
 	delete first;
 	delete food;
@@ -96,6 +97,7 @@ void	Game::Update(eInput value)
 	else
 	{
 		food->Collision();
+		progress -= 1000;
 		score += 1;
 	}
 }
