@@ -24,6 +24,7 @@ private:
 	Game();
 	bool shouldLeave;
 	bool wall;
+	int progress;
 	int score;
 	int entry;
 	int width;

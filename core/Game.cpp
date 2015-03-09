@@ -30,6 +30,7 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	food = new Food(width, height);
 	object->push_back(food);
 	shouldLeave = false;
+	progress = 200000;
 	entry = 0;
 	(void)second;
 
@@ -43,6 +44,7 @@ Game::~Game()
 
 void	Game::Reset()
 {
+	score = 0;
 	object->erase(object->begin(), object->end());
 	delete first;
 	delete food;
@@ -262,7 +264,7 @@ void Game::Launch()
 		gameData->Draw();
 		//gameData->CleanInput();
 		gettimeofday(&time, NULL);
-		auto wait = start + 100000 - time.tv_usec;
+		auto wait = start + progress - time.tv_usec;
 		if (wait > 0)
 			usleep(wait);
 	}

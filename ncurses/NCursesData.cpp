@@ -185,14 +185,14 @@ void NCursesData::DrawEndMenu()
 	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 6), xScreen / 2 - 38, "|   ||  ||       ||       ||    ___|  |  | |  ||       ||    ___||    __  |");
 	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 5), xScreen / 2 - 38, "|   |_| ||   _   || ||_|| ||   |___   |  |_|  | |     | |   |___ |   |  | |");
 	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 4), xScreen / 2 - 38, "|_______||__| |__||_|   |_||_______|  |_______|  |___|  |_______||___|  |_|");
-
+	mvprintw((yScreen / 2) - 4, xScreen / 2 - 8, "your score : %d", score);
 	for (int i = 0; i < NBACTIONPAUSE; i++)
 	{
 		if (i == choice)
 			attron(COLOR_PAIR(CSELECTED));
 		else
 			attron(COLOR_PAIR(CNORMAL));
-		mvprintw((yScreen / 2) - (NBACTIONPAUSE - i * 2), xScreen / 2 - endMenu[i].size() / 2, endMenu[i].c_str());
+		mvprintw((yScreen / 2) - (NBACTIONPAUSE - i * 2) + 2, xScreen / 2 - endMenu[i].size() / 2, endMenu[i].c_str());
 	}
 	refresh();
 
