@@ -45,7 +45,7 @@ Game::~Game()
 void	Game::Reset()
 {
 	score = 0;
-	progress = 200000;
+	//progress = 200000;
 	object->erase(object->begin(), object->end());
 	delete first;
 	delete food;
