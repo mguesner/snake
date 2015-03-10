@@ -40,6 +40,15 @@ public:
 	int		getHeight();
 	void	Destroy();
 
+	void DrawMainMenu();
+	void DrawPseudoMenu();
+	void DrawNormalMode();
+	void DrawPauseMenu();
+
+
+	void DrawSquare(int x, int y, int color);
+
+
 	MLXData *Pipe;
 	std::mutex mtx;
 	std::mutex isLaunch;

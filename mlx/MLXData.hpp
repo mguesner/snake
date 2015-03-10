@@ -11,13 +11,11 @@ class MLXData : public Data
 public:
 	MLXData(int width, int height, std::list<GameObject*> *objects);
 	void Draw();
+	void Close();
 	void Lock();
 	void Start();
 	eInput GetInput();
 	void SetInput(int);
-	void SetChoice(int);
-	void SetState(eGameState);
-	void CleanInput();
 	Windows		*win;
 
 	~MLXData();

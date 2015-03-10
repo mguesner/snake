@@ -44,7 +44,7 @@ loader& loader::operator=(loader const & src)
 
 void loader::Close()
 {
-	(*close)(data);
+	// (*close)(data);
 	dlclose(handle);
 }
 

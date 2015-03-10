@@ -25,7 +25,6 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	object = obj;
 	gameData = data;
 	this->lib = lib;
-	cur_lib = cur;
 	first = new Player(object, width, height);
 	food = new Food(width, height);
 	object->push_back(food);
@@ -33,6 +32,7 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	progress = 200000;
 	entry = 0;
 	(void)second;
+	(void)cur;
 
 }
 
@@ -109,7 +109,10 @@ void Game::MainMenu(eInput value)
 		if (entry == 0)
 			state = NM;
 		else if (entry == 1)
+		{
 			wall = !wall;
+			gameData->SetWall(wall);
+		}
 		else if (entry == 2)
 		{
 			shouldLeave = true;
@@ -131,7 +134,7 @@ void Game::MainMenu(eInput value)
 	}
 	else if (value == PAUSE)
 	{
-		state = NM;
+		shouldLeave = true;
 		entry = 0;
 	}
 	gameData->SetChoice(entry);
@@ -229,20 +232,25 @@ void	Game::Launch()
 		{
 			lib->Close();
 			delete lib;
-			lib = new loader("libcurses.so", width, height, object);
+			lib = new loader("ncurses/libcurses.so", width, height, object);
+			gameData = lib->GetData();
 		}
 		else if (value == F2)
 		{
 			lib->Close();
 			delete lib;
 			lib = new loader("mlx/libmlx.so", width, height, object);
+			gameData = lib->GetData();
 		}
 		else if (value == F3)
 		{
 			lib->Close();
 			delete lib;
 			lib = new loader("libcurses.so", width, height, object);
+			gameData = lib->GetData();
 		}
+		libIsLoading.unlock();
+		libIsLoading.lock();
 		gameData->Start();
 	}
 }
@@ -255,14 +263,20 @@ void Game::Logic()
 	wall = true;
 	gameData->SetScore(score);
 	gameData->SetState(state);
+	gameData->SetWall(wall);
 	while (!shouldLeave)
 	{
 		timeval time;
 		gettimeofday(&time, NULL);
 		auto start = time.tv_usec;
 		value = gameData->GetInput();
-		
-		if (state == NM)
+		if (value == F1 || value == F2 || value == F3)
+		{
+			gameData->Close();
+			libIsLoading.lock();
+			libIsLoading.unlock();
+		}
+		else if (state == NM)
 			Update(value);
 		else if (state == PAUSEMENU)
 			PauseMenu(value);
@@ -272,9 +286,8 @@ void Game::Logic()
 			EndMenu(value);
 		gameData->SetState(state);
 		gameData->SetScore(score);
-		gameData->SetWall(wall);
 		gameData->Draw();
-		//gameData->CleanInput();
+		gameData->CleanInput();
 		gettimeofday(&time, NULL);
 		auto wait = start + progress - time.tv_usec;
 		if (wait > 0)

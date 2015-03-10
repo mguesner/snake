@@ -21,6 +21,7 @@ class NCursesData : public Data
 public:
 	NCursesData(int width, int height, std::list<GameObject*> *objects);
 	void Draw();
+	void Close();
 	void Start();
 	eInput GetInput();
 	~NCursesData();

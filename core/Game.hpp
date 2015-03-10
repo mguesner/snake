@@ -35,7 +35,7 @@ private:
 	eGameState state;
 	Data *gameData;
 	loader *lib;
-	std::string cur_lib;
+	std::mutex libIsLoading;
 	std::list<GameObject*> *object;
 	Player *first;
 	Player *second;

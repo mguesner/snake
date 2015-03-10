@@ -32,6 +32,8 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	this->objects = objects;
 	keypad(stdscr, TRUE);
 	shouldLeave = false;
+	closeIsCall = false;
+	locker.lock();
 	value = NONE;
 	inputs['w'] = UP;
 	inputs['s'] = DOWN;
@@ -63,6 +65,11 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 void NCursesData::Start()
 {
 
+}
+
+void NCursesData::Close()
+{
+	delete this;
 }
 
 void NCursesData::Draw()

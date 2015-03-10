@@ -8,20 +8,22 @@ MLXData::MLXData(int width, int height, std::list<GameObject*> *objects)
 	this->objects = objects;
 	win = new Windows(this);
 	value = NONE;
-	inputs['w'] = UP;
-	inputs['s'] = DOWN;
-	inputs['a'] = LEFT;
-	inputs['d'] = RIGHT;
-	inputs['p'] = PAUSE;
+	inputs[13] = UP;
+	inputs[1] = DOWN;
+	inputs[0] = LEFT;
+	inputs[2] = RIGHT;
+	inputs[35] = PAUSE;
 	inputs[54] = UP;
-	inputs[54] = DOWN;
+	inputs[125] = DOWN;
 	inputs[54] = LEFT;
 	inputs[54] = RIGHT;
-	inputs[27] = PAUSE;
-	inputs[80] = F1;
-	inputs[81] = F2;
-	inputs[82] = F3;
-	inputs['\n'] = VALIDATE;
+	inputs[53] = PAUSE;
+	inputs[18] = F1;
+	inputs[20] = F3;
+	inputs[36] = VALIDATE;
+	shouldDraw = false;
+	closeIsCall = false;
+	locker.lock();
 }
 
 void MLXData::Start()
@@ -31,7 +33,7 @@ void MLXData::Start()
 
 void MLXData::Draw()
 {
-
+	shouldDraw = true;
 }
 
 void MLXData::Lock()
@@ -41,26 +43,13 @@ void MLXData::Lock()
 
 void MLXData::SetInput(int keycode)
 {
+	std::cout << keycode << std::endl;
 	value = inputs[keycode];
 }
 
 eInput MLXData::GetInput()
 {
 	return value;
-}
-
-void MLXData::CleanInput()
-{
-}
-
-void MLXData::SetChoice(int set)
-{
-	choice = set;
-}
-
-void MLXData::SetState(eGameState set)
-{
-	state = set;
 }
 
 MLXData::~MLXData()

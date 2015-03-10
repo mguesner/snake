@@ -3,7 +3,7 @@
 Point::Point() {
 }
 
-Point::Point(int x, int y, int z) {
+Point::Point(double x, double y, double z) {
 	this->x = x;
 	this->y = y;
 	this->z = z;
@@ -28,9 +28,6 @@ Point& Point::operator+=(Point const & ref)
 	x += ref.x;
 	y += ref.y;
 	z += ref.z;
-	x %= x;
-	y %= y;
-	z %= z;
 	return *this;
 }
 
@@ -47,6 +44,13 @@ bool Point::operator==(Point const & ref)
 	if (ref.x == x && ref.y == y && ref.z == z)
 		return true;
 	return false;
+}
+
+bool Point::operator!=(Point const & ref)
+{
+	if (ref.x == x && ref.y == y && ref.z == z)
+		return false;
+	return true;
 }
 
 Point& Point::operator+(Point const & ref)
@@ -68,17 +72,65 @@ Point& Point::operator-(Point const & ref)
 Point::~Point() {
 }
 
-void	Point::SetX(int value)
+void Point::Rotation(double anglex, double angley, double anglez)
+{
+	double radian;
+	double tmpx;
+	double tmpy;
+	double tmpz;
+	if (anglez != 0)
+	{
+		radian = (anglez * M_PI) / 180;
+		tmpx = ((x) * cos(radian)) + ((y) * -sin(radian));
+		tmpy = ((x) * sin(radian)) + ((y) * cos(radian));
+		tmpz = (z);
+		x = tmpx;
+		y = tmpy;
+		z = tmpz;
+	}
+	if (angley != 0)
+	{
+		radian = (angley* M_PI) / 180;
+		tmpx = ((x) * cos(radian)) + ((z) * sin(radian));
+		tmpy = y;
+		tmpz = ((x) * -sin(radian)) + ((z) * cos(radian));
+		x = tmpx;
+		y = tmpy;
+		z = tmpz;
+	}
+	if (anglex != 0)
+	{
+		radian = (anglex * M_PI) / 180;
+		tmpx = ((x) * 1.0);
+		tmpy = (y) * cos(radian) + ((z) * -sin(radian));
+		tmpz = ((y) * sin(radian)) + ((z) * cos(radian));
+		x = tmpx;
+		y = tmpy;
+		z = tmpz;
+	}
+}
+
+double	Point::GetPerspectiveX(double distance)
+{
+	return ( distance * x / (distance + z));
+}
+
+double	Point::GetPerspectiveY(double distance)
+{
+	return (distance * y / (distance + z));
+}
+
+void	Point::SetX(double value)
 {
 	x = value;
 }
 
-void	Point::SetY(int value)
+void	Point::SetY(double value)
 {
 	y = value;
 }
 
-void	Point::SetZ(int value)
+void	Point::SetZ(double value)
 {
 	z = value;
 }
@@ -98,17 +150,17 @@ void	Point::UpdateY(double coef)
 	y *= coef;
 }
 
-int			Point::getX()
+double	Point::getX()
 {
 	return this->x;
 }
 
-int			Point::getY()
+double	Point::getY()
 {
 	return this->y;
 }
 
-int			Point::getZ()
+double	Point::getZ()
 {
 	return this->z;
 }

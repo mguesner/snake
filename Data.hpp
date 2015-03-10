@@ -59,9 +59,18 @@ public:
 	virtual void Start() = 0;
 	virtual void Draw() = 0;
 	virtual eInput GetInput() = 0;
+	void Unlocker();
+	void Close();
+	void SetDrawFinish();
+	bool GetDrawInstruction();
+	bool ShouldClose();
+	void CleanInput();
+	int GetChoice();
 	void SetScore(int);
 	void SetWall(bool);
 	int GetScore();
+	std::list<GameObject*> *GetGameObjects();
+	eGameState GetState();
 	virtual void SetChoice(int);
 	virtual void SetState(eGameState);
 
@@ -80,6 +89,10 @@ protected:
 	std::string mainMenu[NBMODE];
 	std::string pauseMenu[NBACTIONPAUSE];
 	std::string endMenu[NBACTIONEND];
+	bool shouldDraw;
+	bool closeIsCall;
+	std::mutex locker;
+
 };
 
 #endif
