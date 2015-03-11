@@ -102,18 +102,38 @@ void	Game::Update(eInput value)
 	}
 }
 
+void	Game::UpdateMulti(eInput value)
+{
+	(void)value;
+}
+
+void	Game::MultiMenu(eInput value)
+{
+	if (value == VALIDATE)
+	{
+		if (entry == NEWGAME)
+			state = HOSTMENU;
+		else if (entry == MULTIPLAYER)
+			state = JOINMENU;
+		else if (entry == EXIT)
+			shouldLeave = true;
+	}
+}
+
 void Game::MainMenu(eInput value)
 {
 	if (value == VALIDATE)
 	{
-		if (entry == 0)
+		if (entry == NEWGAME)
 			state = NM;
-		else if (entry == 1)
+		else if (entry == MULTIPLAYER)
+			state = MULTIMENU;
+		else if (entry == WALL)
 		{
 			wall = !wall;
 			gameData->SetWall(wall);
 		}
-		else if (entry == 2)
+		else if (entry == EXIT)
 		{
 			shouldLeave = true;
 		}
@@ -278,6 +298,8 @@ void Game::Logic()
 		}
 		else if (state == NM)
 			Update(value);
+		else if (state == MULTIMENU)
+			MultiMenu(value);
 		else if (state == PAUSEMENU)
 			PauseMenu(value);
 		else if (state == MAINMENU)
@@ -293,5 +315,6 @@ void Game::Logic()
 		if (wait > 0)
 			usleep(wait);
 	}
+	delete gameData;
 	exit(0);
 }

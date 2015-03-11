@@ -3,11 +3,6 @@
 #include "../core/GameObject.hpp"
 #include "../core/Snake.hpp"
 
-class test : public std::exception
-{
-
-};
-
 void	mouse_event(int x, int y, void *e)
 {
 	(void)x;
@@ -255,8 +250,9 @@ void	Windows::Run()
 	{
 		mlx_loop(mlx);
 	}
-	catch (test *e)
+	catch (std::exception &e)
 	{
+		std::cout << e.what() << std::endl;
 		Destroy();
 	}
 }
