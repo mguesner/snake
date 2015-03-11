@@ -258,5 +258,6 @@ void	Windows::Run()
 	catch(const char*e)
 	{
 		std::cout << e << std::endl;
+		Destroy();
 	}
 }
