@@ -59,6 +59,7 @@ enum eActionPause
 
 #define NBACTIONPAUSE 3
 #define NBACTIONEND 3
+#define NBACTIONMULTIMENU 3
 #define NBMODE 4
 
 
@@ -100,6 +101,7 @@ protected:
 	std::string mainMenu[NBMODE];
 	std::string pauseMenu[NBACTIONPAUSE];
 	std::string endMenu[NBACTIONEND];
+	std::string multiMenu[NBACTIONMULTIMENU];
 	bool shouldDraw;
 	bool closeIsCall;
 	std::mutex locker;

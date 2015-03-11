@@ -23,7 +23,7 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	funcs[MAINMENU] = &NCursesData::DrawMainMenu;
 	funcs[PSEUDOMENU] = &NCursesData::DrawPseudoMenu;
 	funcs[NM] = &NCursesData::DrawNormalMode;
-	funcs[MULTI] = &NCursesData::DrawMulti;
+	funcs[MULTIMENU] = &NCursesData::DrawMultiMenu;
 	funcs[PAUSEMENU] = &NCursesData::DrawPauseMenu;
 	funcs[ENDMENU] = &NCursesData::DrawEndMenu;
 	funcs2[SNAKE] = &NCursesData::DrawSnake;
@@ -62,6 +62,9 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	endMenu[0] = "restart";
 	endMenu[1] = "main menu";
 	endMenu[2] = "quit";
+	multiMenu[0] = "host game";
+	multiMenu[1] = "join game";
+	multiMenu[2] = "quit";
 }
 
 void NCursesData::Start()
@@ -112,7 +115,7 @@ void NCursesData::DrawMainMenu()
 			attron(COLOR_PAIR(CSELECTED));
 		else
 			attron(COLOR_PAIR(CNORMAL));
-		mvprintw((yScreen / 2) - (NBMODE - i * 2), xScreen / 2 - (mainMenu[i].size() / 2 + (i == 1 ? 1 : 0)), "%s%s", mainMenu[i].c_str(), i == 1 ? (wall ? "ON" : "OFF") : "");
+		mvprintw((yScreen / 2) - (NBMODE - i * 2), xScreen / 2 - (mainMenu[i].size() / 2 + (i == WALL ? 1 : 0)), "%s%s", mainMenu[i].c_str(), i == WALL ? (wall ? "ON" : "OFF") : "");
 	}
 	refresh();
 }
@@ -173,6 +176,20 @@ void NCursesData::DrawNormalMode()
 void NCursesData::DrawMulti()
 {
 	//mvprintw()
+}
+
+
+void NCursesData::DrawMultiMenu()
+{
+	for (int i = 0; i < NBACTIONMULTIMENU; i++)
+	{
+		if (i == choice)
+			attron(COLOR_PAIR(CSELECTED));
+		else
+			attron(COLOR_PAIR(CNORMAL));
+		mvprintw((yScreen / 2) - (NBACTIONMULTIMENU - i * 2), xScreen / 2 - multiMenu[i].size() / 2, multiMenu[i].c_str());
+	}
+	refresh();
 }
 
 void NCursesData::DrawPauseMenu()

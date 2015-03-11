@@ -118,6 +118,26 @@ void	Game::MultiMenu(eInput value)
 		else if (entry == EXIT)
 			shouldLeave = true;
 	}
+	else if (value == UP)
+	{
+		if (entry == 0)
+			entry = NBACTIONMULTIMENU - 1;
+		else
+			entry--;
+	}
+	else if (value == DOWN)
+	{
+		if (entry == NBACTIONMULTIMENU - 1)
+			entry = 0;
+		else
+			entry++;
+	}
+	else if (value == PAUSE)
+	{
+		shouldLeave = true;
+		entry = 0;
+	}
+	gameData->SetChoice(entry);
 }
 
 void Game::MainMenu(eInput value)
@@ -127,7 +147,10 @@ void Game::MainMenu(eInput value)
 		if (entry == NEWGAME)
 			state = NM;
 		else if (entry == MULTIPLAYER)
+		{
 			state = MULTIMENU;
+			entry = 0;
+		}
 		else if (entry == WALL)
 		{
 			wall = !wall;
