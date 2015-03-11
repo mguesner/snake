@@ -14,6 +14,8 @@ public:
 	Game(Game const & src);
 	Game& operator=(Game const & rhs);
 	void Update(eInput value);
+	void UpdateMulti(eInput value);
+	void MultiMenu(eInput value);
 	void MainMenu(eInput value);
 	void PauseMenu(eInput value);
 	void EndMenu(eInput value);

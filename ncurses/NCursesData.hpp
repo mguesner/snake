@@ -33,6 +33,7 @@ private:
 	void DrawMainMenu();
 	void DrawPseudoMenu();
 	void DrawNormalMode();
+	void DrawMulti();
 	void DrawPauseMenu();
 	void DrawEndMenu();
 	void DrawSnake(GameObject*);

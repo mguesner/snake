@@ -20,9 +20,20 @@ enum eGameState
 	MAINMENU = 0,
 	PSEUDOMENU,
 	NM,
+	MULTIMENU,
+	HOSTMENU,
+	JOINMENU,
 	MULTI,
 	PAUSEMENU,
 	ENDMENU
+};
+
+enum eMenuChoice
+{
+	NEWGAME = 0,
+	MULTIPLAYER,
+	WALL,
+	EXIT
 };
 
 enum eInput
@@ -48,7 +59,7 @@ enum eActionPause
 
 #define NBACTIONPAUSE 3
 #define NBACTIONEND 3
-#define NBMODE 3
+#define NBMODE 4
 
 
 class Data

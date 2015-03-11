@@ -19,10 +19,10 @@ void	expose_event(void *e)
 void	redraw_event(void *e)
 {
 	auto win = reinterpret_cast<Windows*>(e);
-	
+
 	//check here change lib throw exception
 	if (win->Pipe->ShouldClose())
-		throw new std::exception();
+		throw std::exception();
 	if (win->Pipe->GetDrawInstruction() == false)
 		return;
 	auto state = win->Pipe->GetState();
@@ -246,8 +246,9 @@ void	Windows::Run()
 	{
 		mlx_loop(mlx);
 	}
-	catch (std::exception *e)
+	catch (std::exception &e)
 	{
+		std::cout << e.what() << std::endl;
 		Destroy();
 	}
 }
