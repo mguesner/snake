@@ -81,6 +81,7 @@ public:
 	void SetScore(int);
 	void SetWall(bool);
 	int GetScore();
+	std::string GetIp();
 	std::list<GameObject*> *GetGameObjects();
 	eGameState GetState();
 	virtual void SetChoice(int);
@@ -97,6 +98,7 @@ protected:
 	std::list<GameObject*> *objects;
 	int score;
 	std::string player;
+	std::string ip;
 	std::map<int, eInput> inputs;
 	std::string mainMenu[NBMODE];
 	std::string pauseMenu[NBACTIONPAUSE];

@@ -24,6 +24,8 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	funcs[PSEUDOMENU] = &NCursesData::DrawPseudoMenu;
 	funcs[NM] = &NCursesData::DrawNormalMode;
 	funcs[MULTIMENU] = &NCursesData::DrawMultiMenu;
+	funcs[HOSTMENU] = &NCursesData::DrawHostMenu;
+	funcs[JOINMENU] = &NCursesData::DrawJoinMenu;
 	funcs[PAUSEMENU] = &NCursesData::DrawPauseMenu;
 	funcs[ENDMENU] = &NCursesData::DrawEndMenu;
 	funcs2[SNAKE] = &NCursesData::DrawSnake;
@@ -49,6 +51,9 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	inputs[80] = F1;
 	inputs[81] = F2;
 	inputs[82] = F3;
+	inputs['1'] = F1;
+	inputs['2'] = F2;
+	inputs['3'] = F3;
 	inputs['\n'] = VALIDATE;
 	// display = std::thread(&NCursesData::StartDisplay, this);
 	// input = std::thread(&NCursesData::StartInput, this);
@@ -70,11 +75,6 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 void NCursesData::Start()
 {
 	while (!closeIsCall);
-}
-
-void NCursesData::Close()
-{
-	delete this;
 }
 
 void NCursesData::Draw()
@@ -171,6 +171,25 @@ void NCursesData::DrawNormalMode()
 	mvprintw(0, width + 3, "player:%s", player.c_str());
 	mvprintw(1, width + 3, "score:%d", score);
 	refresh();
+}
+
+void NCursesData::DrawHostMenu()
+{
+	mvprintw(yScreen / 2, xScreen / 2, "waiting players");
+}
+
+void NCursesData::DrawJoinMenu()
+{
+	char tmp[16];
+	mvprintw(yScreen / 2, xScreen / 2, "enter ip : ");
+	echo();
+	curs_set(1);
+	timeout(-1);
+	getnstr(tmp, 15);
+	ip = std::string(tmp);
+	timeout(0);
+	noecho();
+	curs_set(0);
 }
 
 void NCursesData::DrawMulti()

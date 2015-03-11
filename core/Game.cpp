@@ -2,6 +2,13 @@
 #include "unistd.h"
 #include <ctime>
 #include <sys/time.h>
+#include <netdb.h>
+
+typedef struct protoent		t_protoent;
+typedef struct sockaddr_in	t_sockaddr_in;
+typedef struct sockaddr		t_sockaddr;
+typedef struct hostent		t_hostent;
+typedef struct in_addr		t_in_addr;
 
 Game::Game()
 {
@@ -140,12 +147,55 @@ void	Game::MultiMenu(eInput value)
 	gameData->SetChoice(entry);
 }
 
+void	Game::HostMenu(eInput value)
+{
+	t_protoent		*prot;
+	t_sockaddr_in	sin;
+	int				sock;
+	(void)value;
+	if (!(prot = getprotobyname("tcp")))
+		perror("getprotobyname");
+	if ((sock = socket(PF_INET, SOCK_STREAM, prot->p_proto)) == -1)
+		perror("socket");
+	sin.sin_family = AF_INET;
+	sin.sin_addr.s_addr = INADDR_ANY;
+	sin.sin_port = htons(6666);
+	if (bind(sock, (t_sockaddr*)&sin, sizeof(sin)) == -1)
+		perror("bind");
+	if (listen(sock, 5) == -1)
+		perror("listen");
+}
+
+void	Game::JoinMenu(eInput value)
+{
+	int sock;
+	(void) value;
+	t_sockaddr_in	sin;
+	t_protoent	*proto;
+	if ((proto = getprotobyname("tcp")) == NULL)
+		perror("prot");
+	if ((sock = socket(PF_INET, SOCK_STREAM, proto->p_proto)) == -1)
+		perror("sock");
+	sin.sin_family = AF_INET;
+	sin.sin_port = htons(6666);
+	sin.sin_addr.s_addr = INADDR_ANY;
+	if (connect(sock, (t_sockaddr *)&sin, sizeof(sin)) == -1)
+	{
+		std::cout << "fail" << std::endl;
+		perror("conn");
+		exit(-1);
+	}
+}
+
 void Game::MainMenu(eInput value)
 {
 	if (value == VALIDATE)
 	{
 		if (entry == NEWGAME)
+		{
 			state = NM;
+			entry = 0;
+		}
 		else if (entry == MULTIPLAYER)
 		{
 			state = MULTIMENU;
@@ -176,10 +226,7 @@ void Game::MainMenu(eInput value)
 			entry++;
 	}
 	else if (value == PAUSE)
-	{
 		shouldLeave = true;
-		entry = 0;
-	}
 	gameData->SetChoice(entry);
 }
 
@@ -274,6 +321,7 @@ void	Game::Launch()
 		if (value == F1)
 		{
 			lib->Close();
+			delete gameData;
 			delete lib;
 			lib = new loader("ncurses/libcurses.so", width, height, object);
 			gameData = lib->GetData();
@@ -281,13 +329,16 @@ void	Game::Launch()
 		else if (value == F2)
 		{
 			lib->Close();
+			delete gameData;
 			delete lib;
 			lib = new loader("mlx/libmlx.so", width, height, object);
 			gameData = lib->GetData();
 		}
 		else if (value == F3)
 		{
+			gameData->Close();
 			lib->Close();
+			delete gameData;
 			delete lib;
 			lib = new loader("libcurses.so", width, height, object);
 			gameData = lib->GetData();
@@ -329,6 +380,10 @@ void Game::Logic()
 			MainMenu(value);
 		else if (state == ENDMENU)
 			EndMenu(value);
+		else if (state == HOSTMENU)
+			HostMenu(value);
+		else if (state == JOINMENU)
+			JoinMenu(value);
 		gameData->SetState(state);
 		gameData->SetScore(score);
 		gameData->Draw();
