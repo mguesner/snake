@@ -46,9 +46,10 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	inputs[KEY_LEFT] = LEFT;
 	inputs[KEY_RIGHT] = RIGHT;
 	inputs[27] = PAUSE;
-	inputs[80] = F1;
 	inputs[81] = F2;
 	inputs[82] = F3;
+	inputs['2'] = F2;
+	inputs['3'] = F3;
 	inputs['\n'] = VALIDATE;
 	// display = std::thread(&NCursesData::StartDisplay, this);
 	// input = std::thread(&NCursesData::StartInput, this);
@@ -57,7 +58,7 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	pauseMenu[2] = "quit";
 	mainMenu[0] = "new game";
 	mainMenu[1] = "multiplayer";
-	mainMenu[2] = "wall : ";
+	mainMenu[2] = "wall-e : ";
 	mainMenu[3] = "quit";
 	endMenu[0] = "restart";
 	endMenu[1] = "main menu";

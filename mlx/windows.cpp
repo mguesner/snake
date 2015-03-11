@@ -24,7 +24,7 @@ void	redraw_event(void *e)
 	//check here change lib throw exception
 	if (win->Pipe->ShouldClose())
 	{
-		win->Destroy();
+		throw("dat dick");
 		return;
 	}
 	if (win->Pipe->GetDrawInstruction() == false)
@@ -250,9 +250,13 @@ void	Windows::Run()
 	{
 		mlx_loop(mlx);
 	}
-	catch (std::exception &e)
+	catch (std::exception *e)
 	{
-		std::cout << e.what() << std::endl;
-		Destroy();
+		std::cout << e->what() << std::endl;
+		//Destroy();
+	}
+	catch(const char*e)
+	{
+		std::cout << e << std::endl;
 	}
 }
