@@ -59,6 +59,7 @@ enum eActionPause
 
 #define NBACTIONPAUSE 3
 #define NBACTIONEND 3
+#define NBACTIONMULTIMENU 3
 #define NBMODE 4
 
 
@@ -80,6 +81,7 @@ public:
 	void SetScore(int);
 	void SetWall(bool);
 	int GetScore();
+	std::string GetIp();
 	std::list<GameObject*> *GetGameObjects();
 	eGameState GetState();
 	virtual void SetChoice(int);
@@ -96,10 +98,12 @@ protected:
 	std::list<GameObject*> *objects;
 	int score;
 	std::string player;
+	std::string ip;
 	std::map<int, eInput> inputs;
 	std::string mainMenu[NBMODE];
 	std::string pauseMenu[NBACTIONPAUSE];
 	std::string endMenu[NBACTIONEND];
+	std::string multiMenu[NBACTIONMULTIMENU];
 	bool shouldDraw;
 	bool closeIsCall;
 	std::mutex locker;

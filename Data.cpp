@@ -15,6 +15,11 @@ int Data::GetScore()
 	return score;
 }
 
+std::string Data::GetIp()
+{
+	return ip;
+}
+
 void Data::SetChoice(int choice)
 {
 	this->choice = choice;

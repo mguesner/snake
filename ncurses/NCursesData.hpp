@@ -34,6 +34,9 @@ private:
 	void DrawPseudoMenu();
 	void DrawNormalMode();
 	void DrawMulti();
+	void DrawMultiMenu();
+	void DrawHostMenu();
+	void DrawJoinMenu();
 	void DrawPauseMenu();
 	void DrawEndMenu();
 	void DrawSnake(GameObject*);
