@@ -2,6 +2,12 @@
 #include "MLXData.hpp"
 #include "../core/GameObject.hpp"
 #include "../core/Snake.hpp"
+
+class test : public std::exception
+{
+
+};
+
 void	mouse_event(int x, int y, void *e)
 {
 	(void)x;
@@ -19,10 +25,13 @@ void	expose_event(void *e)
 void	redraw_event(void *e)
 {
 	auto win = reinterpret_cast<Windows*>(e);
-	
+
 	//check here change lib throw exception
 	if (win->Pipe->ShouldClose())
-		throw new std::exception();
+	{
+		win->Destroy();
+		return;
+	}
 	if (win->Pipe->GetDrawInstruction() == false)
 		return;
 	auto state = win->Pipe->GetState();
@@ -246,7 +255,7 @@ void	Windows::Run()
 	{
 		mlx_loop(mlx);
 	}
-	catch (std::exception *e)
+	catch (test *e)
 	{
 		Destroy();
 	}
