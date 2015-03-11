@@ -2,6 +2,7 @@
 #include "MLXData.hpp"
 #include "../core/GameObject.hpp"
 #include "../core/Snake.hpp"
+
 void	mouse_event(int x, int y, void *e)
 {
 	(void)x;
@@ -22,7 +23,10 @@ void	redraw_event(void *e)
 
 	//check here change lib throw exception
 	if (win->Pipe->ShouldClose())
-		throw std::exception();
+	{
+		win->Destroy();
+		return;
+	}
 	if (win->Pipe->GetDrawInstruction() == false)
 		return;
 	auto state = win->Pipe->GetState();
