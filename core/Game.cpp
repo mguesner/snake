@@ -355,6 +355,8 @@ void Game::Logic()
 	state = MAINMENU;
 	score = 0;
 	wall = true;
+	music = new Sound(5);
+	music->Play();
 	gameData->SetScore(score);
 	gameData->SetState(state);
 	gameData->SetWall(wall);
@@ -393,6 +395,7 @@ void Game::Logic()
 		if (wait > 0)
 			usleep(wait);
 	}
+	delete music;
 	delete gameData;
 	exit(0);
 }

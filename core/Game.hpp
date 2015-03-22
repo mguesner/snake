@@ -4,6 +4,7 @@
 #include "loader.hpp"
 #include "Player.hpp"
 #include "../Data.hpp"
+#include "../Sound.hpp"
 #include "Food.hpp"
 #include <thread>
 
@@ -45,6 +46,7 @@ private:
 	Player *second;
 	Food *food;
 	eInput value;
+	Sound *music;
 };
 
 #endif
