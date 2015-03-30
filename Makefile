@@ -41,6 +41,12 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 
-re: fclean all
+recur:
+	make re -C $(DIRLCUR)
+
+remlx:
+	make re -C $(DIRLMLX)
+
+re: recur remlx fclean all
 
 .PHONY: clean all re fclean
