@@ -21,7 +21,7 @@ lib:
 	$(CC) -c -o $@ $<
 
 $(NAME): $(OBJ)
-	$(CC) -dynamiclib -o $(NAME) $(OBJ) -framework OpenGL -framework AppKit lib/lib.a minilibx_macos/libmlx.a
+	$(CC) -dynamiclib -o $(NAME) $(OBJ) -lmlx -framework OpenGL -framework AppKit lib/lib.a
 
 clean:
 	rm -f $(OBJ)
