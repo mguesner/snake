@@ -24,7 +24,8 @@ void	redraw_event(void *e)
 	//check here change lib throw exception
 	if (win->Pipe->ShouldClose())
 	{
-		throw("dat dick");
+		//throw("dat dick");
+		throw new std::exception();
 		return;
 	}
 	if (win->Pipe->GetDrawInstruction() == false)

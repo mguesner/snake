@@ -6,6 +6,8 @@ DIRLCUR = ncurses/
 
 DIRLMLX = mlx/
 
+DIRLSDL = sdl/
+
 SRC = $(DIR)main.cpp\
 	$(DIR)GameObject.cpp\
 	Data.cpp\
@@ -21,13 +23,16 @@ OBJ = $(SRC:.cpp=.o)
 
 CC = clang++ -g -O3 -Wall -Wextra -Werror -std=c++11 -I .
 
-all: LCUR LMLX $(NAME)
+all: LCUR LMLX LSDL $(NAME)
 
 LCUR:
 	make -C $(DIRLCUR)
 
 LMLX:
 	make -C $(DIRLMLX)
+
+LSDL:
+	make -C $(DIRLSDL)
 
 .cpp.o:
 	$(CC) -c -o $@ $<
