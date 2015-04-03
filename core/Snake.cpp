@@ -152,9 +152,9 @@ bool	Snake::Move(bool wall)
 	return false;
 }
 
-void	Snake::Collision()
+void	Snake::Collision(std::list<GameObject*> *object)
 {
-	;
+	(void)object;
 }
 
 Point Snake::GetDirection()

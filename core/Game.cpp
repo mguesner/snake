@@ -52,7 +52,7 @@ Game::~Game()
 void	Game::Reset()
 {
 	score = 0;
-	//progress = 200000;
+	progress = 200000;
 	object->erase(object->begin(), object->end());
 	delete first;
 	delete food;
@@ -103,7 +103,7 @@ void	Game::Update(eInput value)
 		snk->Back();
 	else
 	{
-		food->Collision();
+		food->Collision(object);
 		progress -= 1000;
 		score += 1;
 	}
@@ -315,13 +315,12 @@ void Game::EndMenu(eInput value)
 
 void	Game::Launch()
 {
-	//core = std::thread(&Game::Logic, this);
 	value = NONE;
 	state = MAINMENU;
 	score = 0;
 	wall = true;
 	music = new Sound(5);
-	//music->Play();
+	music->Play();
 	gameData->SetScore(score);
 	gameData->SetState(state);
 	gameData->SetWall(wall);
@@ -329,14 +328,8 @@ void	Game::Launch()
 	{
 		timeval time;
 		gettimeofday(&time, NULL);
-		auto start = time.tv_usec;
+		double start = time.tv_usec + time.tv_sec * 1000000;
 		value = gameData->GetInput();
-		// if (value == F1 || value == F2 || value == F3)
-		// {
-		// 	gameData->Close();
-		// 	// libIsLoading.lock();
-		// 	// libIsLoading.unlock();
-		// }
 		if (value == F1)
 		{
 			delete gameData;
@@ -344,6 +337,7 @@ void	Game::Launch()
 			delete lib;
 			lib = new loader("ncurses/libcurses.so", width, height, object);
 			gameData = lib->GetData();
+			gameData->SetWall(wall);
 		}
 		else if (value == F2)
 		{
@@ -352,6 +346,7 @@ void	Game::Launch()
 			delete lib;
 			lib = new loader("mlx/libmlx.so", width, height, object);
 			gameData = lib->GetData();
+			gameData->SetWall(wall);
 		}
 		else if (value == F3)
 		{
@@ -360,6 +355,7 @@ void	Game::Launch()
 			delete lib;
 			lib = new loader("sdl/libsdl.so", width, height, object);
 			gameData = lib->GetData();
+			gameData->SetWall(wall);
 		}
 		else if (state == NM)
 			Update(value);
@@ -378,14 +374,11 @@ void	Game::Launch()
 		gameData->SetState(state);
 		gameData->SetScore(score);
 		gameData->Draw();
-		gameData->CleanInput();
 		gettimeofday(&time, NULL);
-		auto wait = start + progress - time.tv_usec;
+		double end = (time.tv_usec + time.tv_sec * 1000000);
+		double wait = start + progress - end;
 		if (wait > 0)
-			usleep(wait);
-		//libIsLoading.unlock();
-		//libIsLoading.lock();
-		// gameData->Start();
+			usleep((int)wait);
 	}
 	delete music;
 	delete gameData;

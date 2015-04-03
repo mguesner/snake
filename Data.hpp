@@ -68,7 +68,6 @@ class Data
 public:
 	Data();
 	virtual ~Data(){}
-	virtual void Start() = 0;
 	virtual void Draw() = 0;
 	virtual eInput GetInput() = 0;
 	void Unlocker();

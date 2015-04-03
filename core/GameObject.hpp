@@ -11,7 +11,7 @@ public:
 	GameObject();
 	GameObject(GameObject const & src);
 	GameObject& operator=(GameObject const & rhs);
-	virtual void Collision() = 0;
+	virtual void Collision(std::list<GameObject*> *object) = 0;
 	virtual	bool IsColliding() = 0;
 	virtual ~GameObject();
 	bool IsPhysical();

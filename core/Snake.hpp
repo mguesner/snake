@@ -14,7 +14,7 @@ public:
 	Point GetDirection();
 	std::list<Point> GetSnake();
 	void SetSpeed(int);
-	void Collision();
+	void Collision(std::list<GameObject*> *object);
 	void	Back();
 	bool	Move(bool);
 	~Snake();

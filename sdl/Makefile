@@ -5,7 +5,8 @@ SRC = SdlData.cpp\
 	  ../core/GameObject.cpp \
 	  ../core/Point.cpp \
 	  ../core/Snake.cpp \
-	  ../Data.cpp
+	  ../Data.cpp \
+	  SdlException.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

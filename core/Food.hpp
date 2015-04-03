@@ -9,7 +9,7 @@ public:
 	Food(int, int);
 	Food(Food const & src);
 	Food& operator=(Food const & rhs);
-	void Collision();
+	void Collision(std::list<GameObject*> *object);
 	bool IsColliding();
 	~Food();
 private:

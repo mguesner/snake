@@ -1,6 +1,7 @@
 #include "SdlData.hpp"
 #include "../core/GameObject.hpp"
 #include "../core/Snake.hpp"
+#include "SdlException.hpp"
 
 SdlData::SdlData(int width, int height, std::list<GameObject*> *objects)
 {
@@ -10,12 +11,15 @@ SdlData::SdlData(int width, int height, std::list<GameObject*> *objects)
 
 	x0 = (WIDTH - width * 10) / 2;
 	y0 = (HEIGHT - height * 10) / 2;
-	SDL_Init(SDL_INIT_VIDEO);
-	TTF_Init();
-	win = SDL_CreateWindow("snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS);
+	if (SDL_Init(SDL_INIT_VIDEO) != 0)
+		throw SdlException(SDL_GetError());
+	if(TTF_Init() == -1)
+		throw SdlException(TTF_GetError());
+	if(!(win = SDL_CreateWindow("snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS)))
+		throw SdlException(SDL_GetError());
 
-
-	screenSurface = SDL_GetWindowSurface(win);
+	if (!(screenSurface = SDL_GetWindowSurface(win)))
+		throw SdlException(SDL_GetError());
 
 	funcs[MAINMENU] = &SdlData::DrawMainMenu;
 	funcs[PSEUDOMENU] = &SdlData::DrawPseudoMenu;
@@ -25,6 +29,7 @@ SdlData::SdlData(int width, int height, std::list<GameObject*> *objects)
 	funcs[JOINMENU] = &SdlData::DrawJoinMenu;
 	funcs[PAUSEMENU] = &SdlData::DrawPauseMenu;
 	funcs[ENDMENU] = &SdlData::DrawEndMenu;
+
 	funcs2[SNAKE] = &SdlData::DrawSnake;
 	funcs2[FOOD] = &SdlData::DrawFood;
 
@@ -45,7 +50,7 @@ SdlData::SdlData(int width, int height, std::list<GameObject*> *objects)
 
 	mainMenu[0] = "new game";
 	mainMenu[1] = "multiplayer";
-	mainMenu[2] = "wall1 : ";
+	mainMenu[2] = "wall : ";
 	mainMenu[3] = "quit";
 
 	pauseMenu[0] =  "continue";
@@ -58,11 +63,11 @@ SdlData::SdlData(int width, int height, std::list<GameObject*> *objects)
 
 	shouldDraw = false;
 	closeIsCall = false;
-}
 
-void SdlData::Start()
-{
-	//win->Run();
+	if (!(font70 = TTF_OpenFont("COMICATE.TTF", 70)))
+		throw SdlException(TTF_GetError());
+	if (!(font20 = TTF_OpenFont("COMICATE.TTF", 20)))
+		throw SdlException(TTF_GetError());
 }
 
 void SdlData::Draw()
@@ -74,14 +79,14 @@ void SdlData::DrawMainMenu()
 {
 	SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
 	SDL_Rect position;
-	auto font = TTF_OpenFont("COMICATE.TTF", 70);
 	SDL_Color text_color = {0x0, 0x0, 0x0, 0xFF};
-	SDL_Surface *title = TTF_RenderText_Solid(font, "snake", text_color);
+	auto title = TTF_RenderText_Solid(font70, "snake", text_color);
+	if (!title)
+		throw SdlException(TTF_GetError());
 	position.x = (WIDTH - title->w) / 2;
 	position.y = 350;
 	SDL_BlitSurface(title, NULL, screenSurface, &position);
-	TTF_CloseFont(font);
-	font = TTF_OpenFont("COMICATE.TTF", 20);
+	SDL_FreeSurface(title);
 	for (int i = 0; i < NBMODE; ++i)
 	{
 		if (i == choice)
@@ -89,12 +94,12 @@ void SdlData::DrawMainMenu()
 		else
 			text_color = {0x0, 0x0, 0x0, 0xFF};
 		std::string tmp(mainMenu[i] + (i == WALL ? (wall ? "ON" : "OFF") : ""));
-		auto texte = TTF_RenderText_Solid(font, tmp.c_str(), text_color);
+		auto texte = TTF_RenderText_Solid(font20, tmp.c_str(), text_color);
 		position.x = (WIDTH - texte->w) / 2;
 		position.y = 450 + i * 30;
 		SDL_BlitSurface(texte, NULL, screenSurface, &position);
+		SDL_FreeSurface(texte);
 	}
-	TTF_CloseFont(font);
 	SDL_UpdateWindowSurface(win);
 }
 
@@ -124,6 +129,15 @@ void SdlData::DrawNormalMode()
 	{
 		(this->*funcs2[(*i)->GetType()])(*i);
 	}
+	SDL_Rect position;
+	SDL_Color text_color = {0xFF, 0xFF, 0xFF, 0xFF};
+	std::string s = std::to_string(score);
+	std::string tmp("score : " + s);
+	auto texte = TTF_RenderText_Solid(font20, tmp.c_str(), text_color);
+	position.x = x0;
+	position.y = y0 - 40;
+	SDL_BlitSurface(texte, NULL, screenSurface, &position);
+	SDL_FreeSurface(texte);
 	SDL_UpdateWindowSurface(win);
 }
 
@@ -153,14 +167,12 @@ void SdlData::DrawPauseMenu()
 {
 	SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
 	SDL_Rect position;
-	auto font = TTF_OpenFont("COMICATE.TTF", 70);
 	SDL_Color text_color = {0x0, 0x0, 0x0, 0xFF};
-	SDL_Surface *title = TTF_RenderText_Solid(font, "pause", text_color);
+	SDL_Surface *title = TTF_RenderText_Solid(font70, "pause", text_color);
 	position.x = (WIDTH - title->w) / 2;
 	position.y = 350;
 	SDL_BlitSurface(title, NULL, screenSurface, &position);
-	TTF_CloseFont(font);
-	font = TTF_OpenFont("COMICATE.TTF", 20);
+	SDL_FreeSurface(title);
 	for (int i = 0; i < NBACTIONPAUSE; ++i)
 	{
 		if (i == choice)
@@ -168,12 +180,12 @@ void SdlData::DrawPauseMenu()
 		else
 			text_color = {0x0, 0x0, 0x0, 0xFF};
 		std::string tmp(pauseMenu[i]);
-		auto texte = TTF_RenderText_Solid(font, tmp.c_str(), text_color);
+		auto texte = TTF_RenderText_Solid(font20, tmp.c_str(), text_color);
 		position.x = (WIDTH - texte->w) / 2;
 		position.y = 450 + i * 30;
 		SDL_BlitSurface(texte, NULL, screenSurface, &position);
+		SDL_FreeSurface(texte);
 	}
-	TTF_CloseFont(font);
 	SDL_UpdateWindowSurface(win);
 }
 
@@ -181,27 +193,25 @@ void SdlData::DrawEndMenu()
 {
 	SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
 	SDL_Rect position;
-	auto font = TTF_OpenFont("COMICATE.TTF", 70);
 	SDL_Color text_color = {0x0, 0x0, 0x0, 0xFF};
-	SDL_Surface *title = TTF_RenderText_Solid(font, "game over", text_color);
+	SDL_Surface *title = TTF_RenderText_Solid(font70, "game over", text_color);
 	position.x = (WIDTH - title->w) / 2;
 	position.y = 350;
 	SDL_BlitSurface(title, NULL, screenSurface, &position);
-	TTF_CloseFont(font);
-	font = TTF_OpenFont("COMICATE.TTF", 20);
-	for (int i = 0; i < NBACTIONPAUSE; ++i)
+	SDL_FreeSurface(title);
+	for (int i = 0; i < NBACTIONEND; ++i)
 	{
 		if (i == choice)
 			text_color = {0xFF, 0x0, 0x0, 0xFF};
 		else
 			text_color = {0x0, 0x0, 0x0, 0xFF};
 		std::string tmp(endMenu[i]);
-		auto texte = TTF_RenderText_Solid(font, tmp.c_str(), text_color);
+		auto texte = TTF_RenderText_Solid(font20, tmp.c_str(), text_color);
 		position.x = (WIDTH - texte->w) / 2;
 		position.y = 450 + i * 30;
 		SDL_BlitSurface(texte, NULL, screenSurface, &position);
+		SDL_FreeSurface(texte);
 	}
-	TTF_CloseFont(font);
 	SDL_UpdateWindowSurface(win);
 }
 
@@ -246,7 +256,10 @@ eInput SdlData::GetInput()
 
 SdlData::~SdlData()
 {
+	std::cout << "delete" << std::endl;
+	TTF_CloseFont(font20);
+	TTF_CloseFont(font70);
+	TTF_Quit();
 	SDL_DestroyWindow(win);
 	SDL_Quit();
-	TTF_Quit();
 }

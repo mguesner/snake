@@ -52,6 +52,9 @@ recur:
 remlx:
 	make re -C $(DIRLMLX)
 
-re: recur remlx fclean all
+resdl:
+	make re -C $(DIRLSDL)
+
+re: resdl recur remlx fclean all
 
 .PHONY: clean all re fclean
