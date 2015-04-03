@@ -23,6 +23,7 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	funcs[MAINMENU] = &NCursesData::DrawMainMenu;
 	funcs[PSEUDOMENU] = &NCursesData::DrawPseudoMenu;
 	funcs[NM] = &NCursesData::DrawNormalMode;
+	funcs[MULTI] = &NCursesData::DrawMultiMode;
 	funcs[MULTIMENU] = &NCursesData::DrawMultiMenu;
 	funcs[HOSTMENU] = &NCursesData::DrawHostMenu;
 	funcs[JOINMENU] = &NCursesData::DrawJoinMenu;
@@ -133,6 +134,45 @@ void NCursesData::DrawPseudoMenu()
 }
 
 void NCursesData::DrawNormalMode()
+{
+	auto i = 0;
+	attron(COLOR_PAIR(CWALL));
+	while (wall && i < height + 2)
+	{
+		mvprintw(i, 0, " ");
+		mvprintw(i, width + 1, " ");
+		i++;
+	}
+	i = 0;
+	while (wall && i < width + 1)
+	{
+		mvprintw(0, i, " ");
+		mvprintw(height + 1, i, " ");
+		i++;
+	}
+	i = 0;
+	attron(COLOR_PAIR(CBACKGROUND));
+	while (i < width)
+	{
+		auto j = 0;
+		while (j < height)
+		{
+			mvprintw(j + (wall ? 1 : 0), i + (wall ? 1 : 0)," ");
+			j++;
+		}
+		i++;
+	}
+	for (auto i = objects->begin(); i != objects->end(); ++i)
+	{
+		(this->*funcs2[(*i)->GetType()])(*i);
+	}
+	attron(COLOR_PAIR(CNORMAL));
+	mvprintw(0, width + 3, "player:%s", player.c_str());
+	mvprintw(1, width + 3, "score:%d", score);
+	refresh();
+}
+
+void NCursesData::DrawMultiMode()
 {
 	auto i = 0;
 	attron(COLOR_PAIR(CWALL));

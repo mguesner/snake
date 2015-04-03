@@ -8,6 +8,8 @@ class Snake : public GameObject
 public:
 	Snake(int, int);
 	Snake(Snake const & src);
+	Snake(int, int, int);
+	Snake(int, int, Point, Point);
 	Snake& operator=(Snake const & rhs);
 	bool IsColliding();
 	void SetDirection(eInput);

@@ -9,7 +9,8 @@ class Player
 public:
 	Player();
 	Player(int nb);
-	Player(std::list<GameObject*> *obj, int, int);
+	Player(std::list<GameObject*> *obj, int, int, int);
+	Player(std::list<GameObject*> *obj, int, int, Point, Point);
 	Player(Player const & src);
 	Snake *GetSnake();
 	Player& operator=(Player const & rhs);

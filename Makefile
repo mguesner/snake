@@ -18,6 +18,7 @@ SRC = $(DIR)main.cpp\
 	$(DIR)Player.cpp\
 	$(DIR)Point.cpp\
 	$(DIR)Snake.cpp\
+	$(DIR)Multi.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

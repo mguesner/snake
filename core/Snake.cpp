@@ -13,16 +13,16 @@ Snake::Snake(int width , int height)
 	bool isVertical = (rand() % 2) == 0;
 	xMax = width;
 	yMax = height;
-	Point test(width / 2, height / 2 ,0);
+	Point test(width / 2, (height / 3) ,0);
 	collider = true;
 	type = SNAKE;
 	snake.push_front(test);
 	position = test;
 	if (isVertical)
 	{
-		Point test2(width / 2,  height / 2 + 1 ,0);
-		Point test3(width / 2,  height / 2 + 2 ,0);
-		Point test4(width / 2,  height / 2 + 3 ,0);
+		Point test2(width / 2,  (height / 3) + 1 ,0);
+		Point test3(width / 2,  (height / 3) + 2 ,0);
+		Point test4(width / 2,  (height / 3) + 3 ,0);
 		snake.push_back(test2);
 		snake.push_back(test3);
 		snake.push_back(test4);
@@ -31,9 +31,9 @@ Snake::Snake(int width , int height)
 	}
 	else
 	{
-		Point test2(width / 2 - 1,  height / 2, 0);
-		Point test3(width / 2 - 2,  height / 2, 0);
-		Point test4(width / 2 - 3,  height / 2, 0);
+		Point test2(width / 2 - 1,  (height / 3), 0);
+		Point test3(width / 2 - 2,  (height / 3), 0);
+		Point test4(width / 2 - 3,  (height / 3), 0);
 		snake.push_back(test2);
 		snake.push_back(test3);
 		snake.push_back(test4);
@@ -44,6 +44,81 @@ Snake::Snake(int width , int height)
 	down = Point(0, 1, 0);
 	left = Point(-1, 0, 0);
 	right = Point(1, 0, 0);
+}
+
+Snake::Snake(int width , int height, int nb)
+{
+	bool isVertical = (rand() % 2) == 0;
+	xMax = width;
+	yMax = height;
+	Point test(width / 2, (height / 3) * nb ,0);
+	collider = true;
+	type = SNAKE;
+	snake.push_front(test);
+	position = test;
+	if (isVertical)
+	{
+		Point test2(width / 2,  (height / 3) * nb + 1 ,0);
+		Point test3(width / 2,  (height / 3) * nb + 2 ,0);
+		Point test4(width / 2,  (height / 3) * nb + 3 ,0);
+		snake.push_back(test2);
+		snake.push_back(test3);
+		snake.push_back(test4);
+		direction = Point(0, -1, 0);
+		current_dir = UP;
+	}
+	else
+	{
+		Point test2(width / 2 - 1,  (height / 3) * nb, 0);
+		Point test3(width / 2 - 2,  (height / 3) * nb, 0);
+		Point test4(width / 2 - 3,  (height / 3) * nb, 0);
+		snake.push_back(test2);
+		snake.push_back(test3);
+		snake.push_back(test4);
+		direction = Point(1, 0, 0);
+		current_dir = RIGHT;
+	}
+	up = Point(0, -1, 0);
+	down = Point(0, 1, 0);
+	left = Point(-1, 0, 0);
+	right = Point(1, 0, 0);
+}
+
+Snake::Snake(int width , int height, Point ori, Point dir)
+{
+	xMax = width;
+	yMax = height;
+	Point test(ori);
+	collider = true;
+	type = SNAKE;
+	snake.push_front(test);
+	position = test;
+	up = Point(0, -1, 0);
+	down = Point(0, 1, 0);
+	left = Point(-1, 0, 0);
+	right = Point(1, 0, 0);
+	if (dir == up)
+	{
+		Point test2(ori.getX(), ori.getY() + 1 ,0);
+		Point test3(ori.getX(), ori.getY() + 2 ,0);
+		Point test4(ori.getX(), ori.getY() + 3 ,0);
+		snake.push_back(test2);
+		snake.push_back(test3);
+		snake.push_back(test4);
+		direction = Point(0, -1, 0);
+		current_dir = UP;
+	}
+	else
+	{
+		Point test2(ori.getX() - 1, ori.getY(), 0);
+		Point test3(ori.getX() - 2, ori.getY(), 0);
+		Point test4(ori.getX() - 3, ori.getY(), 0);
+		snake.push_back(test2);
+		snake.push_back(test3);
+		snake.push_back(test4);
+		direction = Point(1, 0, 0);
+		current_dir = RIGHT;
+	}
 }
 
 Snake::Snake(Snake const & src)

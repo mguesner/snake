@@ -11,8 +11,9 @@ class GameObject;
 enum ObjectType
 {
 	SNAKE = 0,
-	FOOD = 1,
-	VOID = 2
+	FOOD,
+	VOID,
+	SIZETOBJ
 };
 
 enum eGameState
@@ -25,7 +26,8 @@ enum eGameState
 	JOINMENU,
 	MULTI,
 	PAUSEMENU,
-	ENDMENU
+	ENDMENU,
+	SIZEGSTATE
 };
 
 enum eMenuChoice
@@ -33,7 +35,8 @@ enum eMenuChoice
 	NEWGAME = 0,
 	MULTIPLAYER,
 	WALL,
-	EXIT
+	EXIT,
+	SIZEMENUCHOICES
 };
 
 enum eInput
@@ -47,7 +50,8 @@ enum eInput
 	F1,
 	F2,
 	F3,
-	VALIDATE
+	VALIDATE,
+	SIZEINPUT
 };
 
 enum eActionPause

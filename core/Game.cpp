@@ -1,14 +1,6 @@
 #include "Game.hpp"
-#include "unistd.h"
 #include <ctime>
 #include <sys/time.h>
-#include <netdb.h>
-
-typedef struct protoent		t_protoent;
-typedef struct sockaddr_in	t_sockaddr_in;
-typedef struct sockaddr		t_sockaddr;
-typedef struct hostent		t_hostent;
-typedef struct in_addr		t_in_addr;
 
 Game::Game()
 {
@@ -32,7 +24,7 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	object = obj;
 	gameData = data;
 	this->lib = lib;
-	first = new Player(object, width, height);
+	first = new Player(object, width, height, 1);
 	food = new Food(width, height);
 	object->push_back(food);
 	shouldLeave = false;
@@ -56,7 +48,7 @@ void	Game::Reset()
 	object->erase(object->begin(), object->end());
 	delete first;
 	delete food;
-	first = new Player(object, width, height);
+	first = new Player(object, width, height, 1);
 	food = new Food(width, height);
 	object->push_back(food);
 }
@@ -111,7 +103,13 @@ void	Game::Update(eInput value)
 
 void	Game::UpdateMulti(eInput value)
 {
-	(void)value;
+	char data[128] = {0};
+
+	while (1);
+	multi.Rcv(data);
+	std::cout << data << std::endl;
+	Update(value);
+	multi.Send((void*)"COUCOU\n", 7);
 }
 
 void	Game::MultiMenu(eInput value)
@@ -149,42 +147,87 @@ void	Game::MultiMenu(eInput value)
 
 void	Game::HostMenu(eInput value)
 {
-	t_protoent		*prot;
-	t_sockaddr_in	sin;
-	int				sock;
+	char data[128];
 	(void)value;
-	if (!(prot = getprotobyname("tcp")))
-		perror("getprotobyname");
-	if ((sock = socket(PF_INET, SOCK_STREAM, prot->p_proto)) == -1)
-		perror("socket");
-	sin.sin_family = AF_INET;
-	sin.sin_addr.s_addr = INADDR_ANY;
-	sin.sin_port = htons(6666);
-	if (bind(sock, (t_sockaddr*)&sin, sizeof(sin)) == -1)
-		perror("bind");
-	if (listen(sock, 5) == -1)
-		perror("listen");
+	if (!multi.IsConnect())
+		multi.Host();
+	state = MULTI;
+	//multi.Send((void*)"HOST\n", 5);
+	second = new Player(object, width, height, 2);
+
+	auto start = *first->GetSnake()->GetSnake().begin();
+	multi.Send((void *)(&start), sizeof(Point));
+
+	multi.Rcv(data);
+
+	auto dir = first->GetSnake()->GetDirection();
+	multi.Send((void *)(&dir), sizeof(Point));
+
+	multi.Rcv(data);
+
+	start = *second->GetSnake()->GetSnake().begin();
+	multi.Send((void *)(&start), sizeof(Point));
+
+	multi.Rcv(data);
+
+	dir = second->GetSnake()->GetDirection();
+	multi.Send((void *)(&dir), sizeof(Point));
+
+	multi.Rcv(data);
+
+	multi.Send((void *) food, sizeof(Food));
+	auto point = food->GetPosition();
+	std::cout << "food : " << point << std::endl;
+
+	multi.Rcv(data);
+
+	sleep (2);
+
+	// while (1);
 }
 
 void	Game::JoinMenu(eInput value)
 {
-	int sock;
-	(void) value;
-	t_sockaddr_in	sin;
-	t_protoent	*proto;
-	if ((proto = getprotobyname("tcp")) == NULL)
-		perror("prot");
-	if ((sock = socket(PF_INET, SOCK_STREAM, proto->p_proto)) == -1)
-		perror("sock");
-	sin.sin_family = AF_INET;
-	sin.sin_port = htons(6666);
-	sin.sin_addr.s_addr = INADDR_ANY;
-	if (connect(sock, (t_sockaddr *)&sin, sizeof(sin)) == -1)
-	{
-		std::cout << "fail" << std::endl;
-		perror("conn");
-		exit(-1);
-	}
+	object->clear();
+	delete first;
+	delete food;
+	(void)value;
+	if (!multi.IsConnect())
+		multi.Join();
+	state = MULTI;
+	// multi.Send((void*)"JOIN	\n", 5);
+	char data[128];
+
+	multi.Rcv(data);
+	Point ori(*(Point *)data);
+	multi.Send((void*)"done\n", 5);
+
+	multi.Rcv(data);
+
+	Point dir(*(Point *)data);
+	multi.Send((void*)"done\n", 5);
+	first = new Player(object, width, height, ori, dir);
+
+	multi.Rcv(data);
+	Point ori2(*(Point *)data);
+	multi.Send((void*)"done\n", 5);
+
+	multi.Rcv(data);
+
+	Point dir2(*(Point *)data);
+	multi.Send((void*)"done\n", 5);
+	second = new Player(object, width, height, ori2, dir2);
+
+	multi.Rcv(data);
+
+	food = new Food(*(Food *)data);
+	object->push_back(food);
+	auto point = food->GetPosition();
+	std::cout << "food : " << point << std::endl;
+	multi.Send((void*)"done\n", 5);
+
+	sleep (2);
+	// while (1);
 }
 
 void Game::MainMenu(eInput value)
@@ -359,6 +402,8 @@ void	Game::Launch()
 		}
 		else if (state == NM)
 			Update(value);
+		else if (state == MULTI)
+			UpdateMulti(value);
 		else if (state == MULTIMENU)
 			MultiMenu(value);
 		else if (state == PAUSEMENU)
@@ -373,7 +418,8 @@ void	Game::Launch()
 			JoinMenu(value);
 		gameData->SetState(state);
 		gameData->SetScore(score);
-		gameData->Draw();
+		// if (state != MULTI)
+			gameData->Draw();
 		gettimeofday(&time, NULL);
 		double end = (time.tv_usec + time.tv_sec * 1000000);
 		double wait = start + progress - end;
@@ -392,7 +438,7 @@ void Game::Logic()
 	score = 0;
 	wall = true;
 	music = new Sound(5);
-	music->Play();
+	// music->Play();
 	gameData->SetScore(score);
 	gameData->SetState(state);
 	gameData->SetWall(wall);

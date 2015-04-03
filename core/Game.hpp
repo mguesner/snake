@@ -6,6 +6,7 @@
 #include "../Data.hpp"
 #include "../Sound.hpp"
 #include "Food.hpp"
+#include "Multi.hpp"
 #include <thread>
 
 class Game
@@ -29,6 +30,7 @@ public:
 	void Logic();
 private:
 	Game();
+	Multi multi;
 	bool shouldLeave;
 	bool wall;
 	int progress;
