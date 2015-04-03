@@ -99,17 +99,42 @@ void	Game::Update(eInput value)
 		progress -= 1000;
 		score += 1;
 	}
+	if (second)
+	{
+		snk = second->GetSnake();
+		if (value >= UP && value <= RIGHT)
+			snk->SetDirection(value);
+		if (snk->Move(wall))
+		{
+		//shouldLeave = true;
+			state = ENDMENU;
+		}
+		if (snk->IsColliding())
+		{
+		//shouldLeave = true;//game stat = loose
+			state = ENDMENU;
+		}
+		ObjectType ret = Collide();
+		if (ret == VOID)
+			snk->Back();
+		else
+		{
+			food->Collision(object);
+			progress -= 1000;
+			score += 1;
+		}
+	}
 }
 
 void	Game::UpdateMulti(eInput value)
 {
-	char data[128] = {0};
+	// char data[128] = {0};
 
-	while (1);
-	multi.Rcv(data);
-	std::cout << data << std::endl;
+	// while (1);
+	// multi.Rcv(data);
+	// std::cout << data << std::endl;
 	Update(value);
-	multi.Send((void*)"COUCOU\n", 7);
+	// multi.Send((void*)"COUCOU\n", 7);
 }
 
 void	Game::MultiMenu(eInput value)
@@ -176,8 +201,10 @@ void	Game::HostMenu(eInput value)
 	multi.Rcv(data);
 
 	multi.Send((void *) food, sizeof(Food));
-	auto point = food->GetPosition();
-	std::cout << "food : " << point << std::endl;
+
+	multi.Rcv(data);
+
+	multi.Send((void *)&wall, sizeof(bool));
 
 	multi.Rcv(data);
 
@@ -200,30 +227,36 @@ void	Game::JoinMenu(eInput value)
 
 	multi.Rcv(data);
 	Point ori(*(Point *)data);
+
 	multi.Send((void*)"done\n", 5);
 
 	multi.Rcv(data);
-
 	Point dir(*(Point *)data);
-	multi.Send((void*)"done\n", 5);
 	first = new Player(object, width, height, ori, dir);
+
+	multi.Send((void*)"done\n", 5);
 
 	multi.Rcv(data);
 	Point ori2(*(Point *)data);
+
 	multi.Send((void*)"done\n", 5);
 
 	multi.Rcv(data);
-
 	Point dir2(*(Point *)data);
-	multi.Send((void*)"done\n", 5);
 	second = new Player(object, width, height, ori2, dir2);
 
-	multi.Rcv(data);
+	multi.Send((void*)"done\n", 5);
 
+	multi.Rcv(data);
 	food = new Food(*(Food *)data);
 	object->push_back(food);
-	auto point = food->GetPosition();
-	std::cout << "food : " << point << std::endl;
+
+	multi.Send((void*)"done\n", 5);
+
+	multi.Rcv(data);
+	wall = *(bool *)data;
+	gameData->SetWall(wall);
+
 	multi.Send((void*)"done\n", 5);
 
 	sleep (2);
@@ -438,7 +471,7 @@ void Game::Logic()
 	score = 0;
 	wall = true;
 	music = new Sound(5);
-	// music->Play();
+	music->Play();
 	gameData->SetScore(score);
 	gameData->SetState(state);
 	gameData->SetWall(wall);

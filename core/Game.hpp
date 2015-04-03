@@ -33,6 +33,7 @@ private:
 	Multi multi;
 	bool shouldLeave;
 	bool wall;
+	// bool isHost;
 	int progress;
 	int score;
 	int entry;
