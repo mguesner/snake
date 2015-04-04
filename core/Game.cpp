@@ -420,7 +420,7 @@ void	Game::Launch()
 			delete gameData;
 			lib->Close();
 			delete lib;
-			lib = new loader("mlx/libmlx.so", width, height, object);
+			lib = new loader("sfml/libsfml.so", width, height, object);
 			gameData = lib->GetData();
 			gameData->SetWall(wall);
 		}

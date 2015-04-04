@@ -24,7 +24,7 @@ OBJ = $(SRC:.cpp=.o)
 
 CC = clang++ -g -O3 -Wall -Wextra -Werror -std=c++11 -I .
 
-all: LCUR LMLX LSDL $(NAME)
+all: LCUR $(NAME)
 
 LCUR:
 	make -C $(DIRLCUR)
