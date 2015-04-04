@@ -35,6 +35,7 @@ SFMLData::SFMLData(int width, int height, std::list<GameObject*> *objects)
 	texture->setRepeated(true);
 	texture->setSmooth(true);
 	background->setTexture(texture);
+	background->setFillColor(sf::Color(40,40,40));
 	funcs[MAINMENU] = &SFMLData::DrawMainMenu;
 	funcs[PSEUDOMENU] = &SFMLData::DrawPseudoMenu;
 	funcs[NM] = &SFMLData::DrawNormalMode;
@@ -96,7 +97,7 @@ void SFMLData::DrawMainMenu()
        sf::Text menuEntry;
 
        menuEntry.setFont(*font);
-       menuEntry.setCharacterSize(25);
+       menuEntry.setCharacterSize(35);
        
 
        int i = 0;
@@ -148,12 +149,12 @@ void SFMLData::DrawNormalMode()
 	sf::Text scoreText;
 
     scoreText.setFont(*font);
-    scoreText.setCharacterSize(25);
+    scoreText.setCharacterSize(45);
 	std::string s = std::to_string(score);
 	std::string tmp("score : " + s);
 	scoreText.setColor(sf::Color::White);
 	scoreText.setString(tmp);
-	scoreText.setPosition(1500, 400);
+	scoreText.setPosition(1500, y0 - 60);
 	win->draw(scoreText);
 	// auto texte = TTF_RenderText_Solid(font20, tmp.c_str(), text_color);
 	// position.x = x0;
@@ -190,7 +191,7 @@ void SFMLData::DrawPauseMenu()
 	sf::Text menuEntry;
 
        menuEntry.setFont(*font);
-       menuEntry.setCharacterSize(25);
+       menuEntry.setCharacterSize(35);
        
 
        int i = 0;
@@ -212,7 +213,7 @@ void SFMLData::DrawEndMenu()
 	sf::Text menuEntry;
 
        menuEntry.setFont(*font);
-       menuEntry.setCharacterSize(25);
+       menuEntry.setCharacterSize(35);
        
 
        int i = 0;
@@ -242,9 +243,9 @@ void SFMLData::DrawSnake(GameObject *it)
 	{
 		sf::RectangleShape rect(sf::Vector2f(20, 20));
 		if (i == snake.begin())
-			rect.setFillColor(sf::Color(150, 50, 250));
+			rect.setFillColor(sf::Color(50, 50, 50));
 		else
-			rect.setFillColor(sf::Color(150, 250, 250));
+			rect.setFillColor(sf::Color(75, 75, 75));
 		rect.setPosition(x0 + (int)(*i).getX() * 20, y0 + (int)(*i).getY() * 20);
 		win->draw(rect);
 	}
@@ -253,11 +254,11 @@ void SFMLData::DrawSnake(GameObject *it)
 void SFMLData::DrawFood(GameObject *it)
 {
 	sf::CircleShape shape(10);
-	shape.setFillColor(sf::Color(150, 50, 250));
+	shape.setFillColor(sf::Color(220, 0, 0));
 
 // set a 10-pixel wide orange outline
-	shape.setOutlineThickness(2);
-	shape.setOutlineColor(sf::Color(250, 150, 100));
+	shape.setOutlineThickness(3);
+	shape.setOutlineColor(sf::Color(250, 10, 10));
 	shape.setPosition(x0 + (int)it->GetPosition().getX() * 20, y0 + (int)it->GetPosition().getY() * 20);
 	win->draw(shape);
 }
