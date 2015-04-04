@@ -16,6 +16,8 @@ bool Sound::Play()
 	son = fork();
 	if (son == 0)
 	{
+		if (willPlay == 5)
+			execl("/usr/bin/afplay", "afplay", "mp3/Diablo.mp3", (char *) 0);
 		execl("/usr/bin/afplay", "afplay", "mp3/test.mp3", (char *) 0);
 		perror("failed music"); 
 		exit(0);
