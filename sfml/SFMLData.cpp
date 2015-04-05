@@ -8,7 +8,7 @@ SFMLData::SFMLData(int width, int height, std::list<GameObject*> *objects)
 	this->height = height;
 	this->objects = objects;
 
-	x0 = (WIDTH - width * 10) / 2;
+	x0 = (WIDTH - width * 20) / 2;
 	y0 = (HEIGHT - height * 10) / 2;
 	
 	win = new sf::RenderWindow(sf::VideoMode(1920, 1600), "My window");

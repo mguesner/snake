@@ -227,6 +227,15 @@ bool	Snake::Move(bool wall)
 	return false;
 }
 
+void Snake::AutoPLayer()
+{
+	Point test = snake.front();
+	Point testRight = test + right;
+	Point testLeft = test + left;
+	Point testDown = test + down;
+	Point testUp = test + up;
+}
+
 void	Snake::Collision(std::list<GameObject*> *object)
 {
 	(void)object;

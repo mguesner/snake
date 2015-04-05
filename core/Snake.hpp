@@ -13,6 +13,7 @@ public:
 	Snake& operator=(Snake const & rhs);
 	bool IsColliding();
 	void SetDirection(eInput);
+	void AutoPLayer();
 	Point GetDirection();
 	std::list<Point> GetSnake();
 	void SetSpeed(int);

@@ -28,7 +28,7 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	food = new Food(width, height);
 	object->push_back(food);
 	shouldLeave = false;
-	progress = 200000;
+	progress = 40000;
 	entry = 0;
 	(void)second;
 	(void)cur;
@@ -44,7 +44,7 @@ Game::~Game()
 void	Game::Reset()
 {
 	score = 0;
-	progress = 200000;
+	progress = 40000;
 	object->erase(object->begin(), object->end());
 	delete first;
 	delete food;
