@@ -25,8 +25,8 @@ $(NAME): $(OBJ)
 SFML:
 	mkdir -p SFML/junk
 	curl -L -o "SFML-2.2-osx-clang-universal.tar.gz" http://www.sfml-dev.org/files/SFML-2.2-osx-clang-universal.tar.gz
-	open SFML-2.2-osx-clang-universal.tar.gz
-	cp -r SFML-2.2-osx-clang-universal/extlibs/freetype.framework SFML-2.2-osx-clang-universal/Frameworks/freetype.framework
+	open SFML-2.2-osx-clang-universal.tar.gz \
+	&& cp -r SFML-2.2-osx-clang-universal/extlibs/freetype.framework SFML-2.2-osx-clang-universal/Frameworks/freetype.framework
 clean:
 	rm -f $(OBJ)
 
