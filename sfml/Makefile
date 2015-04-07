@@ -20,13 +20,13 @@ lib:
 	$(CC) -c -o $@ $<
 
 $(NAME): $(OBJ)
-	$(CC) -dynamiclib -o $(NAME) $(OBJ)  -Wl,-rpath,/Users/Nephalim/Desktop/github/snakefixed/sfml/SFML-2.2-osx-clang-universal/Frameworks -Wl,-rpath,/Users/Nephalim/Desktop/github/snakefixed/sfml/SFML-2.2-osx-clang-universal/extlibs -F /Users/Nephalim/Desktop/github/snakefixed/sfml/SFML-2.2-osx-clang-universal/Frameworks -framework SFML -framework sfml-system -framework sfml-window -framework sfml-graphics
+	$(CC) -dynamiclib -o $(NAME) $(OBJ)  -Wl,-rpath,$(shell pwd)/SFML-2.2-osx-clang-universal/Frameworks -Wl,-rpath,$(shell pwd)/SFML-2.2-osx-clang-universal/extlibs -F $(shell pwd)/SFML-2.2-osx-clang-universal/Frameworks -framework SFML -framework sfml-system -framework sfml-window -framework sfml-graphics
 
 SFML:
 	mkdir -p SFML/junk
 	curl -L -o "SFML-2.2-osx-clang-universal.tar.gz" http://www.sfml-dev.org/files/SFML-2.2-osx-clang-universal.tar.gz
 	open SFML-2.2-osx-clang-universal.tar.gz
-	cp SFML-2.2-osx-clang-universal/extlibs/freetype.framework SFML-2.2-osx-clang-universal/Frameworks/freetype.framework
+	cp -r SFML-2.2-osx-clang-universal/extlibs/freetype.framework SFML-2.2-osx-clang-universal/Frameworks/freetype.framework
 clean:
 	rm -f $(OBJ)
 

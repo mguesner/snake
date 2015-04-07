@@ -10,7 +10,7 @@ SFMLData::SFMLData(int width, int height, std::list<GameObject*> *objects)
 
 	x0 = (WIDTH - width * 20) / 2;
 	y0 = (HEIGHT - height * 10) / 2;
-	
+
 	win = new sf::RenderWindow(sf::VideoMode(1920, 1600), "My window");
 	font = new sf::Font();
 	texture = new sf::Texture();
@@ -60,7 +60,7 @@ SFMLData::SFMLData(int width, int height, std::list<GameObject*> *objects)
 	inputs[sf::Keyboard::D] = RIGHT;
 	inputs[sf::Keyboard::P] = PAUSE;
 	inputs[sf::Keyboard::Num1] = F1;
-	inputs[sf::Keyboard::Num3] = F2;
+	inputs[sf::Keyboard::Num3] = F3;
 	inputs[sf::Keyboard::Return] = VALIDATE;
 
 	mainMenu[0] = "new game";
@@ -98,7 +98,7 @@ void SFMLData::DrawMainMenu()
 
        menuEntry.setFont(*font);
        menuEntry.setCharacterSize(35);
-       
+
 
        int i = 0;
        while (i < NBMODE)
@@ -137,7 +137,7 @@ void SFMLData::DrawNormalMode()
 	// 	SFML_FillRect(screenSurface, &wall4, noir);
 	// }
 	win->draw(*background);
-	
+
 
 
 	for (auto i = objects->begin(); i != objects->end(); ++i)
@@ -192,7 +192,7 @@ void SFMLData::DrawPauseMenu()
 
        menuEntry.setFont(*font);
        menuEntry.setCharacterSize(35);
-       
+
 
        int i = 0;
        while (i < NBACTIONPAUSE)
@@ -214,7 +214,7 @@ void SFMLData::DrawEndMenu()
 
        menuEntry.setFont(*font);
        menuEntry.setCharacterSize(35);
-       
+
 
        int i = 0;
        while (i < NBACTIONEND)

@@ -39,7 +39,7 @@ FREE_TYPE:
 
 SDL2_TFF:
 	mkdir -p SDL2_TFF/junk
-	curl https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.12.tar.gz -o "SDL2_ttf-2.0.12.tar.gz"
+	curl -L https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.12.tar.gz -o "SDL2_ttf-2.0.12.tar.gz"
 	tar -xf SDL2_ttf-2.0.12.tar.gz
 	( cd SDL2_ttf-2.0.12 \
 	&& ./configure --prefix=$(shell pwd)/SDL2/ --with-freetype-prefix=/Volumes/Data/nfs/zfs-student-3/users/2013/mguesner/Documents/snake/sdl/FREE_TYPE --with-sdl-prefix=/Volumes/Data/nfs/zfs-student-3/users/2013/mguesner/Documents/snake/sdl/SDL2\
