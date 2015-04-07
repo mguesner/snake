@@ -4,7 +4,7 @@ DIR = core/
 
 DIRLCUR = ncurses/
 
-DIRLMLX = mlx/
+DIRLSFML = sfml/
 
 DIRLSDL = sdl/
 
@@ -24,13 +24,13 @@ OBJ = $(SRC:.cpp=.o)
 
 CC = clang++ -g -O3 -Wall -Wextra -Werror -std=c++11 -I .
 
-all: LCUR $(NAME)
+all: LCUR LSDL $(NAME)
 
 LCUR:
 	make -C $(DIRLCUR)
 
-LMLX:
-	make -C $(DIRLMLX)
+LSFML:
+	make -C $(DIRLSFML)
 
 LSDL:
 	make -C $(DIRLSDL)
