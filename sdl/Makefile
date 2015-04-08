@@ -26,7 +26,7 @@ $(NAME): $(OBJ)
 SDL2:
 	mkdir -p SDL2/junk
 	curl http://www.libsdl.org/release/SDL2-2.0.3.tar.gz -o "SDL2-2.0.3.tar.gz"
-	tar xf SDL2-2.0.3.tar.gz
+	tar -xf SDL2-2.0.3.tar.gz
 	( cd SDL2-2.0.3 \
 	&& ./configure --prefix=$(shell pwd)/SDL2/ \
 	 && $(MAKE) && $(MAKE) install )

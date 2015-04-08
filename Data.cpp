@@ -75,6 +75,17 @@ void Data::Close()
 	closeIsCall = true;
 }
 
+void Data::SetPlayer(char player[3])
+{
+	this->player[0] = player[0];
+	this->player[1] = player[1];
+	this->player[2] = player[2];
+}
+
+void Data::SetScore(Score *score)
+{
+	hiScores = score;
+}
 
 bool Data::ShouldClose()
 {

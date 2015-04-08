@@ -5,6 +5,7 @@
 #include <list>
 #include <mutex>
 #include <map>
+#include "core/Score.hpp"
 
 class GameObject;
 
@@ -19,7 +20,7 @@ enum ObjectType
 enum eGameState
 {
 	MAINMENU = 0,
-	PSEUDOMENU,
+	HISCOREMENU,
 	NM,
 	MULTIMENU,
 	HOSTMENU,
@@ -27,6 +28,7 @@ enum eGameState
 	MULTI,
 	PAUSEMENU,
 	ENDMENU,
+	BESTENDMENU,
 	SIZEGSTATE
 };
 
@@ -34,6 +36,7 @@ enum eMenuChoice
 {
 	NEWGAME = 0,
 	MULTIPLAYER,
+	HISCORE,
 	WALL,
 	EXIT,
 	SIZEMENUCHOICES
@@ -83,6 +86,8 @@ public:
 	int GetChoice();
 	void SetScore(int);
 	void SetWall(bool);
+	void SetPlayer(char[3]);
+	void SetScore(Score*);
 	int GetScore();
 	std::string GetIp();
 	std::list<GameObject*> *GetGameObjects();
@@ -98,15 +103,17 @@ protected:
 	int choice;
 	bool wall;
 	eInput value;
+	Score *hiScores;
 	std::list<GameObject*> *objects;
 	int score;
-	std::string player;
+	char player[3];
 	std::string ip;
 	std::map<int, eInput> inputs;
-	std::string mainMenu[NBMODE];
+	std::string mainMenu[SIZEMENUCHOICES];
 	std::string pauseMenu[NBACTIONPAUSE];
 	std::string endMenu[NBACTIONEND];
 	std::string multiMenu[NBACTIONMULTIMENU];
+	std::string hiScoreMenu[NBACTIONMULTIMENU];
 	bool shouldDraw;
 	bool closeIsCall;
 	std::mutex locker;

@@ -37,7 +37,7 @@ SFMLData::SFMLData(int width, int height, std::list<GameObject*> *objects)
 	background->setTexture(texture);
 	background->setFillColor(sf::Color(40,40,40));
 	funcs[MAINMENU] = &SFMLData::DrawMainMenu;
-	funcs[PSEUDOMENU] = &SFMLData::DrawPseudoMenu;
+	// funcs[PSEUDOMENU] = &SFMLData::DrawPseudoMenu;
 	funcs[NM] = &SFMLData::DrawNormalMode;
 	funcs[MULTIMENU] = &SFMLData::DrawMultiMenu;
 	funcs[HOSTMENU] = &SFMLData::DrawHostMenu;

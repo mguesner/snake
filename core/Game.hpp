@@ -5,6 +5,7 @@
 #include "Player.hpp"
 #include "../Data.hpp"
 #include "../Sound.hpp"
+#include "Score.hpp"
 #include "Food.hpp"
 #include "Multi.hpp"
 #include <thread>
@@ -23,11 +24,13 @@ public:
 	void MainMenu(eInput value);
 	void PauseMenu(eInput value);
 	void EndMenu(eInput value);
+	void BestEndMenu(eInput value);
 	void Reset();
 	ObjectType Collide();
 	~Game();
 	void Launch();
 	void Logic();
+
 private:
 	Game();
 	Multi multi;
@@ -39,12 +42,14 @@ private:
 	int entry;
 	int width;
 	int height;
+	Score *hiScores;
 	std::thread core;
 	eGameState state;
 	Data *gameData;
 	loader *lib;
 	std::mutex libIsLoading;
 	std::list<GameObject*> *object;
+	char player[3];
 	Player *first;
 	Player *second;
 	Food *food;

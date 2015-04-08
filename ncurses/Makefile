@@ -5,6 +5,7 @@ SRC = NCursesData.cpp\
 	  ../core/GameObject.cpp \
 	  ../core/Point.cpp \
 	  ../core/Snake.cpp \
+	  ../core/Score.cpp \
 	  ../Data.cpp
 
 OBJ = $(SRC:.cpp=.o)

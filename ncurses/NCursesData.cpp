@@ -21,7 +21,7 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	init_pair(CFOOD, COLOR_RED, COLOR_WHITE);
 	init_pair(CWALL, COLOR_WHITE, COLOR_MARRON);
 	funcs[MAINMENU] = &NCursesData::DrawMainMenu;
-	funcs[PSEUDOMENU] = &NCursesData::DrawPseudoMenu;
+	funcs[HISCOREMENU] = &NCursesData::DrawHiScoreMenu;
 	funcs[NM] = &NCursesData::DrawNormalMode;
 	funcs[MULTI] = &NCursesData::DrawMultiMode;
 	funcs[MULTIMENU] = &NCursesData::DrawMultiMenu;
@@ -29,6 +29,7 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	funcs[JOINMENU] = &NCursesData::DrawJoinMenu;
 	funcs[PAUSEMENU] = &NCursesData::DrawPauseMenu;
 	funcs[ENDMENU] = &NCursesData::DrawEndMenu;
+	funcs[BESTENDMENU] = &NCursesData::DrawBestEndMenu;
 	funcs2[SNAKE] = &NCursesData::DrawSnake;
 	funcs2[FOOD] = &NCursesData::DrawFood;
 	this->width = width;
@@ -59,10 +60,11 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	pauseMenu[0] =  "continue";
 	pauseMenu[1] = "restart";
 	pauseMenu[2] = "quit";
-	mainMenu[0] = "new game";
-	mainMenu[1] = "multiplayer";
-	mainMenu[2] = "wall-e : ";
-	mainMenu[3] = "quit";
+	mainMenu[NEWGAME] = "new game";
+	mainMenu[MULTIPLAYER] = "multiplayer";
+	mainMenu[HISCORE] = "hi-score";
+	mainMenu[WALL] = "wall-e : ";
+	mainMenu[EXIT] = "quit";
 	endMenu[0] = "restart";
 	endMenu[1] = "main menu";
 	endMenu[2] = "quit";
@@ -102,35 +104,45 @@ eInput NCursesData::GetInput()
 void NCursesData::DrawMainMenu()
 {
 	attron(COLOR_PAIR(CNORMAL));
-	mvprintw((yScreen / 2) - (NBMODE + 9), xScreen / 2 - 20, " _______ __    _ _______ ___   _ _______");
-	mvprintw((yScreen / 2) - (NBMODE + 8), xScreen / 2 - 20, "|  _____|  |  | |   _   |   |_| |    ___|");
-	mvprintw((yScreen / 2) - (NBMODE + 7), xScreen / 2 - 20, "| |_____|   |_| |  |_|  |     __|   |___");
-	mvprintw((yScreen / 2) - (NBMODE + 6), xScreen / 2 - 20, "|_____  |  _    |       |    |__|    ___|");
-	mvprintw((yScreen / 2) - (NBMODE + 5), xScreen / 2 - 20, " _____| | | |   |   _   |    _  |   |___");
-	mvprintw((yScreen / 2) - (NBMODE + 4), xScreen / 2 - 20, "|_______|_|  |__|__| |__|___| |_|_______|");
-	for (int i = 0; i < NBMODE; ++i)
+	mvprintw((yScreen / 2) - (SIZEMENUCHOICES + 9), xScreen / 2 - 20, " _______ __    _ _______ ___   _ _______");
+	mvprintw((yScreen / 2) - (SIZEMENUCHOICES + 8), xScreen / 2 - 20, "|  _____|  |  | |   _   |   |_| |    ___|");
+	mvprintw((yScreen / 2) - (SIZEMENUCHOICES + 7), xScreen / 2 - 20, "| |_____|   |_| |  |_|  |     __|   |___");
+	mvprintw((yScreen / 2) - (SIZEMENUCHOICES + 6), xScreen / 2 - 20, "|_____  |  _    |       |    |__|    ___|");
+	mvprintw((yScreen / 2) - (SIZEMENUCHOICES + 5), xScreen / 2 - 20, " _____| | | |   |   _   |    _  |   |___");
+	mvprintw((yScreen / 2) - (SIZEMENUCHOICES + 4), xScreen / 2 - 20, "|_______|_|  |__|__| |__|___| |_|_______|");
+	for (int i = 0; i < SIZEMENUCHOICES; ++i)
 	{
 		if (i == choice)
 			attron(COLOR_PAIR(CSELECTED));
 		else
 			attron(COLOR_PAIR(CNORMAL));
-		mvprintw((yScreen / 2) - (NBMODE - i * 2), xScreen / 2 - (mainMenu[i].size() / 2 + (i == WALL ? 1 : 0)), "%s%s", mainMenu[i].c_str(), i == WALL ? (wall ? "ON" : "OFF") : "");
+		mvprintw((yScreen / 2) - (SIZEMENUCHOICES - i * 2), xScreen / 2 - (mainMenu[i].size() / 2 + (i == WALL ? 1 : 0)), "%s%s", mainMenu[i].c_str(), i == WALL ? (wall ? "ON" : "OFF") : "");
 	}
 	refresh();
 }
 
-void NCursesData::DrawPseudoMenu()
+void NCursesData::DrawHiScoreMenu()
 {
-	char tmp[8];
-
 	attron(COLOR_PAIR(CNORMAL));
-	mvprintw((yScreen / 2), xScreen / 2 - 10, "player name : ");
-	curs_set(1);
-	echo();
-	getnstr(tmp, 8);
-	curs_set(0);
-	noecho();
-	player = tmp;
+	mvprintw((yScreen / 2) - (10 + 9), xScreen / 2 - 34, " __   __  ___          _______  _______  _______  ______    _______ ");
+	mvprintw((yScreen / 2) - (10 + 8), xScreen / 2 - 34, "|  |_|  ||   |        |  _____||     __||   _   ||    _ |  |    ___|");
+	mvprintw((yScreen / 2) - (10 + 7), xScreen / 2 - 34, "|       ||   |  ____  | |_____ |    |   |  | |  ||   |_||_ |   |___ ");
+	mvprintw((yScreen / 2) - (10 + 6), xScreen / 2 - 34, "|       ||   | |____| |_____  ||    |   |  | |  ||    __  ||    ___|");
+	mvprintw((yScreen / 2) - (10 + 5), xScreen / 2 - 34, "|   _   ||   |         _____| ||    |__ |  |_|  ||   |  | ||   |___ ");
+	mvprintw((yScreen / 2) - (10 + 4), xScreen / 2 - 34, "|__| |__||___|        |_______||_______||_______||___|  |_||_______|");
+	mvprintw((yScreen / 2) - (10 + 2), xScreen / 2 - 5, "With wall :");
+	mvprintw((yScreen / 2) - (10 + 1), xScreen / 2 - 3, "%s : %d", hiScores->GetPseudo(0, true), hiScores->GetScore(0, true));
+	mvprintw((yScreen / 2) - 10, xScreen / 2 - 3, "%s : %d", hiScores->GetPseudo(1, true), hiScores->GetScore(1, true));
+	mvprintw((yScreen / 2) - (10 - 1), xScreen / 2 - 3, "%s : %d", hiScores->GetPseudo(2, true), hiScores->GetScore(2, true));
+	mvprintw((yScreen / 2) - (10 - 2), xScreen / 2 - 3, "%s : %d", hiScores->GetPseudo(3, true), hiScores->GetScore(3, true));
+	mvprintw((yScreen / 2) - (10 - 3), xScreen / 2 - 3, "%s : %d", hiScores->GetPseudo(4, true), hiScores->GetScore(4, true));
+	mvprintw((yScreen / 2) - (10 - 5), xScreen / 2 - 5, "Without wall :");
+	mvprintw((yScreen / 2) - (10 - 6), xScreen / 2 - 3, "%s : %d", hiScores->GetPseudo(0, false), hiScores->GetScore(0, false));
+	mvprintw((yScreen / 2) - (10 - 7), xScreen / 2 - 3, "%s : %d", hiScores->GetPseudo(1, false), hiScores->GetScore(1, false));
+	mvprintw((yScreen / 2) - (10 - 8), xScreen / 2 - 3, "%s : %d", hiScores->GetPseudo(2, false), hiScores->GetScore(2, false));
+	mvprintw((yScreen / 2) - (10 - 9), xScreen / 2 - 3, "%s : %d", hiScores->GetPseudo(3, false), hiScores->GetScore(3, false));
+	mvprintw((yScreen / 2) - (10 - 10), xScreen / 2 - 3, "%s : %d", hiScores->GetPseudo(4, false), hiScores->GetScore(4, false));
+	refresh();
 }
 
 void NCursesData::DrawNormalMode()
@@ -167,8 +179,8 @@ void NCursesData::DrawNormalMode()
 		(this->*funcs2[(*i)->GetType()])(*i);
 	}
 	attron(COLOR_PAIR(CNORMAL));
-	mvprintw(0, width + 3, "player:%s", player.c_str());
-	mvprintw(1, width + 3, "score:%d", score);
+	// mvprintw(0, width + 3, "player: %s", player.c_str());
+	mvprintw(1, width + 3, "score: %d", score);
 	refresh();
 }
 
@@ -206,7 +218,7 @@ void NCursesData::DrawMultiMode()
 		(this->*funcs2[(*i)->GetType()])(*i);
 	}
 	attron(COLOR_PAIR(CNORMAL));
-	mvprintw(0, width + 3, "player:%s", player.c_str());
+	// mvprintw(0, width + 3, "player:%s", player.c_str());
 	mvprintw(1, width + 3, "score:%d", score);
 	refresh();
 }
@@ -288,7 +300,27 @@ void NCursesData::DrawEndMenu()
 		mvprintw((yScreen / 2) - (NBACTIONPAUSE - i * 2) + 2, xScreen / 2 - endMenu[i].size() / 2, endMenu[i].c_str());
 	}
 	refresh();
+}
 
+void NCursesData::DrawBestEndMenu()
+{
+	attron(COLOR_PAIR(CNORMAL));
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 9), xScreen / 2 - 38, " _______  _______  __   __  _______    _______  __   __  _______  ______   ");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 8), xScreen / 2 - 38, "|    ___||   _   ||  |_|  ||    ___|  |   _   ||  |_|  ||    ___||    _ |  ");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 7), xScreen / 2 - 38, "|   | __ |  |_|  ||       ||   |___   |  | |  ||       ||   |___ |   |_||_ ");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 6), xScreen / 2 - 38, "|   ||  ||       ||       ||    ___|  |  | |  ||       ||    ___||    __  |");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 5), xScreen / 2 - 38, "|   |_| ||   _   || ||_|| ||   |___   |  |_|  | |     | |   |___ |   |  | |");
+	mvprintw((yScreen / 2) - (NBACTIONPAUSE + 4), xScreen / 2 - 38, "|_______||__| |__||_|   |_||_______|  |_______|  |___|  |_______||___|  |_|");
+	mvprintw((yScreen / 2) - 4, xScreen / 2 - 8, "your score : %d", score);
+	for (int i = 0; i < 3; i++)
+	{
+		if (i == choice)
+			attron(COLOR_PAIR(CSELECTED));
+		else
+			attron(COLOR_PAIR(CNORMAL));
+		mvprintw((yScreen / 2), xScreen / 2 - 1 + i, "%c", player[i]);
+	}
+	refresh();
 }
 
 void NCursesData::DrawSnake(GameObject *it)

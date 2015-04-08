@@ -31,7 +31,7 @@ private:
 	void StartDisplay();
 	void StartInput();
 	void DrawMainMenu();
-	void DrawPseudoMenu();
+	void DrawHiScoreMenu();
 	void DrawNormalMode();
 	void DrawMultiMode();
 	void DrawMulti();
@@ -40,6 +40,7 @@ private:
 	void DrawJoinMenu();
 	void DrawPauseMenu();
 	void DrawEndMenu();
+	void DrawBestEndMenu();
 	void DrawSnake(GameObject*);
 	void DrawFood(GameObject*);
 	Func funcs[SIZEGSTATE];

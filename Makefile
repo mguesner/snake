@@ -18,7 +18,8 @@ SRC = $(DIR)main.cpp\
 	$(DIR)Player.cpp\
 	$(DIR)Point.cpp\
 	$(DIR)Snake.cpp\
-	$(DIR)Multi.cpp
+	$(DIR)Multi.cpp\
+	$(DIR)Score.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
@@ -50,12 +51,12 @@ fclean: clean
 recur:
 	make re -C $(DIRLCUR)
 
-remlx:
-	make re -C $(DIRLMLX)
+resfml:
+	make re -C $(DIRLSFML)
 
 resdl:
 	make re -C $(DIRLSDL)
 
-re: resdl recur remlx fclean all
+re: resdl recur resfml fclean all
 
 .PHONY: clean all re fclean

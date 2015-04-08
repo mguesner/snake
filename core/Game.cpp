@@ -19,6 +19,10 @@ Game& Game::operator=(Game const & src)
 
 Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std::list<GameObject*> *obj)
 {
+	player[0] = 'A';
+	player[1] = 'A';
+	player[2] = 'A';
+	hiScores = new Score();
 	this->width = width;
 	this->height = height;
 	object = obj;
@@ -28,7 +32,7 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	food = new Food(width, height);
 	object->push_back(food);
 	shouldLeave = false;
-	progress = 40000;
+	progress = 100000;
 	entry = 0;
 	(void)second;
 	(void)cur;
@@ -44,7 +48,7 @@ Game::~Game()
 void	Game::Reset()
 {
 	score = 0;
-	progress = 40000;
+	progress = 100000;
 	object->erase(object->begin(), object->end());
 	delete first;
 	delete food;
@@ -83,12 +87,21 @@ void	Game::Update(eInput value)
 	if (snk->Move(wall))
 	{
 		//shouldLeave = true;
-		state = ENDMENU;
+		if (hiScores->CheckScore(score, wall))
+		{
+			std::cout << "BESTENDMENU\n";
+			state = BESTENDMENU;
+		}
+		else
+			state = ENDMENU;
 	}
 	if (snk->IsColliding())
 	{
 		//shouldLeave = true;//game stat = loose
-		state = ENDMENU;
+		if (hiScores->CheckScore(score, wall))
+			state = BESTENDMENU;
+		else
+			state = ENDMENU;
 	}
 	ObjectType ret = Collide();
 	if (ret == VOID)
@@ -96,7 +109,7 @@ void	Game::Update(eInput value)
 	else
 	{
 		food->Collision(object);
-		progress -= 1000;
+		progress -= 5000;
 		score += 1;
 	}
 	if (second)
@@ -277,6 +290,11 @@ void Game::MainMenu(eInput value)
 			state = MULTIMENU;
 			entry = 0;
 		}
+		else if (entry == HISCORE)
+		{
+			state = HISCOREMENU;
+			entry = 0;
+		}
 		else if (entry == WALL)
 		{
 			wall = !wall;
@@ -290,13 +308,13 @@ void Game::MainMenu(eInput value)
 	else if (value == UP)
 	{
 		if (entry == 0)
-			entry = NBMODE -1;
+			entry = SIZEMENUCHOICES -1;
 		else
 			entry--;
 	}
 	else if (value == DOWN)
 	{
-		if (entry == NBMODE -1)
+		if (entry == SIZEMENUCHOICES -1)
 			entry = 0;
 		else
 			entry++;
@@ -346,6 +364,27 @@ void Game::PauseMenu(eInput value)
 		entry = 0;
 		gameData->SetChoice(0);
 	}
+}
+
+void Game::BestEndMenu(eInput value)
+{
+	if (value == VALIDATE)
+	{
+		hiScores->SetScore(std::string(player), score, wall);
+		gameData->SetChoice(0);
+		entry = 0;
+		state = ENDMENU;
+	}
+	else if (value == UP)
+		player[entry]++;
+	else if (value == DOWN)
+		player[entry]--;
+	else if (value == LEFT)
+		entry = (entry - 1 >= 0 ? entry - 1 : entry - 1 + 3);
+	else if (value == RIGHT)
+		entry = (entry + 1) % 3;
+	gameData->SetPlayer(player);
+	gameData->SetChoice(entry);
 }
 
 void Game::EndMenu(eInput value)
@@ -400,6 +439,7 @@ void	Game::Launch()
 	gameData->SetScore(score);
 	gameData->SetState(state);
 	gameData->SetWall(wall);
+	gameData->SetScore(hiScores);
 	while (!shouldLeave)
 	{
 		timeval time;
@@ -414,6 +454,7 @@ void	Game::Launch()
 			lib = new loader("ncurses/libcurses.so", width, height, object);
 			gameData = lib->GetData();
 			gameData->SetWall(wall);
+			gameData->SetChoice(entry);
 		}
 		else if (value == F2)
 		{
@@ -423,6 +464,7 @@ void	Game::Launch()
 			lib = new loader("sfml/libsfml.so", width, height, object);
 			gameData = lib->GetData();
 			gameData->SetWall(wall);
+			gameData->SetChoice(entry);
 		}
 		else if (value == F3)
 		{
@@ -432,6 +474,7 @@ void	Game::Launch()
 			lib = new loader("sdl/libsdl.so", width, height, object);
 			gameData = lib->GetData();
 			gameData->SetWall(wall);
+			gameData->SetChoice(entry);
 		}
 		else if (state == NM)
 			Update(value);
@@ -449,6 +492,8 @@ void	Game::Launch()
 			HostMenu(value);
 		else if (state == JOINMENU)
 			JoinMenu(value);
+		else if (state == BESTENDMENU)
+			BestEndMenu(value);
 		gameData->SetState(state);
 		gameData->SetScore(score);
 		// if (state != MULTI)
@@ -459,58 +504,57 @@ void	Game::Launch()
 		if (wait > 0)
 			usleep((int)wait);
 	}
+	delete hiScores;
 	delete music;
 	delete gameData;
-	exit(0);
 }
 
 void Game::Logic()
 {
-	value = NONE;
-	state = MAINMENU;
-	score = 0;
-	wall = true;
-	music = new Sound(5);
-	music->Play();
-	gameData->SetScore(score);
-	gameData->SetState(state);
-	gameData->SetWall(wall);
-	while (!shouldLeave)
-	{
-		timeval time;
-		gettimeofday(&time, NULL);
-		auto start = time.tv_usec;
-		value = gameData->GetInput();
-		if (value == F1 || value == F2 || value == F3)
-		{
-			gameData->Close();
-			libIsLoading.lock();
-			libIsLoading.unlock();
-		}
-		else if (state == NM)
-			Update(value);
-		else if (state == MULTIMENU)
-			MultiMenu(value);
-		else if (state == PAUSEMENU)
-			PauseMenu(value);
-		else if (state == MAINMENU)
-			MainMenu(value);
-		else if (state == ENDMENU)
-			EndMenu(value);
-		else if (state == HOSTMENU)
-			HostMenu(value);
-		else if (state == JOINMENU)
-			JoinMenu(value);
-		gameData->SetState(state);
-		gameData->SetScore(score);
-		gameData->Draw();
-		gameData->CleanInput();
-		gettimeofday(&time, NULL);
-		auto wait = start + progress - time.tv_usec;
-		if (state == NM && wait > 0)
-			usleep(wait);
-	}
-	delete music;
-	delete gameData;
-	exit(0);
+	// value = NONE;
+	// state = MAINMENU;
+	// score = 0;
+	// wall = true;
+	// music = new Sound(5);
+	// music->Play();
+	// gameData->SetScore(score);
+	// gameData->SetState(state);
+	// gameData->SetWall(wall);
+	// while (!shouldLeave)
+	// {
+	// 	timeval time;
+	// 	gettimeofday(&time, NULL);
+	// 	auto start = time.tv_usec;
+	// 	value = gameData->GetInput();
+	// 	if (value == F1 || value == F2 || value == F3)
+	// 	{
+	// 		gameData->Close();
+	// 		libIsLoading.lock();
+	// 		libIsLoading.unlock();
+	// 	}
+	// 	else if (state == NM)
+	// 		Update(value);
+	// 	else if (state == MULTIMENU)
+	// 		MultiMenu(value);
+	// 	else if (state == PAUSEMENU)
+	// 		PauseMenu(value);
+	// 	else if (state == MAINMENU)
+	// 		MainMenu(value);
+	// 	else if (state == ENDMENU)
+	// 		EndMenu(value);
+	// 	else if (state == HOSTMENU)
+	// 		HostMenu(value);
+	// 	else if (state == JOINMENU)
+	// 		JoinMenu(value);
+	// 	gameData->SetState(state);
+	// 	gameData->SetScore(score);
+	// 	gameData->Draw();
+	// 	gameData->CleanInput();
+	// 	gettimeofday(&time, NULL);
+	// 	auto wait = start + progress - time.tv_usec;
+	// 	if (state == NM && wait > 0)
+	// 		usleep(wait);
+	// }
+	// delete music;
+	// delete gameData;
 }

@@ -41,8 +41,8 @@ void Multi::Host()
 	unsigned int sinsize = sizeof sin;
 	if ((cSock = accept(sock, (t_sockaddr *)&sin, &sinsize)) == -1)
 		perror("accept");
-		std::cout << "accepted" << std::endl;
-		isConnect = true;
+	std::cout << "accepted" << std::endl;
+	isConnect = true;
 }
 
 void Multi::Join()

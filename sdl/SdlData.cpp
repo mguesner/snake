@@ -22,7 +22,7 @@ SdlData::SdlData(int width, int height, std::list<GameObject*> *objects)
 		throw SdlException(SDL_GetError());
 
 	funcs[MAINMENU] = &SdlData::DrawMainMenu;
-	funcs[PSEUDOMENU] = &SdlData::DrawPseudoMenu;
+	// funcs[PSEUDOMENU] = &SdlData::DrawPseudoMenu;
 	funcs[NM] = &SdlData::DrawNormalMode;
 	funcs[MULTIMENU] = &SdlData::DrawMultiMenu;
 	funcs[HOSTMENU] = &SdlData::DrawHostMenu;
@@ -196,9 +196,16 @@ void SdlData::DrawEndMenu()
 	SDL_Color text_color = {0x0, 0x0, 0x0, 0xFF};
 	SDL_Surface *title = TTF_RenderText_Solid(font70, "game over", text_color);
 	position.x = (WIDTH - title->w) / 2;
-	position.y = 350;
+	position.y = 300;
 	SDL_BlitSurface(title, NULL, screenSurface, &position);
 	SDL_FreeSurface(title);
+	std::string s = std::to_string(score);
+	std::string tmp("score : " + s);
+	SDL_Surface *score = TTF_RenderText_Solid(font20, tmp.c_str(), text_color);
+	position.x = (WIDTH - title->w) / 2;
+	position.y = 400;
+	SDL_BlitSurface(score, NULL, screenSurface, &position);
+	SDL_FreeSurface(score);
 	for (int i = 0; i < NBACTIONEND; ++i)
 	{
 		if (i == choice)
