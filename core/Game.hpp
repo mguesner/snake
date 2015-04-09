@@ -25,6 +25,7 @@ public:
 	void PauseMenu(eInput value);
 	void EndMenu(eInput value);
 	void BestEndMenu(eInput value);
+	void HiScoreMenu(eInput value);
 	void Reset();
 	ObjectType Collide();
 	~Game();
@@ -49,7 +50,7 @@ private:
 	loader *lib;
 	std::mutex libIsLoading;
 	std::list<GameObject*> *object;
-	char player[3];
+	char player[4];
 	Player *first;
 	Player *second;
 	Food *food;

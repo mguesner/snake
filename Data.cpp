@@ -2,7 +2,45 @@
 
 Data::Data()
 {
-	score = 1;
+
+}
+
+Data::Data(int width, int height, std::list<GameObject*> *objects)
+{
+	this->width = width;
+	this->height = height;
+	this->objects = objects;
+	value = NONE;
+	closeIsCall = false;
+
+	funcs2[SNAKE] = &Data::DrawSnake;
+	funcs2[FOOD] = &Data::DrawFood;
+
+	funcs[MAINMENU] = &Data::DrawMainMenu;
+	funcs[HISCOREMENU] = &Data::DrawHiScoreMenu;
+	funcs[NM] = &Data::DrawNormalMode;
+	funcs[MULTI] = &Data::DrawMultiMode;
+	funcs[MULTIMENU] = &Data::DrawMultiMenu;
+	funcs[HOSTMENU] = &Data::DrawHostMenu;
+	funcs[JOINMENU] = &Data::DrawJoinMenu;
+	funcs[PAUSEMENU] = &Data::DrawPauseMenu;
+	funcs[ENDMENU] = &Data::DrawEndMenu;
+	funcs[BESTENDMENU] = &Data::DrawBestEndMenu;
+
+	pauseMenu[0] =  "continue";
+	pauseMenu[1] = "restart";
+	pauseMenu[2] = "quit";
+	mainMenu[NEWGAME] = "new game";
+	mainMenu[MULTIPLAYER] = "multiplayer";
+	mainMenu[HISCORE] = "hi-score";
+	mainMenu[WALL] = "wall-e : ";
+	mainMenu[EXIT] = "quit";
+	endMenu[0] = "restart";
+	endMenu[1] = "main menu";
+	endMenu[2] = "quit";
+	multiMenu[0] = "host game";
+	multiMenu[1] = "join game";
+	multiMenu[2] = "quit";
 }
 
 void Data::SetScore(int value)
@@ -63,11 +101,6 @@ int Data::GetChoice()
 void Data::CleanInput()
 {
 	value = NONE;
-}
-
-void Data::Unlocker()
-{
-	locker.unlock();
 }
 
 void Data::Close()

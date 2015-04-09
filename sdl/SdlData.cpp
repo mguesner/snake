@@ -3,12 +3,8 @@
 #include "../core/Snake.hpp"
 #include "SdlException.hpp"
 
-SdlData::SdlData(int width, int height, std::list<GameObject*> *objects)
+SdlData::SdlData(int width, int height, std::list<GameObject*> *objects) : Data(width, height, objects)
 {
-	this->width = width;
-	this->height = height;
-	this->objects = objects;
-
 	x0 = (WIDTH - width * 10) / 2;
 	y0 = (HEIGHT - height * 10) / 2;
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -21,19 +17,6 @@ SdlData::SdlData(int width, int height, std::list<GameObject*> *objects)
 	if (!(screenSurface = SDL_GetWindowSurface(win)))
 		throw SdlException(SDL_GetError());
 
-	funcs[MAINMENU] = &SdlData::DrawMainMenu;
-	// funcs[PSEUDOMENU] = &SdlData::DrawPseudoMenu;
-	funcs[NM] = &SdlData::DrawNormalMode;
-	funcs[MULTIMENU] = &SdlData::DrawMultiMenu;
-	funcs[HOSTMENU] = &SdlData::DrawHostMenu;
-	funcs[JOINMENU] = &SdlData::DrawJoinMenu;
-	funcs[PAUSEMENU] = &SdlData::DrawPauseMenu;
-	funcs[ENDMENU] = &SdlData::DrawEndMenu;
-
-	funcs2[SNAKE] = &SdlData::DrawSnake;
-	funcs2[FOOD] = &SdlData::DrawFood;
-
-	value = NONE;
 	inputs[SDLK_UP] = UP;
 	inputs[SDLK_DOWN] = DOWN;
 	inputs[SDLK_LEFT] = LEFT;
@@ -48,21 +31,7 @@ SdlData::SdlData(int width, int height, std::list<GameObject*> *objects)
 	inputs[SDLK_2] = F2;
 	inputs[SDLK_RETURN] = VALIDATE;
 
-	mainMenu[0] = "new game";
-	mainMenu[1] = "multiplayer";
-	mainMenu[2] = "wall : ";
-	mainMenu[3] = "quit";
-
-	pauseMenu[0] =  "continue";
-	pauseMenu[1] = "restart";
-	pauseMenu[2] = "quit";
-
-	endMenu[0] = "restart";
-	endMenu[1] = "main menu";
-	endMenu[2] = "quit";
-
 	shouldDraw = false;
-	closeIsCall = false;
 
 	if (!(font70 = TTF_OpenFont("COMICATE.TTF", 70)))
 		throw SdlException(TTF_GetError());
@@ -73,6 +42,7 @@ SdlData::SdlData(int width, int height, std::list<GameObject*> *objects)
 void SdlData::Draw()
 {
 	(this->*funcs[state])();
+	SDL_UpdateWindowSurface(win);
 }
 
 void SdlData::DrawMainMenu()
@@ -87,7 +57,7 @@ void SdlData::DrawMainMenu()
 	position.y = 350;
 	SDL_BlitSurface(title, NULL, screenSurface, &position);
 	SDL_FreeSurface(title);
-	for (int i = 0; i < NBMODE; ++i)
+	for (int i = 0; i < SIZEMENUCHOICES; ++i)
 	{
 		if (i == choice)
 			text_color = {0xFF, 0x0, 0x0, 0xFF};
@@ -100,12 +70,60 @@ void SdlData::DrawMainMenu()
 		SDL_BlitSurface(texte, NULL, screenSurface, &position);
 		SDL_FreeSurface(texte);
 	}
-	SDL_UpdateWindowSurface(win);
 }
 
-void SdlData::DrawPseudoMenu()
+void SdlData::DrawHiScoreMenu()
 {
-
+	SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
+	SDL_Rect position;
+	SDL_Color text_color = {0x0, 0x0, 0x0, 0xFF};
+	auto title = TTF_RenderText_Solid(font70, "hi-score", text_color);
+	if (!title)
+		throw SdlException(TTF_GetError());
+	position.x = (WIDTH - title->w) / 2;
+	position.y = 350;
+	SDL_BlitSurface(title, NULL, screenSurface, &position);
+	SDL_FreeSurface(title);
+	title = TTF_RenderText_Solid(font20, "With wall :", text_color);
+	if (!title)
+		throw SdlException(TTF_GetError());
+	position.x = (WIDTH - title->w) / 2;
+	position.y = 420;
+	SDL_BlitSurface(title, NULL, screenSurface, &position);
+	SDL_FreeSurface(title);
+	for (int i = 0; i < 5; ++i)
+	{
+		std::string s = std::to_string(hiScores->GetScore(i, true));
+		s = std::string(" : " + s);
+		std::string tmp( hiScores->GetPseudo(i, true) + s);
+		auto score = TTF_RenderText_Solid(font20, tmp.c_str(), text_color);
+		if (!score)
+			throw SdlException(TTF_GetError());
+		position.x = (WIDTH - score->w) / 2;
+		position.y = 430 + 20 * (i + 1);
+		SDL_BlitSurface(score, NULL, screenSurface, &position);
+		SDL_FreeSurface(score);
+	}
+	title = TTF_RenderText_Solid(font20, "Without wall :", text_color);
+	if (!title)
+		throw SdlException(TTF_GetError());
+	position.x = (WIDTH - title->w) / 2;
+	position.y = 560;
+	SDL_BlitSurface(title, NULL, screenSurface, &position);
+	SDL_FreeSurface(title);
+	for (int i = 0; i < 5; ++i)
+	{
+		std::string s = std::to_string(hiScores->GetScore(i, false));
+		s = std::string(" : " + s);
+		std::string tmp( hiScores->GetPseudo(i, false) + s);
+		auto score = TTF_RenderText_Solid(font20, tmp.c_str(), text_color);
+		if (!score)
+			throw SdlException(TTF_GetError());
+		position.x = (WIDTH - score->w) / 2;
+		position.y = 570 + 20 * (i + 1);
+		SDL_BlitSurface(score, NULL, screenSurface, &position);
+		SDL_FreeSurface(score);
+	}
 }
 
 void SdlData::DrawNormalMode()
@@ -138,7 +156,16 @@ void SdlData::DrawNormalMode()
 	position.y = y0 - 40;
 	SDL_BlitSurface(texte, NULL, screenSurface, &position);
 	SDL_FreeSurface(texte);
-	SDL_UpdateWindowSurface(win);
+}
+
+void SdlData::DrawMultiMode()
+{
+
+}
+
+void SdlData::DrawMultiMenu()
+{
+
 }
 
 void SdlData::DrawHostMenu()
@@ -150,17 +177,9 @@ void SdlData::DrawJoinMenu()
 {
 }
 
-void SdlData::Lock()
-{
-}
-
 void SdlData::DrawMulti()
 {
 
-}
-
-void SdlData::DrawMultiMenu()
-{
 }
 
 void SdlData::DrawPauseMenu()
@@ -186,7 +205,6 @@ void SdlData::DrawPauseMenu()
 		SDL_BlitSurface(texte, NULL, screenSurface, &position);
 		SDL_FreeSurface(texte);
 	}
-	SDL_UpdateWindowSurface(win);
 }
 
 void SdlData::DrawEndMenu()
@@ -198,14 +216,14 @@ void SdlData::DrawEndMenu()
 	position.x = (WIDTH - title->w) / 2;
 	position.y = 300;
 	SDL_BlitSurface(title, NULL, screenSurface, &position);
-	SDL_FreeSurface(title);
 	std::string s = std::to_string(score);
 	std::string tmp("score : " + s);
 	SDL_Surface *score = TTF_RenderText_Solid(font20, tmp.c_str(), text_color);
-	position.x = (WIDTH - title->w) / 2;
+	position.x = (WIDTH - score->w) / 2;
 	position.y = 400;
 	SDL_BlitSurface(score, NULL, screenSurface, &position);
 	SDL_FreeSurface(score);
+	SDL_FreeSurface(title);
 	for (int i = 0; i < NBACTIONEND; ++i)
 	{
 		if (i == choice)
@@ -219,7 +237,41 @@ void SdlData::DrawEndMenu()
 		SDL_BlitSurface(texte, NULL, screenSurface, &position);
 		SDL_FreeSurface(texte);
 	}
-	SDL_UpdateWindowSurface(win);
+}
+
+void SdlData::DrawBestEndMenu()
+{
+	SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
+	SDL_Rect position;
+	SDL_Color text_color = {0x0, 0x0, 0x0, 0xFF};
+	SDL_Color text_color_selected = {0xFF, 0x0, 0x0, 0xFF};
+	SDL_Surface *title = TTF_RenderText_Solid(font70, "game over", text_color);
+	position.x = (WIDTH - title->w) / 2;
+	position.y = 300;
+	SDL_BlitSurface(title, NULL, screenSurface, &position);
+	std::string s = std::to_string(score);
+	std::string tmp("score : " + s);
+	SDL_Surface *score = TTF_RenderText_Solid(font20, tmp.c_str(), text_color);
+	position.x = (WIDTH - score->w) / 2;
+	position.y = 400;
+	SDL_BlitSurface(score, NULL, screenSurface, &position);
+	SDL_FreeSurface(title);
+	SDL_FreeSurface(score);
+	for (int i = 0; i < 3; i++)
+	{
+		char tmp[2];
+		tmp[0] = player[i];
+		tmp[1] = 0;
+		SDL_Surface *pseudo;
+		if (i == choice)
+			pseudo = TTF_RenderText_Solid(font20, tmp, text_color_selected);
+		else
+			pseudo = TTF_RenderText_Solid(font20, tmp, text_color);
+		position.x = (WIDTH - 60) / 2 + i * 20;
+		position.y = 430;
+		SDL_BlitSurface(pseudo, NULL, screenSurface, &position);
+		SDL_FreeSurface(pseudo);
+	}
 }
 
 void SdlData::SetInput(int keycode)
@@ -252,18 +304,26 @@ void SdlData::DrawFood(GameObject *it)
 
 eInput SdlData::GetInput()
 {
-	SDL_Event       event;
+	SDL_Event event;
 	if (!SDL_PollEvent(&event))
 		return NONE;
 	if (event.type == SDL_KEYDOWN)
 		return inputs[event.key.keysym.sym];
+	else if (event.type == SDL_QUIT)
+	{
+		TTF_CloseFont(font20);
+		TTF_CloseFont(font70);
+		TTF_Quit();
+		SDL_DestroyWindow(win);
+		SDL_Quit();
+		exit(0);
+	}
 	return NONE;
 }
 
 
 SdlData::~SdlData()
 {
-	std::cout << "delete" << std::endl;
 	TTF_CloseFont(font20);
 	TTF_CloseFont(font70);
 	TTF_Quit();

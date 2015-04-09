@@ -72,12 +72,14 @@ enum eActionPause
 
 class Data
 {
+	typedef void (Data::*Func)();
+	typedef void (Data::*Func2)(GameObject*);
 public:
 	Data();
+	Data(int, int, std::list<GameObject*>*);
 	virtual ~Data(){}
 	virtual void Draw() = 0;
 	virtual eInput GetInput() = 0;
-	void Unlocker();
 	void Close();
 	void SetDrawFinish();
 	bool GetDrawInstruction();
@@ -96,6 +98,24 @@ public:
 	virtual void SetState(eGameState);
 
 protected:
+	virtual void DrawMainMenu() = 0;
+	virtual void DrawHiScoreMenu() = 0;
+	virtual void DrawNormalMode() = 0;
+	virtual void DrawMultiMode() = 0;
+	virtual void DrawMulti() = 0;
+	virtual void DrawMultiMenu() = 0;
+	virtual void DrawHostMenu() = 0;
+	virtual void DrawJoinMenu() = 0;
+	virtual void DrawPauseMenu() = 0;
+	virtual void DrawEndMenu() = 0;
+	virtual void DrawBestEndMenu() = 0;
+
+	virtual void DrawSnake(GameObject*) = 0;
+	virtual void DrawFood(GameObject*) = 0;
+
+	Func2 funcs2[2];
+	Func funcs[SIZEGSTATE];
+
 	eGameState state;
 	int keycode;
 	int width;
@@ -116,7 +136,6 @@ protected:
 	std::string hiScoreMenu[NBACTIONMULTIMENU];
 	bool shouldDraw;
 	bool closeIsCall;
-	std::mutex locker;
 
 };
 

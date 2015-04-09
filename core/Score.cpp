@@ -85,12 +85,8 @@ void Score::SetScore(std::string pseudo, int score, bool wall)
 		i++;
 		while (i < 5)
 		{
-			// std::cout << "score[" << i << "]<" << std::get<0>(scores[i]) << ", " << std::get<1>(scores[i]) << ">" << std::endl;
 			auto tmp2 = tmp;
-			// std::cout << "tmp2 = <" << std::get<0>(tmp2) << ", " << std::get<1>(tmp2) << ">" << std::endl;
 			tmp = (wall ? wallScores[i] : noWallScores[i]);
-			// std::cout << "tmp = <" << std::get<0>(tmp) << ", " << std::get<1>(tmp) << ">, score[" << i << "]<" << std::get<0>(scores[i]) << ", " << std::get<1>(scores[i]) << ">" << std::endl;
-			// sleep(1);
 			(wall ? wallScores[i] : noWallScores[i]) = tmp2;
 			i++;
 		}
@@ -118,8 +114,10 @@ Score::~Score()
 		i++;
 	}
 	fs << "nowall" << std::endl;
+	i = 0;
 	while (std::get<1>(noWallScores[i]) && i < 5)
 	{
+		std::cout << "bite" << std::endl;
 		fs << std::get<0>(noWallScores[i]) << ":" << std::get<1>(noWallScores[i]) << std::endl;
 		i++;
 	}

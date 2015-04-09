@@ -22,6 +22,7 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	player[0] = 'A';
 	player[1] = 'A';
 	player[2] = 'A';
+	player[3] = 0;
 	hiScores = new Score();
 	this->width = width;
 	this->height = height;
@@ -89,8 +90,8 @@ void	Game::Update(eInput value)
 		//shouldLeave = true;
 		if (hiScores->CheckScore(score, wall))
 		{
-			std::cout << "BESTENDMENU\n";
 			state = BESTENDMENU;
+			std::cout << "BESTENDMENU\n";
 		}
 		else
 			state = ENDMENU;
@@ -428,6 +429,12 @@ void Game::EndMenu(eInput value)
 	}
 }
 
+void	Game::HiScoreMenu(eInput value)
+{
+	if (value != NONE)
+		state = MAINMENU;
+}
+
 void	Game::Launch()
 {
 	value = NONE;
@@ -494,10 +501,11 @@ void	Game::Launch()
 			JoinMenu(value);
 		else if (state == BESTENDMENU)
 			BestEndMenu(value);
-		gameData->SetState(state);
+		else if (state == HISCOREMENU)
+			HiScoreMenu(value);
 		gameData->SetScore(score);
-		// if (state != MULTI)
-			gameData->Draw();
+		gameData->Draw();
+		gameData->SetState(state);
 		gettimeofday(&time, NULL);
 		double end = (time.tv_usec + time.tv_sec * 1000000);
 		double wait = start + progress - end;

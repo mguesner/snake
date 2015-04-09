@@ -2,11 +2,8 @@
 #include "../core/GameObject.hpp"
 #include "../core/Snake.hpp"
 
-SFMLData::SFMLData(int width, int height, std::list<GameObject*> *objects)
+SFMLData::SFMLData(int width, int height, std::list<GameObject*> *objects) : Data(width, height, objects)
 {
-	this->width = width;
-	this->height = height;
-	this->objects = objects;
 
 	x0 = (WIDTH - width * 20) / 2;
 	y0 = (HEIGHT - height * 10) / 2;
@@ -23,12 +20,12 @@ SFMLData::SFMLData(int width, int height, std::list<GameObject*> *objects)
 	// }
 	if (!font->loadFromFile("SPECIAL.TTF"))
 	{
-    	std::cout << "WTF FONT CANT BE OPEN" << std::endl;
+    	std::cerr << "WTF FONT CANT BE OPEN" << std::endl;
     	exit(-1);
 	}
 	if (!texture->loadFromFile("groundX.png"))
 	{
-		std::cout << "WTF TExture CANT BE OPEN" << std::endl;
+		std::cerr << "WTF TExture CANT BE OPEN" << std::endl;
     	exit(-1);
 	}
 	background->setPosition(x0, y0);
@@ -36,19 +33,7 @@ SFMLData::SFMLData(int width, int height, std::list<GameObject*> *objects)
 	texture->setSmooth(true);
 	background->setTexture(texture);
 	background->setFillColor(sf::Color(40,40,40));
-	funcs[MAINMENU] = &SFMLData::DrawMainMenu;
-	// funcs[PSEUDOMENU] = &SFMLData::DrawPseudoMenu;
-	funcs[NM] = &SFMLData::DrawNormalMode;
-	funcs[MULTIMENU] = &SFMLData::DrawMultiMenu;
-	funcs[HOSTMENU] = &SFMLData::DrawHostMenu;
-	funcs[JOINMENU] = &SFMLData::DrawJoinMenu;
-	funcs[PAUSEMENU] = &SFMLData::DrawPauseMenu;
-	funcs[ENDMENU] = &SFMLData::DrawEndMenu;
 
-	funcs2[SNAKE] = &SFMLData::DrawSnake;
-	funcs2[FOOD] = &SFMLData::DrawFood;
-
-	value = NONE;
 	inputs[sf::Keyboard::Up] = UP;
 	inputs[sf::Keyboard::Down] = DOWN;
 	inputs[sf::Keyboard::Left] = LEFT;
@@ -63,21 +48,7 @@ SFMLData::SFMLData(int width, int height, std::list<GameObject*> *objects)
 	inputs[sf::Keyboard::Num3] = F3;
 	inputs[sf::Keyboard::Return] = VALIDATE;
 
-	mainMenu[0] = "new game";
-	mainMenu[1] = "multiplayer";
-	mainMenu[2] = "wall : ";
-	mainMenu[3] = "quit";
-
-	pauseMenu[0] =  "continue";
-	pauseMenu[1] = "restart";
-	pauseMenu[2] = "quit";
-
-	endMenu[0] = "restart";
-	endMenu[1] = "main menu";
-	endMenu[2] = "quit";
-
 	shouldDraw = false;
-	closeIsCall = false;
 
 	// if (!(font70 = TTF_OpenFont("COMICATE.TTF", 70)))
 	// 	throw SFMLException(TTF_GetError());
@@ -101,7 +72,7 @@ void SFMLData::DrawMainMenu()
 
 
        int i = 0;
-       while (i < NBMODE)
+       while (i < SIZEMENUCHOICES)
        {
        		if (i == choice)
        			menuEntry.setColor(sf::Color::Red);
@@ -114,7 +85,7 @@ void SFMLData::DrawMainMenu()
        }
 }
 
-void SFMLData::DrawPseudoMenu()
+void SFMLData::DrawHiScoreMenu()
 {
 
 }
@@ -164,16 +135,17 @@ void SFMLData::DrawNormalMode()
 	// SFML_UpdateWindowSurface(win);
 }
 
+void SFMLData::DrawMultiMode()
+{
+
+}
+
 void SFMLData::DrawHostMenu()
 {
 
 }
 
 void SFMLData::DrawJoinMenu()
-{
-}
-
-void SFMLData::Lock()
 {
 }
 
@@ -228,6 +200,11 @@ void SFMLData::DrawEndMenu()
        		win->draw(menuEntry);
        		i++;
        }
+}
+
+void SFMLData::DrawBestEndMenu()
+{
+
 }
 
 void SFMLData::SetInput(int keycode)
@@ -287,7 +264,6 @@ eInput SFMLData::GetInput()
 
 SFMLData::~SFMLData()
 {
-	std::cout << "delete" << std::endl;
 	delete font;
 	delete win;
 }
