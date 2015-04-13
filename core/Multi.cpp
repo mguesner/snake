@@ -1,5 +1,6 @@
 #include "Multi.hpp"
 #include <iostream>
+#include <string>
 #include <sys/types.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -12,19 +13,9 @@ typedef struct in_addr		t_in_addr;
 
 Multi::Multi()
 {
-	t_protoent		*prot;
 	isConnect = false;
-	if (!(prot = getprotobyname("tcp")))
-		perror("getprotobyname");
-	if ((sock = socket(PF_INET, SOCK_STREAM, prot->p_proto)) == -1)
-		perror("socket");
-	sin.sin_family = AF_INET;
-	sin.sin_addr.s_addr = INADDR_ANY;
-	sin.sin_port = htons(PORT);
-	if (bind(sock, (t_sockaddr*)&sin, sizeof(sin)) == -1)
-		perror("bind");
-	if (listen(sock, 1) == -1)
-		perror("listen");
+	isListening = false;
+
 }
 
 Multi::Multi(Multi const & src)
@@ -34,6 +25,22 @@ Multi::Multi(Multi const & src)
 
 void Multi::Host()
 {
+	if (!isConnect && !isListening)
+	{
+		t_protoent		*prot;
+		if (!(prot = getprotobyname("tcp")))
+			perror("getprotobyname");
+		if ((sock = socket(PF_INET, SOCK_STREAM, prot->p_proto)) == -1)
+			perror("socket");
+		sin.sin_family = AF_INET;
+		sin.sin_addr.s_addr = INADDR_ANY;
+		sin.sin_port = htons(PORT);
+		if (bind(sock, (t_sockaddr*)&sin, sizeof(sin)) == -1)
+			perror("bind");
+		if (listen(sock, 1) == -1)
+			perror("listen");
+		isListening = true;
+	}
 	fd_set readfs;
 	int ret = 0;
 	FD_ZERO(&readfs);
@@ -52,10 +59,11 @@ void Multi::Host()
 		unsigned int sinsize = sizeof sin;
 		cSock = accept(sock, (t_sockaddr *)&sin, &sinsize);
 		isConnect = true;
+		isListening = false;
 	}
 }
 
-void Multi::Join()
+void Multi::Join(std::string ip)
 {
 	t_sockaddr_in	sin;
 	t_protoent	*proto;
@@ -64,14 +72,14 @@ void Multi::Join()
 	if ((cSock = socket(PF_INET, SOCK_STREAM, proto->p_proto)) == -1)
 		perror("sock");
 	sin.sin_family = AF_INET;
-	sin.sin_port = htons(6666);
-	sin.sin_addr = *(t_in_addr *)(gethostbyname("localhost")->h_addr);
+	sin.sin_port = htons(PORT);
+	sin.sin_addr = *(t_in_addr *)(gethostbyname(ip.c_str())->h_addr);
+	std::cout << "CONNECTION..." << std::endl;
 	if (connect(cSock, (t_sockaddr *)&sin, sizeof(sin)) == -1)
-	{
-		perror("conn");
-		exit(errno);
-	}
-	isConnect = true;
+		perror("connect");
+	else
+		isConnect = true;
+	std::cout << "DONE..." << std::endl;
 }
 
 void Multi::Send(void *data, int size)

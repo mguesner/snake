@@ -53,6 +53,7 @@ enum eMenuMultiChoice
 enum eInput
 {
 	NONE = 0,
+	CHAR,
 	UP,
 	DOWN,
 	LEFT,
@@ -88,6 +89,7 @@ public:
 	virtual ~Data(){}
 	virtual void Draw() = 0;
 	virtual eInput GetInput() = 0;
+	virtual char GetChar() = 0;
 	void Close();
 	void SetDrawFinish();
 	bool GetDrawInstruction();
@@ -100,6 +102,7 @@ public:
 	void SetScore(Score*);
 	int GetScore();
 	std::string GetIp();
+	void SetIp(std::string);
 	std::list<GameObject*> *GetGameObjects();
 	eGameState GetState();
 	virtual void SetChoice(int);
@@ -129,6 +132,7 @@ protected:
 	int width;
 	int height;
 	int choice;
+	char ch;
 	bool wall;
 	eInput value;
 	Score *hiScores;
@@ -137,6 +141,7 @@ protected:
 	char player[3];
 	std::string ip;
 	std::map<int, eInput> inputs;
+	std::map<int, char> chars;
 	std::string mainMenu[SIZEMENUCHOICES];
 	std::string pauseMenu[NBACTIONPAUSE];
 	std::string endMenu[NBACTIONEND];

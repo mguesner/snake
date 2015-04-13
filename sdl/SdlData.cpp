@@ -31,6 +31,19 @@ SdlData::SdlData(int width, int height, std::list<GameObject*> *objects) : Data(
 	inputs[SDLK_2] = F2;
 	inputs[SDLK_RETURN] = VALIDATE;
 
+	chars[SDLK_KP_0] = '0';
+	chars[SDLK_KP_1] = '1';
+	chars[SDLK_KP_2] = '2';
+	chars[SDLK_KP_3] = '3';
+	chars[SDLK_KP_4] = '4';
+	chars[SDLK_KP_5] = '5';
+	chars[SDLK_KP_6] = '6';
+	chars[SDLK_KP_7] = '7';
+	chars[SDLK_KP_8] = '8';
+	chars[SDLK_KP_9] = '9';
+	chars[SDLK_KP_PERIOD] = '.';
+	chars[SDLK_BACKSPACE] = 127;
+
 	shouldDraw = false;
 
 	if (!(font70 = TTF_OpenFont("COMICATE.TTF", 70)))
@@ -201,7 +214,9 @@ void SdlData::DrawJoinMenu()
 	SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
 	SDL_Rect position;
 	SDL_Color text_color = {0x0, 0x0, 0x0, 0xFF};
-	auto title = TTF_RenderText_Solid(font20, "enter ip : ", text_color);
+	auto tmp = std::string("enter ip : ");
+	tmp += ip;
+	auto title = TTF_RenderText_Solid(font20, tmp.c_str(), text_color);
 	if (!title)
 		throw SdlException(TTF_GetError());
 	position.x = (WIDTH - title->w) / 2;
@@ -340,7 +355,16 @@ eInput SdlData::GetInput()
 	if (!SDL_PollEvent(&event))
 		return NONE;
 	if (event.type == SDL_KEYDOWN)
-		return inputs[event.key.keysym.sym];
+	{
+		auto tmp = inputs[event.key.keysym.sym];
+		if (tmp != NONE)
+			return tmp;
+		else
+		{
+			ch = chars[event.key.keysym.sym];
+			return CHAR;
+		}
+	}
 	else if (event.type == SDL_QUIT)
 	{
 		TTF_CloseFont(font20);
@@ -353,6 +377,10 @@ eInput SdlData::GetInput()
 	return NONE;
 }
 
+char SdlData::GetChar()
+{
+	return ch;
+}
 
 SdlData::~SdlData()
 {

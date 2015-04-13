@@ -223,58 +223,72 @@ void	Game::HostMenu(eInput value)
 		multi.Send((void *)&wall, sizeof(bool));
 
 		multi.Rcv(data);
-		}
-
-	// while (1);
+	}
 }
 
 void	Game::JoinMenu(eInput value)
 {
-	object->clear();
-	delete first;
-	delete food;
-	(void)value;
-	if (!multi.IsConnect())
-		multi.Join();
-	state = MULTI;
-	char data[128];
+	if (value == VALIDATE)
+	{
+		if (!multi.IsConnect())
+			multi.Join(addr);
+		if (multi.IsConnect())
+		{
+			object->clear();
+			delete first;
+			delete food;
+			state = MULTI;
+			char data[128];
 
-	multi.Rcv(data);
-	Point ori(*(Point *)data);
+			multi.Rcv(data);
+			Point ori(*(Point *)data);
 
-	multi.Send((void*)"done\n", 5);
+			multi.Send((void*)"done\n", 5);
 
-	multi.Rcv(data);
-	Point dir(*(Point *)data);
-	first = new Player(object, width, height, ori, dir);
+			multi.Rcv(data);
+			Point dir(*(Point *)data);
+			first = new Player(object, width, height, ori, dir);
 
-	multi.Send((void*)"done\n", 5);
+			multi.Send((void*)"done\n", 5);
 
-	multi.Rcv(data);
-	Point ori2(*(Point *)data);
+			multi.Rcv(data);
+			Point ori2(*(Point *)data);
 
-	multi.Send((void*)"done\n", 5);
+			multi.Send((void*)"done\n", 5);
 
-	multi.Rcv(data);
-	Point dir2(*(Point *)data);
-	second = new Player(object, width, height, ori2, dir2);
+			multi.Rcv(data);
+			Point dir2(*(Point *)data);
+			second = new Player(object, width, height, ori2, dir2);
 
-	multi.Send((void*)"done\n", 5);
+			multi.Send((void*)"done\n", 5);
 
-	multi.Rcv(data);
-	food = new Food(*(Food *)data);
-	object->push_back(food);
+			multi.Rcv(data);
+			food = new Food(*(Food *)data);
+			object->push_back(food);
 
-	multi.Send((void*)"done\n", 5);
+			multi.Send((void*)"done\n", 5);
 
-	multi.Rcv(data);
-	wall = *(bool *)data;
-	gameData->SetWall(wall);
+			multi.Rcv(data);
+			wall = *(bool *)data;
+			gameData->SetWall(wall);
 
-	multi.Send((void*)"done\n", 5);
-
-	sleep (2);
-	// while (1);
+			multi.Send((void*)"done\n", 5);
+		}
+	}
+	else if (value == CHAR)
+	{
+		auto ch = gameData->GetChar();
+		std::cout << (int)ch << std::endl;
+		if (ch && ch == 127 && addr.size())
+			addr.pop_back();
+		else if (ch && ch != 127)
+			addr.append(1, ch);
+		gameData->SetIp(addr);
+	}
+	else if (value == PAUSE)
+	{
+		state = MAINMENU;
+	}
 }
 
 void Game::MainMenu(eInput value)

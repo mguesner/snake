@@ -44,13 +44,12 @@ private:
 	int width;
 	int height;
 	Score *hiScores;
-	std::thread core;
 	eGameState state;
 	Data *gameData;
 	loader *lib;
-	std::mutex libIsLoading;
 	std::list<GameObject*> *object;
 	char player[4];
+	std::string addr;
 	Player *first;
 	Player *second;
 	Food *food;

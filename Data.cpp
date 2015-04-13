@@ -120,6 +120,11 @@ void Data::SetScore(Score *score)
 	hiScores = score;
 }
 
+void Data::SetIp(std::string ip)
+{
+	this->ip = ip;
+}
+
 bool Data::ShouldClose()
 {
 	return closeIsCall;
