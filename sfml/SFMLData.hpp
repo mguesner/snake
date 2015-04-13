@@ -24,22 +24,22 @@ public:
 private:
 
 	void		DrawMainMenu();
-	void		DrawPseudoMenu();
+	void		DrawHiScoreMenu();
 	void		DrawNormalMode();
+	void		DrawMultiMode();
 	void		DrawMulti();
 	void		DrawMultiMenu();
 	void		DrawHostMenu();
 	void		DrawJoinMenu();
 	void		DrawPauseMenu();
 	void		DrawEndMenu();
+	void		DrawBestEndMenu();
+
 	void		DrawSnake(GameObject*);
 	void		DrawFood(GameObject*);
-	int			width;
-	int			height;
+
 	int			x0;
 	int			y0;
-	Func		funcs[9];
-	Func2		funcs2[2];
 	sf::RenderWindow	*win;
 	sf::Font 			*font;
 	sf::Texture			*texture;

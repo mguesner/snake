@@ -37,8 +37,8 @@ int main(int argc, char **argv)
 	std::list<GameObject*> obj;
 	try
 	{
-		 //loader	*graphiclib = new loader("sdl/libsdl.so", width, height, &obj);
-		loader	*graphiclib = new loader("ncurses/libcurses.so", width, height, &obj);
+		 loader	*graphiclib = new loader("sdl/libsdl.so", width, height, &obj);
+		// loader	*graphiclib = new loader("ncurses/libcurses.so", width, height, &obj);
 		// loader 	*graphiclib = new loader("sfml/libsfml.so", width, height, &obj);
 		Data	*gameData = graphiclib->GetData();
 		Game	*game = new Game(gameData, graphiclib, current, width, height, &obj);

@@ -3,8 +3,14 @@
 
 #define PORT	6666
 
+#include <sys/socket.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <sys/time.h>
+
 class Multi
 {
+typedef struct sockaddr_in	t_sockaddr_in;
 public:
 	Multi();
 	void Host();
@@ -17,8 +23,10 @@ public:
 	~Multi();
 
 private:
-	bool isConnect;
-	int  cSock;
+	bool	isConnect;
+	int		sock;
+	int		cSock;
+	t_sockaddr_in	sin;
 };
 
 #endif

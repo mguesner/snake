@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <time.h>
 
-NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
+NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects) : Data(width, height, objects)
 {
 	initscr();
 	curs_set(0);
@@ -20,25 +20,8 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	init_pair(CSNAKEBODY, COLOR_BLACK, COLOR_GREEN);
 	init_pair(CFOOD, COLOR_RED, COLOR_WHITE);
 	init_pair(CWALL, COLOR_WHITE, COLOR_MARRON);
-	funcs[MAINMENU] = &NCursesData::DrawMainMenu;
-	funcs[HISCOREMENU] = &NCursesData::DrawHiScoreMenu;
-	funcs[NM] = &NCursesData::DrawNormalMode;
-	funcs[MULTI] = &NCursesData::DrawMultiMode;
-	funcs[MULTIMENU] = &NCursesData::DrawMultiMenu;
-	funcs[HOSTMENU] = &NCursesData::DrawHostMenu;
-	funcs[JOINMENU] = &NCursesData::DrawJoinMenu;
-	funcs[PAUSEMENU] = &NCursesData::DrawPauseMenu;
-	funcs[ENDMENU] = &NCursesData::DrawEndMenu;
-	funcs[BESTENDMENU] = &NCursesData::DrawBestEndMenu;
-	funcs2[SNAKE] = &NCursesData::DrawSnake;
-	funcs2[FOOD] = &NCursesData::DrawFood;
-	this->width = width;
-	this->height = height;
-	this->objects = objects;
 	keypad(stdscr, TRUE);
 	shouldLeave = false;
-	closeIsCall = false;
-	locker.lock();
 	value = NONE;
 	inputs['w'] = UP;
 	inputs['s'] = DOWN;
@@ -57,20 +40,6 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	inputs['\n'] = VALIDATE;
 	// display = std::thread(&NCursesData::StartDisplay, this);
 	// input = std::thread(&NCursesData::StartInput, this);
-	pauseMenu[0] =  "continue";
-	pauseMenu[1] = "restart";
-	pauseMenu[2] = "quit";
-	mainMenu[NEWGAME] = "new game";
-	mainMenu[MULTIPLAYER] = "multiplayer";
-	mainMenu[HISCORE] = "hi-score";
-	mainMenu[WALL] = "wall-e : ";
-	mainMenu[EXIT] = "quit";
-	endMenu[0] = "restart";
-	endMenu[1] = "main menu";
-	endMenu[2] = "quit";
-	multiMenu[0] = "host game";
-	multiMenu[1] = "join game";
-	multiMenu[2] = "quit";
 }
 
 void NCursesData::Start()

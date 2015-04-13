@@ -22,6 +22,7 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	player[0] = 'A';
 	player[1] = 'A';
 	player[2] = 'A';
+	player[3] = 0;
 	hiScores = new Score();
 	this->width = width;
 	this->height = height;
@@ -89,7 +90,6 @@ void	Game::Update(eInput value)
 		//shouldLeave = true;
 		if (hiScores->CheckScore(score, wall))
 		{
-			std::cout << "BESTENDMENU\n";
 			state = BESTENDMENU;
 		}
 		else
@@ -154,23 +154,24 @@ void	Game::MultiMenu(eInput value)
 {
 	if (value == VALIDATE)
 	{
-		if (entry == NEWGAME)
+		if (entry == HOST)
 			state = HOSTMENU;
-		else if (entry == MULTIPLAYER)
+		else if (entry == JOIN)
 			state = JOINMENU;
-		else if (entry == EXIT)
+		else if (entry == MMEXIT)
 			shouldLeave = true;
+		entry = 0;
 	}
 	else if (value == UP)
 	{
 		if (entry == 0)
-			entry = NBACTIONMULTIMENU - 1;
+			entry = SIZEMULTIMENUCHOICES - 1;
 		else
 			entry--;
 	}
 	else if (value == DOWN)
 	{
-		if (entry == NBACTIONMULTIMENU - 1)
+		if (entry == SIZEMULTIMENUCHOICES - 1)
 			entry = 0;
 		else
 			entry++;
@@ -189,39 +190,40 @@ void	Game::HostMenu(eInput value)
 	(void)value;
 	if (!multi.IsConnect())
 		multi.Host();
-	state = MULTI;
-	//multi.Send((void*)"HOST\n", 5);
-	second = new Player(object, width, height, 2);
+	else
+	{
+		state = MULTI;
+		//multi.Send((void*)"HOST\n", 5);
+		second = new Player(object, width, height, 2);
 
-	auto start = *first->GetSnake()->GetSnake().begin();
-	multi.Send((void *)(&start), sizeof(Point));
+		auto start = *first->GetSnake()->GetSnake().begin();
+		multi.Send((void *)(&start), sizeof(Point));
 
-	multi.Rcv(data);
+		multi.Rcv(data);
 
-	auto dir = first->GetSnake()->GetDirection();
-	multi.Send((void *)(&dir), sizeof(Point));
+		auto dir = first->GetSnake()->GetDirection();
+		multi.Send((void *)(&dir), sizeof(Point));
 
-	multi.Rcv(data);
+		multi.Rcv(data);
 
-	start = *second->GetSnake()->GetSnake().begin();
-	multi.Send((void *)(&start), sizeof(Point));
+		start = *second->GetSnake()->GetSnake().begin();
+		multi.Send((void *)(&start), sizeof(Point));
 
-	multi.Rcv(data);
+		multi.Rcv(data);
 
-	dir = second->GetSnake()->GetDirection();
-	multi.Send((void *)(&dir), sizeof(Point));
+		dir = second->GetSnake()->GetDirection();
+		multi.Send((void *)(&dir), sizeof(Point));
 
-	multi.Rcv(data);
+		multi.Rcv(data);
 
-	multi.Send((void *) food, sizeof(Food));
+		multi.Send((void *) food, sizeof(Food));
 
-	multi.Rcv(data);
+		multi.Rcv(data);
 
-	multi.Send((void *)&wall, sizeof(bool));
+		multi.Send((void *)&wall, sizeof(bool));
 
-	multi.Rcv(data);
-
-	sleep (2);
+		multi.Rcv(data);
+		}
 
 	// while (1);
 }
@@ -235,7 +237,6 @@ void	Game::JoinMenu(eInput value)
 	if (!multi.IsConnect())
 		multi.Join();
 	state = MULTI;
-	// multi.Send((void*)"JOIN	\n", 5);
 	char data[128];
 
 	multi.Rcv(data);
@@ -428,6 +429,12 @@ void Game::EndMenu(eInput value)
 	}
 }
 
+void	Game::HiScoreMenu(eInput value)
+{
+	if (value != NONE)
+		state = MAINMENU;
+}
+
 void	Game::Launch()
 {
 	value = NONE;
@@ -494,10 +501,11 @@ void	Game::Launch()
 			JoinMenu(value);
 		else if (state == BESTENDMENU)
 			BestEndMenu(value);
-		gameData->SetState(state);
+		else if (state == HISCOREMENU)
+			HiScoreMenu(value);
 		gameData->SetScore(score);
-		// if (state != MULTI)
-			gameData->Draw();
+		gameData->Draw();
+		gameData->SetState(state);
 		gettimeofday(&time, NULL);
 		double end = (time.tv_usec + time.tv_sec * 1000000);
 		double wait = start + progress - end;

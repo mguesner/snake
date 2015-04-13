@@ -1,32 +1,19 @@
 #include "Multi.hpp"
-#include "unistd.h"
-#include <netdb.h>
-#include <stdio.h>
-#include <sys/time.h>
 #include <iostream>
-#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/select.h>
 
 typedef struct protoent		t_protoent;
-typedef struct sockaddr_in	t_sockaddr_in;
 typedef struct sockaddr		t_sockaddr;
 typedef struct hostent		t_hostent;
 typedef struct in_addr		t_in_addr;
 
 Multi::Multi()
 {
-}
-
-Multi::Multi(Multi const & src)
-{
-	(void)src;
-}
-
-void Multi::Host()
-{
 	t_protoent		*prot;
-	t_sockaddr_in	sin;
-	int				sock;
-
+	isConnect = false;
 	if (!(prot = getprotobyname("tcp")))
 		perror("getprotobyname");
 	if ((sock = socket(PF_INET, SOCK_STREAM, prot->p_proto)) == -1)
@@ -38,11 +25,34 @@ void Multi::Host()
 		perror("bind");
 	if (listen(sock, 1) == -1)
 		perror("listen");
-	unsigned int sinsize = sizeof sin;
-	if ((cSock = accept(sock, (t_sockaddr *)&sin, &sinsize)) == -1)
-		perror("accept");
-	std::cout << "accepted" << std::endl;
-	isConnect = true;
+}
+
+Multi::Multi(Multi const & src)
+{
+	(void)src;
+}
+
+void Multi::Host()
+{
+	fd_set readfs;
+	int ret = 0;
+	FD_ZERO(&readfs);
+	FD_SET(sock, &readfs);
+	struct timeval	timeout;
+	timeout.tv_sec = 1;
+	timeout.tv_usec = 0;
+
+	if((ret = select(sock + 1, &readfs, NULL, NULL, &timeout)) < 0)
+	{
+		perror("select");
+		exit(errno);
+	}
+	if(FD_ISSET(sock, &readfs))
+	{
+		unsigned int sinsize = sizeof sin;
+		cSock = accept(sock, (t_sockaddr *)&sin, &sinsize);
+		isConnect = true;
+	}
 }
 
 void Multi::Join()
@@ -58,9 +68,8 @@ void Multi::Join()
 	sin.sin_addr = *(t_in_addr *)(gethostbyname("localhost")->h_addr);
 	if (connect(cSock, (t_sockaddr *)&sin, sizeof(sin)) == -1)
 	{
-		std::cout << "fail" << std::endl;
 		perror("conn");
-		exit(-1);
+		exit(errno);
 	}
 	isConnect = true;
 }
@@ -88,5 +97,7 @@ Multi& Multi::operator=(Multi const & rhs)
 
 Multi::~Multi()
 {
+	close(sock);
+	close(cSock);
 }
 

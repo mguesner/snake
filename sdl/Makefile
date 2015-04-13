@@ -5,6 +5,7 @@ SRC = SdlData.cpp\
 	  ../core/GameObject.cpp \
 	  ../core/Point.cpp \
 	  ../core/Snake.cpp \
+	  ../core/Score.cpp \
 	  ../Data.cpp \
 	  SdlException.cpp
 

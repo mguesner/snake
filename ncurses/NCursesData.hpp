@@ -16,8 +16,6 @@
 
 class NCursesData : public Data
 {
-	typedef void (NCursesData::*Func)();
-	typedef void (NCursesData::*Func2)(GameObject*);
 public:
 	NCursesData(int width, int height, std::list<GameObject*> *objects);
 	void Draw();
@@ -43,8 +41,6 @@ private:
 	void DrawBestEndMenu();
 	void DrawSnake(GameObject*);
 	void DrawFood(GameObject*);
-	Func funcs[SIZEGSTATE];
-	Func2 funcs2[2];
 	int xScreen;
 	int yScreen;
 };
