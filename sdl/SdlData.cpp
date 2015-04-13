@@ -30,7 +30,6 @@ SdlData::SdlData(int width, int height, std::list<GameObject*> *objects) : Data(
 	inputs[SDLK_1] = F1;
 	inputs[SDLK_2] = F2;
 	inputs[SDLK_RETURN] = VALIDATE;
-
 	chars[SDLK_KP_0] = '0';
 	chars[SDLK_KP_1] = '1';
 	chars[SDLK_KP_2] = '2';
@@ -43,7 +42,6 @@ SdlData::SdlData(int width, int height, std::list<GameObject*> *objects) : Data(
 	chars[SDLK_KP_9] = '9';
 	chars[SDLK_KP_PERIOD] = '.';
 	chars[SDLK_BACKSPACE] = 127;
-
 	shouldDraw = false;
 
 	if (!(font70 = TTF_OpenFont("COMICATE.TTF", 70)))

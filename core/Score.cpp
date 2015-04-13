@@ -117,6 +117,7 @@ Score::~Score()
 	i = 0;
 	while (std::get<1>(noWallScores[i]) && i < 5)
 	{
+		std::cout << "bite" << std::endl;
 		fs << std::get<0>(noWallScores[i]) << ":" << std::get<1>(noWallScores[i]) << std::endl;
 		i++;
 	}

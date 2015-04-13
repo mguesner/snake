@@ -91,6 +91,7 @@ void	Game::Update(eInput value)
 		if (hiScores->CheckScore(score, wall))
 		{
 			state = BESTENDMENU;
+			std::cout << "BESTENDMENU\n";
 		}
 		else
 			state = ENDMENU;
