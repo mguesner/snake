@@ -34,7 +34,8 @@ SDL2:
 	mv SDL2-2.0.3.tar.gz SDL2-2.0.3 SDL2/junk
 
 FREE_TYPE:
-	( cd /Volumes/Data/nfs/zfs-student-3/users/2013/mguesner/Downloads/freetype-2.5.5 3 \
+	curl -L file:///nfs/zfs-student-3/users/2013/mguesner/Downloads/freetype-2.5.5.tar.bz2
+	( cd $(shell pwd)/freetype-2.5.5 3 \
 		&& ./configure --prefix=$(shell pwd)/FREE_TYPE/ \
 		&& $(MAKE) && $(MAKE) install)
 

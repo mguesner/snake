@@ -89,16 +89,12 @@ void	Game::Update(eInput value)
 	{
 		//shouldLeave = true;
 		if (hiScores->CheckScore(score, wall))
-		{
 			state = BESTENDMENU;
-			std::cout << "BESTENDMENU\n";
-		}
 		else
 			state = ENDMENU;
 	}
 	if (snk->IsColliding())
 	{
-		//shouldLeave = true;//game stat = loose
 		if (hiScores->CheckScore(score, wall))
 			state = BESTENDMENU;
 		else
@@ -113,42 +109,39 @@ void	Game::Update(eInput value)
 		progress -= 5000;
 		score += 1;
 	}
-	if (second)
-	{
-		snk = second->GetSnake();
-		if (value >= UP && value <= RIGHT)
-			snk->SetDirection(value);
-		if (snk->Move(wall))
-		{
-		//shouldLeave = true;
-			state = ENDMENU;
-		}
-		if (snk->IsColliding())
-		{
-		//shouldLeave = true;//game stat = loose
-			state = ENDMENU;
-		}
-		ObjectType ret = Collide();
-		if (ret == VOID)
-			snk->Back();
-		else
-		{
-			food->Collision(object);
-			progress -= 1000;
-			score += 1;
-		}
-	}
 }
 
 void	Game::UpdateMulti(eInput value)
 {
-	// char data[128] = {0};
+	// if (!isHost)
 
-	// while (1);
-	// multi.Rcv(data);
-	// std::cout << data << std::endl;
-	Update(value);
-	// multi.Send((void*)"COUCOU\n", 7);
+	Snake *snk = first->GetSnake();
+	if (value >= UP && value <= RIGHT)
+		snk->SetDirection(value);
+	if (snk->Move(wall))
+	{
+		//shouldLeave = true;
+		if (hiScores->CheckScore(score, wall))
+			state = BESTENDMENU;
+		else
+			state = ENDMENU;
+	}
+	if (snk->IsColliding())
+	{
+		if (hiScores->CheckScore(score, wall))
+			state = BESTENDMENU;
+		else
+			state = ENDMENU;
+	}
+	ObjectType ret = Collide();
+	if (ret == VOID)
+		snk->Back();
+	else
+	{
+		food->Collision(object);
+		progress -= 5000;
+		score += 1;
+	}
 }
 
 void	Game::MultiMenu(eInput value)
