@@ -12,6 +12,7 @@ Data::Data(int width, int height, std::list<GameObject*> *objects)
 	this->objects = objects;
 	value = NONE;
 	closeIsCall = false;
+	isMulti = false;
 
 	funcs2[SNAKE] = &Data::DrawSnake;
 	funcs2[FOOD] = &Data::DrawFood;
@@ -113,6 +114,11 @@ void Data::SetPlayer(char player[3])
 	this->player[0] = player[0];
 	this->player[1] = player[1];
 	this->player[2] = player[2];
+}
+
+char Data::GetChar()
+{
+	return ch;
 }
 
 void Data::SetScore(Score *score)

@@ -188,42 +188,51 @@ void	Game::MultiMenu(eInput value)
 void	Game::HostMenu(eInput value)
 {
 	char data[128];
-	(void)value;
+	if (value == PAUSE)
+	{
+		state = MAINMENU;
+		return ;
+	}
 	if (!multi.IsConnect())
 		multi.Host();
-	else
+	if (multi.IsConnect())
 	{
 		state = MULTI;
-		//multi.Send((void*)"HOST\n", 5);
 		second = new Player(object, width, height, 2);
 
 		auto start = *first->GetSnake()->GetSnake().begin();
 		multi.Send((void *)(&start), sizeof(Point));
 
-		multi.Rcv(data);
+		if (!multi.Rcv(data))
+			state = MAINMENU;
 
 		auto dir = first->GetSnake()->GetDirection();
 		multi.Send((void *)(&dir), sizeof(Point));
 
-		multi.Rcv(data);
+		if (!multi.Rcv(data))
+			state = MAINMENU;
 
 		start = *second->GetSnake()->GetSnake().begin();
 		multi.Send((void *)(&start), sizeof(Point));
 
-		multi.Rcv(data);
+		if (!multi.Rcv(data))
+			state = MAINMENU;
 
 		dir = second->GetSnake()->GetDirection();
 		multi.Send((void *)(&dir), sizeof(Point));
 
-		multi.Rcv(data);
+		if (!multi.Rcv(data))
+			state = MAINMENU;
 
 		multi.Send((void *) food, sizeof(Food));
 
-		multi.Rcv(data);
+		if (!multi.Rcv(data))
+			state = MAINMENU;
 
 		multi.Send((void *)&wall, sizeof(bool));
 
-		multi.Rcv(data);
+		if (!multi.Rcv(data))
+			state = MAINMENU;
 	}
 }
 
@@ -241,35 +250,41 @@ void	Game::JoinMenu(eInput value)
 			state = MULTI;
 			char data[128];
 
-			multi.Rcv(data);
+			if (!multi.Rcv(data))
+				state = MAINMENU;
 			Point ori(*(Point *)data);
 
 			multi.Send((void*)"done\n", 5);
 
-			multi.Rcv(data);
+			if (!multi.Rcv(data))
+				state = MAINMENU;
 			Point dir(*(Point *)data);
 			first = new Player(object, width, height, ori, dir);
 
 			multi.Send((void*)"done\n", 5);
 
-			multi.Rcv(data);
+			if (!multi.Rcv(data))
+				state = MAINMENU;
 			Point ori2(*(Point *)data);
 
 			multi.Send((void*)"done\n", 5);
 
-			multi.Rcv(data);
+			if (!multi.Rcv(data))
+				state = MAINMENU;
 			Point dir2(*(Point *)data);
 			second = new Player(object, width, height, ori2, dir2);
 
 			multi.Send((void*)"done\n", 5);
 
-			multi.Rcv(data);
+			if (!multi.Rcv(data))
+				state = MAINMENU;
 			food = new Food(*(Food *)data);
 			object->push_back(food);
 
 			multi.Send((void*)"done\n", 5);
 
-			multi.Rcv(data);
+			if (!multi.Rcv(data))
+				state = MAINMENU;
 			wall = *(bool *)data;
 			gameData->SetWall(wall);
 
@@ -415,6 +430,8 @@ void Game::EndMenu(eInput value)
 		else if (entry == 1)
 		{
 			Reset();
+			if (multi.IsConnect())
+				multi.Disconnect();
 			state = MAINMENU;
 		}
 		else if (entry == 2)

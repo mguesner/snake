@@ -30,14 +30,23 @@ void Multi::Host()
 		if (!(prot = getprotobyname("tcp")))
 			perror("getprotobyname");
 		if ((sock = socket(PF_INET, SOCK_STREAM, prot->p_proto)) == -1)
+		{
 			perror("socket");
+			return;
+		}
 		sin.sin_family = AF_INET;
 		sin.sin_addr.s_addr = INADDR_ANY;
 		sin.sin_port = htons(PORT);
 		if (bind(sock, (t_sockaddr*)&sin, sizeof(sin)) == -1)
+		{
 			perror("bind");
+			return;
+		}
 		if (listen(sock, 1) == -1)
+		{
 			perror("listen");
+			return;
+		}
 		isListening = true;
 	}
 	fd_set readfs;
@@ -51,7 +60,7 @@ void Multi::Host()
 	if((ret = select(sock + 1, &readfs, NULL, NULL, &timeout)) < 0)
 	{
 		perror("select");
-		exit(errno);
+		return;
 	}
 	if(FD_ISSET(sock, &readfs))
 	{
@@ -86,14 +95,24 @@ void Multi::Send(void *data, int size)
 	write(cSock, data, size);
 }
 
-void Multi::Rcv(char data[128])
+bool Multi::Rcv(char data[128])
 {
+	if (!isConnect)
+		return false;
 	read(cSock, data, 127);
+	std::cout << "rcv : " << data << std::endl;
+	return true;
 }
 
 bool Multi::IsConnect()
 {
 	return isConnect;
+}
+
+void Multi::Disconnect()
+{
+	isConnect = false;
+	close(cSock);
 }
 
 Multi& Multi::operator=(Multi const & rhs)

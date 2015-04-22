@@ -171,7 +171,34 @@ void SdlData::DrawNormalMode()
 
 void SdlData::DrawMultiMode()
 {
-
+	SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0x00, 0x00, 0x0));
+	SDL_Rect bg = {x0, y0, width * 10, height * 10};
+	SDL_FillRect(screenSurface, &bg, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
+	if (wall)
+	{
+		auto noir = SDL_MapRGB(screenSurface->format, 178, 34, 34);
+		SDL_Rect wall1 = {x0 - 3, y0 - 3, 3, height * 10 + 6};
+		SDL_Rect wall2 = {x0, y0 - 3, width * 10 + 3, 3};
+		SDL_Rect wall3 = {x0, y0 + height * 10, width * 10 + 3, 3};
+		SDL_Rect wall4 = {x0 + width * 10, y0, 3, height * 10};
+		SDL_FillRect(screenSurface, &wall1, noir);
+		SDL_FillRect(screenSurface, &wall2, noir);
+		SDL_FillRect(screenSurface, &wall3, noir);
+		SDL_FillRect(screenSurface, &wall4, noir);
+	}
+	for (auto i = objects->begin(); i != objects->end(); ++i)
+	{
+		(this->*funcs2[(*i)->GetType()])(*i);
+	}
+	SDL_Rect position;
+	SDL_Color text_color = {0xFF, 0xFF, 0xFF, 0xFF};
+	std::string s = std::to_string(score);
+	std::string tmp("score : " + s);
+	auto texte = TTF_RenderText_Solid(font20, tmp.c_str(), text_color);
+	position.x = x0;
+	position.y = y0 - 40;
+	SDL_BlitSurface(texte, NULL, screenSurface, &position);
+	SDL_FreeSurface(texte);
 }
 
 void SdlData::DrawMultiMenu()
@@ -373,11 +400,6 @@ eInput SdlData::GetInput()
 		exit(0);
 	}
 	return NONE;
-}
-
-char SdlData::GetChar()
-{
-	return ch;
 }
 
 SdlData::~SdlData()

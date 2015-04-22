@@ -19,7 +19,6 @@ public:
 	void Close();
 	void Lock();
 	eInput GetInput();
-	char GetChar();
 	void SetInput(int);
 	~SdlData();
 

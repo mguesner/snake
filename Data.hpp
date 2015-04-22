@@ -89,7 +89,7 @@ public:
 	virtual ~Data(){}
 	virtual void Draw() = 0;
 	virtual eInput GetInput() = 0;
-	virtual char GetChar() = 0;
+	char GetChar();
 	void Close();
 	void SetDrawFinish();
 	bool GetDrawInstruction();
@@ -134,6 +134,7 @@ protected:
 	int choice;
 	char ch;
 	bool wall;
+	bool isMulti;
 	eInput value;
 	Score *hiScores;
 	std::list<GameObject*> *objects;
