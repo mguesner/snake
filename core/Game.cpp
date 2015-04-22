@@ -113,8 +113,9 @@ void	Game::Update(eInput value)
 
 void	Game::UpdateMulti(eInput value)
 {
-	// if (!isHost)
-
+	char data[128];
+	if (!isHost)
+		multi.Rcv(data);
 	Snake *snk = first->GetSnake();
 	if (value >= UP && value <= RIGHT)
 		snk->SetDirection(value);
