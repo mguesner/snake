@@ -113,9 +113,6 @@ void	Game::Update(eInput value)
 
 void	Game::UpdateMulti(eInput value)
 {
-	char data[128];
-	if (!isHost)
-		multi.Rcv(data);
 	Snake *snk = first->GetSnake();
 	if (value >= UP && value <= RIGHT)
 		snk->SetDirection(value);
@@ -142,6 +139,53 @@ void	Game::UpdateMulti(eInput value)
 		food->Collision(object);
 		progress -= 5000;
 		score += 1;
+	}
+
+	char data[128];
+	if (!isHost)
+		multi.Rcv(data);
+	multi.Send((void *)(&value), sizeof(eInput));
+	if (isHost)
+		multi.Rcv(data);
+	eInput *tmp = (eInput*)data;
+
+
+	if (!isHost)
+		multi.Rcv(data);
+	auto point = food->GetPosition();
+	multi.Send((void *)(&point), sizeof(Point));
+	if (isHost)
+		multi.Rcv(data);
+	Point *newFood = (Point*)data;
+
+	snk = second->GetSnake();
+	if (*tmp >= UP && *tmp <= RIGHT)
+	{
+		std::cout << "set direction : " << *tmp << std::endl;
+		snk->SetDirection(*tmp);
+	}
+	if (snk->Move(wall))
+	{
+		//shouldLeave = true;
+		if (hiScores->CheckScore(score, wall))
+			state = BESTENDMENU;
+		else
+			state = ENDMENU;
+	}
+	if (snk->IsColliding())
+	{
+		if (hiScores->CheckScore(score, wall))
+			state = BESTENDMENU;
+		else
+			state = ENDMENU;
+	}
+	ret = Collide();
+	if (ret == VOID)
+		snk->Back();
+	else
+	{
+		food->Collision(object, *newFood);
+		progress -= 5000;
 	}
 }
 
@@ -182,6 +226,7 @@ void	Game::MultiMenu(eInput value)
 void	Game::HostMenu(eInput value)
 {
 	char data[128];
+	isHost = true;
 	if (value == PAUSE)
 	{
 		state = MAINMENU;
@@ -253,7 +298,7 @@ void	Game::JoinMenu(eInput value)
 			if (!multi.Rcv(data))
 				state = MAINMENU;
 			Point dir(*(Point *)data);
-			first = new Player(object, width, height, ori, dir);
+			second = new Player(object, width, height, ori, dir);
 
 			multi.Send((void*)"done\n", 5);
 
@@ -266,7 +311,7 @@ void	Game::JoinMenu(eInput value)
 			if (!multi.Rcv(data))
 				state = MAINMENU;
 			Point dir2(*(Point *)data);
-			second = new Player(object, width, height, ori2, dir2);
+			first = new Player(object, width, height, ori2, dir2);
 
 			multi.Send((void*)"done\n", 5);
 

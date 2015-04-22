@@ -10,6 +10,7 @@ public:
 	Food(Food const & src);
 	Food& operator=(Food const & rhs);
 	void Collision(std::list<GameObject*> *object);
+	void Collision(std::list<GameObject*> *object, Point newFood);
 	bool IsColliding();
 	~Food();
 private:

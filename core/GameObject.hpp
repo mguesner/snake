@@ -4,7 +4,6 @@
 #include "Point.hpp"
 #include "../Data.hpp"
 
-
 class GameObject
 {
 public:

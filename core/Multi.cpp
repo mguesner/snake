@@ -100,7 +100,7 @@ bool Multi::Rcv(char data[128])
 	if (!isConnect)
 		return false;
 	read(cSock, data, 127);
-	std::cout << "rcv : " << data << std::endl;
+	// std::cout << "rcv : " << data << std::endl;
 	return true;
 }
 
