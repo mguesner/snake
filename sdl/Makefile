@@ -22,7 +22,7 @@ lib:
 	$(CC) -c -o $@ $<
 
 $(NAME): $(OBJ)
-	$(CC) -dynamiclib -o $(NAME) $(OBJ) -L/Volumes/Data/nfs/zfs-student-3/users/2013/mguesner/Documents/snake/sdl/SDL2/lib -lSDL2 -lSDL2_ttf
+	$(CC) -dynamiclib -o $(NAME) $(OBJ) -L$(shell pwd)/SDL2/lib -lSDL2 -lSDL2_ttf
 
 SDL2:
 	mkdir -p SDL2/junk
@@ -45,7 +45,7 @@ SDL2_TFF:
 	curl -L https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.12.tar.gz -o "SDL2_ttf-2.0.12.tar.gz"
 	tar -xf SDL2_ttf-2.0.12.tar.gz
 	( cd SDL2_ttf-2.0.12 \
-	&& ./configure --prefix=$(shell pwd)/SDL2/ --with-freetype-prefix=/Volumes/Data/nfs/zfs-student-3/users/2013/mguesner/Documents/snake/sdl/FREE_TYPE --with-sdl-prefix=/Volumes/Data/nfs/zfs-student-3/users/2013/mguesner/Documents/snake/sdl/SDL2\
+	&& ./configure --prefix=$(shell pwd)/SDL2/ --with-freetype-prefix=$(shell pwd)/FREE_TYPE --with-sdl-prefix=$(shell pwd)/SDL2\
 	&& $(MAKE) && $(MAKE) install )
 	mv SDL2_ttf-2.0.12.tar.gz SDL2_ttf-2.0.12 SDL2/junk
 

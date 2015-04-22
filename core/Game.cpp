@@ -147,7 +147,7 @@ void	Game::UpdateMulti(eInput value)
 	multi.Send((void *)(&value), sizeof(eInput));
 	if (isHost)
 		multi.Rcv(data);
-	eInput *tmp = (eInput*)data;
+	eInput tmp = (eInput)*data;
 
 
 	if (!isHost)
@@ -159,10 +159,10 @@ void	Game::UpdateMulti(eInput value)
 	Point *newFood = (Point*)data;
 
 	snk = second->GetSnake();
-	if (*tmp >= UP && *tmp <= RIGHT)
+	if (tmp >= UP && tmp <= RIGHT)
 	{
-		std::cout << "set direction : " << *tmp << std::endl;
-		snk->SetDirection(*tmp);
+		std::cout << "set direction : " << tmp << std::endl;
+		snk->SetDirection(tmp);
 	}
 	if (snk->Move(wall))
 	{
