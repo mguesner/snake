@@ -142,21 +142,22 @@ void	Game::UpdateMulti(eInput value)
 	}
 
 	char data[128];
+	auto point = food->GetPosition();
 	if (!isHost)
 		multi.Rcv(data);
 	multi.Send((void *)(&value), sizeof(eInput));
-	if (isHost)
-		multi.Rcv(data);
-	eInput tmp = (eInput)*data;
-
-
-	if (!isHost)
-		multi.Rcv(data);
-	auto point = food->GetPosition();
 	multi.Send((void *)(&point), sizeof(Point));
 	if (isHost)
 		multi.Rcv(data);
-	Point *newFood = (Point*)data;
+	eInput tmp = (eInput)*data;
+	Point *newFood = (Point*)(data + sizeof(eInput));
+
+
+	// if (!isHost)
+	// 	multi.Rcv(data);
+	// multi.Send((void *)(&point), sizeof(Point));
+	// if (isHost)
+	// 	multi.Rcv(data);
 
 	snk = second->GetSnake();
 	if (tmp >= UP && tmp <= RIGHT)
