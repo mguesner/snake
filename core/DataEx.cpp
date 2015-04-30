@@ -2,6 +2,9 @@
 
 DataEx::DataEx()
 {
+	snakeFirst = NULL;
+	snakeSecond = NULL;
+	food = NULL;
 }
 
 DataEx::DataEx(DataEx const & src)
@@ -21,6 +24,7 @@ DataEx& DataEx::operator=(DataEx const & src)
 
 DataEx::~DataEx()
 {
+	
 }
 
 Serializer DataEx::Serialize(Snake *first, Snake *second, Food *food)
@@ -42,7 +46,6 @@ Serializer DataEx::Serialize(Snake *first, Snake *second, Food *food)
 		total += sizeof(double);
 		serialize.data[total] = (*it).getZ();
 		total += sizeof(double);
-		std::cout << (*it) << std::endl;
 		it++;
 	}
 	if (second)

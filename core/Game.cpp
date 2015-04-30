@@ -35,6 +35,7 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	shouldLeave = false;
 	progress = 100000;
 	entry = 0;
+	addr = "127.0.0.1";
 	(void)second;
 	(void)cur;
 
@@ -113,33 +114,23 @@ void	Game::Update(eInput value)
 
 void	Game::UpdateMulti(eInput value)
 {
-	char data[128];
+	char data[128] = {0};
 
 	if (isHost)
 	{
-
 		multi.Rcv(data);
-		eInput tmp = (eInput)*data;
-		(void)tmp;
+		eInput value2 = (eInput)*data;
 		Snake *snk = first->GetSnake();
-		Snake *snk2 = first->GetSnake();
+		Snake *snk2 = second->GetSnake();
 		if (value >= UP && value <= RIGHT)
 			snk->SetDirection(value);
-		if (snk->Move(wall))
-		{
-			//shouldLeave = true;
-			if (hiScores->CheckScore(score, wall))
-				state = BESTENDMENU;
-			else
-				state = ENDMENU;
-		}
-		if (snk->IsColliding())
-		{
-			if (hiScores->CheckScore(score, wall))
-				state = BESTENDMENU;
-			else
-				state = ENDMENU;
-		}
+		if (value2 >= UP && value2 <= RIGHT)
+			snk2->SetDirection(value2);
+		
+		snk2->Move(wall);
+		snk2->IsColliding();
+		snk->Move(wall);
+		snk->IsColliding();
 		ObjectType ret = Collide();
 		if (ret == VOID)
 			snk->Back();
@@ -149,17 +140,30 @@ void	Game::UpdateMulti(eInput value)
 			progress -= 5000;
 			score += 1;
 		}
+
+
+
+
 		DataEx seri;
 		auto serialize = seri.Serialize(snk, snk2, food);
 		multi.Send((void*)&serialize, sizeof(Serializer));
 	}
 	else
 	{
-		//multi.Send(value);
+		multi.Send((void*)&value, sizeof(eInput));
 		if (value == PAUSE)
+		{
+			multi.Disconnect();
 			state = MAINMENU;
+			return;
+		}
 		DataEx unseri;
 		unseri.UnSerialize(multi.Rcv());
+		first->SetSnake(unseri.GetSnake());
+		second->SetSnake(unseri.GetSecondSnake());
+		object->remove(food);
+		delete food;
+		food = unseri.GetFood();
 
 	}
 }
@@ -200,7 +204,7 @@ void	Game::MultiMenu(eInput value)
 
 void	Game::HostMenu(eInput value)
 {
-	char data[128];
+	//char data[128];
 	isHost = true;
 	if (value == PAUSE)
 	{
@@ -213,45 +217,13 @@ void	Game::HostMenu(eInput value)
 	{
 		state = MULTI;
 		second = new Player(object, width, height, 2);
-
-		auto start = *first->GetSnake()->GetSnake().begin();
-		multi.Send((void *)(&start), sizeof(Point));
-
-		if (!multi.Rcv(data))
-			state = MAINMENU;
-
-		auto dir = first->GetSnake()->GetDirection();
-		multi.Send((void *)(&dir), sizeof(Point));
-
-		if (!multi.Rcv(data))
-			state = MAINMENU;
-
-		start = *second->GetSnake()->GetSnake().begin();
-		multi.Send((void *)(&start), sizeof(Point));
-
-		if (!multi.Rcv(data))
-			state = MAINMENU;
-
-		dir = second->GetSnake()->GetDirection();
-		multi.Send((void *)(&dir), sizeof(Point));
-
-		if (!multi.Rcv(data))
-			state = MAINMENU;
-
-		multi.Send((void *) food, sizeof(Food));
-
-		if (!multi.Rcv(data))
-			state = MAINMENU;
-
 		multi.Send((void *)&wall, sizeof(bool));
-
-		if (!multi.Rcv(data))
-			state = MAINMENU;
 	}
 }
 
 void	Game::JoinMenu(eInput value)
 {
+	char data[128] = {0};
 	if (value == VALIDATE)
 	{
 		if (!multi.IsConnect())
@@ -259,50 +231,13 @@ void	Game::JoinMenu(eInput value)
 		if (multi.IsConnect())
 		{
 			object->clear();
-			delete first;
-			delete food;
+			second = new Player(object, width, height, 2);
 			state = MULTI;
-			char data[128];
-
-			if (!multi.Rcv(data))
-				state = MAINMENU;
-			Point ori(*(Point *)data);
-
-			multi.Send((void*)"done\n", 5);
-
-			if (!multi.Rcv(data))
-				state = MAINMENU;
-			Point dir(*(Point *)data);
-			second = new Player(object, width, height, ori, dir);
-
-			multi.Send((void*)"done\n", 5);
-
-			if (!multi.Rcv(data))
-				state = MAINMENU;
-			Point ori2(*(Point *)data);
-
-			multi.Send((void*)"done\n", 5);
-
-			if (!multi.Rcv(data))
-				state = MAINMENU;
-			Point dir2(*(Point *)data);
-			first = new Player(object, width, height, ori2, dir2);
-
-			multi.Send((void*)"done\n", 5);
-
-			if (!multi.Rcv(data))
-				state = MAINMENU;
-			food = new Food(*(Food *)data);
-			object->push_back(food);
-
-			multi.Send((void*)"done\n", 5);
 
 			if (!multi.Rcv(data))
 				state = MAINMENU;
 			wall = *(bool *)data;
 			gameData->SetWall(wall);
-
-			multi.Send((void*)"done\n", 5);
 		}
 	}
 	else if (value == CHAR)

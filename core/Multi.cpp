@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/select.h>
+#include <csignal>
 
 typedef struct protoent		t_protoent;
 typedef struct sockaddr		t_sockaddr;
@@ -14,6 +15,7 @@ Multi::Multi()
 {
 	isConnect = false;
 	isListening = false;
+	signal(SIGPIPE, SIG_IGN);
 
 }
 
@@ -92,14 +94,21 @@ void Multi::Join(std::string ip)
 
 void Multi::Send(void *data, int size)
 {
+	char res[2];
 	write(cSock, data, size);
+	read(cSock, res, 1);
 }
 
 bool Multi::Rcv(char data[128])
 {
 	if (!isConnect)
 		return false;
-	read(cSock, data, 127);
+	if (read(cSock, data, 127) == -1)
+	{
+		std::cout << "Multi.cpp error PIPE read" << std::endl;
+		exit(-1);
+	}
+	write(cSock, "1", 1);
 	// std::cout << "rcv : " << data << std::endl;
 	return true;
 }
@@ -109,7 +118,12 @@ Serializer Multi::Rcv()
 	Serializer data;
 	if (!isConnect)
 		return data;
-	read(cSock, &data, sizeof(Serializer));
+	if (read(cSock, &data, sizeof(Serializer)) == -1)
+	{
+		std::cout << "Multi.cpp error PIPE read" << std::endl;
+		exit(-1);
+	}
+	write(cSock, "1", 1);
 	// std::cout << "rcv : " << data << std::endl;
 	return data;
 }

@@ -10,7 +10,7 @@ public:
 	Serializer(Serializer const & src);
 	Serializer& operator=(Serializer const & rhs);
 	~Serializer();
-	char data[1048576];
+	char data[65536];
 	int total;
 	int size[20];
 };

@@ -42,6 +42,7 @@ Data::Data(int width, int height, std::list<GameObject*> *objects)
 	multiMenu[0] = "host game";
 	multiMenu[1] = "join game";
 	multiMenu[2] = "quit";
+	ip = "127.0.0.1";
 }
 
 void Data::SetScore(int value)

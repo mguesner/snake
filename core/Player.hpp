@@ -13,6 +13,7 @@ public:
 	Player(std::list<GameObject*> *obj, int, int, Point, Point);
 	Player(Player const & src);
 	Snake *GetSnake();
+	void SetSnake(Snake *);
 	Player& operator=(Player const & rhs);
 	~Player();
 private:
@@ -20,6 +21,7 @@ private:
 	Snake *snake;
 	Point direction;
 	int		speed;
+	std::list<GameObject*> *object;
 };
 
 #endif
