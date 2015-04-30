@@ -114,8 +114,10 @@ void	Game::Update(eInput value)
 void	Game::UpdateMulti(eInput value)
 {
 	char data[128];
+
 	if (isHost)
 	{
+
 		multi.Rcv(data);
 		eInput tmp = (eInput)*data;
 		(void)tmp;
