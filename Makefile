@@ -19,7 +19,9 @@ SRC = $(DIR)main.cpp\
 	$(DIR)Point.cpp\
 	$(DIR)Snake.cpp\
 	$(DIR)Multi.cpp\
-	$(DIR)Score.cpp
+	$(DIR)Score.cpp\
+	$(DIR)DataEx.cpp\
+	$(DIR)Serializer.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

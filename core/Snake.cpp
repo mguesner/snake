@@ -251,6 +251,11 @@ void	Snake::Back()
 	snake.pop_back();
 }
 
+void	Snake::SetSnake(std::list<Point> toSave)
+{
+	snake = toSave;
+}
+
 std::list<Point> Snake::GetSnake()
 {
 	return snake;

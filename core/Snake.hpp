@@ -15,14 +15,15 @@ public:
 	void SetDirection(eInput);
 	void AutoPLayer();
 	Point GetDirection();
+	Snake();
 	std::list<Point> GetSnake();
 	void SetSpeed(int);
+	void	SetSnake(std::list<Point> toSave);
 	void Collision(std::list<GameObject*> *object);
 	void	Back();
 	bool	Move(bool);
 	~Snake();
 private:
-	Snake();
 	std::list<Point> snake;
 	eInput current_dir;
 	Point up;

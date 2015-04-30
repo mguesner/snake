@@ -104,6 +104,16 @@ bool Multi::Rcv(char data[128])
 	return true;
 }
 
+Serializer Multi::Rcv()
+{
+	Serializer data;
+	if (!isConnect)
+		return data;
+	read(cSock, &data, sizeof(Serializer));
+	// std::cout << "rcv : " << data << std::endl;
+	return data;
+}
+
 bool Multi::IsConnect()
 {
 	return isConnect;

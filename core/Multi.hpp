@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include <string>
+#include "Serializer.hpp"
 
 class Multi
 {
@@ -18,6 +19,7 @@ public:
 	void Join(std::string ip);
 	void Send(void *data, int size);
 	bool Rcv(char data[128]);
+	Serializer Rcv();
 	Multi(Multi const & src);
 	void Disconnect();
 	bool IsConnect();

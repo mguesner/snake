@@ -113,79 +113,52 @@ void	Game::Update(eInput value)
 
 void	Game::UpdateMulti(eInput value)
 {
-	Snake *snk = first->GetSnake();
-	if (value >= UP && value <= RIGHT)
-		snk->SetDirection(value);
-	if (snk->Move(wall))
-	{
-		//shouldLeave = true;
-		if (hiScores->CheckScore(score, wall))
-			state = BESTENDMENU;
-		else
-			state = ENDMENU;
-	}
-	if (snk->IsColliding())
-	{
-		if (hiScores->CheckScore(score, wall))
-			state = BESTENDMENU;
-		else
-			state = ENDMENU;
-	}
-	ObjectType ret = Collide();
-	if (ret == VOID)
-		snk->Back();
-	else
-	{
-		food->Collision(object);
-		progress -= 5000;
-		score += 1;
-	}
-
 	char data[128];
-	if (!isHost)
-		multi.Rcv(data);
-	multi.Send((void *)(&value), sizeof(eInput));
 	if (isHost)
-		multi.Rcv(data);
-	eInput tmp = (eInput)*data;
-
-
-	if (!isHost)
-		multi.Rcv(data);
-	auto point = food->GetPosition();
-	multi.Send((void *)(&point), sizeof(Point));
-	if (isHost)
-		multi.Rcv(data);
-	Point *newFood = (Point*)data;
-
-	snk = second->GetSnake();
-	if (tmp >= UP && tmp <= RIGHT)
 	{
-		std::cout << "set direction : " << tmp << std::endl;
-		snk->SetDirection(tmp);
-	}
-	if (snk->Move(wall))
-	{
-		//shouldLeave = true;
-		if (hiScores->CheckScore(score, wall))
-			state = BESTENDMENU;
+		multi.Rcv(data);
+		eInput tmp = (eInput)*data;
+		(void)tmp;
+		Snake *snk = first->GetSnake();
+		Snake *snk2 = first->GetSnake();
+		if (value >= UP && value <= RIGHT)
+			snk->SetDirection(value);
+		if (snk->Move(wall))
+		{
+			//shouldLeave = true;
+			if (hiScores->CheckScore(score, wall))
+				state = BESTENDMENU;
+			else
+				state = ENDMENU;
+		}
+		if (snk->IsColliding())
+		{
+			if (hiScores->CheckScore(score, wall))
+				state = BESTENDMENU;
+			else
+				state = ENDMENU;
+		}
+		ObjectType ret = Collide();
+		if (ret == VOID)
+			snk->Back();
 		else
-			state = ENDMENU;
+		{
+			food->Collision(object);
+			progress -= 5000;
+			score += 1;
+		}
+		DataEx seri;
+		auto serialize = seri.Serialize(snk, snk2, food);
+		multi.Send((void*)&serialize, sizeof(Serializer));
 	}
-	if (snk->IsColliding())
-	{
-		if (hiScores->CheckScore(score, wall))
-			state = BESTENDMENU;
-		else
-			state = ENDMENU;
-	}
-	ret = Collide();
-	if (ret == VOID)
-		snk->Back();
 	else
 	{
-		food->Collision(object, *newFood);
-		progress -= 5000;
+		//multi.Send(value);
+		if (value == PAUSE)
+			state = MAINMENU;
+		DataEx unseri;
+		unseri.UnSerialize(multi.Rcv());
+
 	}
 }
 
@@ -514,6 +487,7 @@ void	Game::Launch()
 	wall = true;
 	music = new Sound(5);
 	music->Play();
+
 	gameData->SetScore(score);
 	gameData->SetState(state);
 	gameData->SetWall(wall);

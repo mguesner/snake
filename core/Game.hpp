@@ -8,6 +8,7 @@
 #include "Score.hpp"
 #include "Food.hpp"
 #include "Multi.hpp"
+#include "DataEx.hpp"
 #include <thread>
 
 class Game

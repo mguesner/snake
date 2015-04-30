@@ -99,6 +99,11 @@ void Food::Collision(std::list<GameObject*> *object, Point newFood)
 	// }
 }
 
+void Food::SetPosition(Point pos)
+{
+	position = pos;
+}
+
 void Food::Collision(std::list<GameObject*> *object)
 {
 	int x = rand() % xMax;
