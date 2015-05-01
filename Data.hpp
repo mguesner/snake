@@ -105,6 +105,7 @@ public:
 	void SetIp(std::string);
 	std::list<GameObject*> *GetGameObjects();
 	eGameState GetState();
+	void SetIpInfo(std::string info);
 	virtual void SetChoice(int);
 	virtual void SetState(eGameState);
 
@@ -141,6 +142,7 @@ protected:
 	int score;
 	char player[3];
 	std::string ip;
+	std::string myAccess;
 	std::map<int, eInput> inputs;
 	std::map<int, char> chars;
 	std::string mainMenu[SIZEMENUCHOICES];

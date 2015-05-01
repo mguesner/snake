@@ -226,12 +226,16 @@ void SdlData::DrawHostMenu()
 	SDL_Rect position;
 	SDL_Color text_color = {0x0, 0x0, 0x0, 0xFF};
 	auto title = TTF_RenderText_Solid(font70, "waiting players", text_color);
+	auto myips = TTF_RenderText_Solid(font70, myAccess.c_str(), text_color);
 	if (!title)
 		throw SdlException(TTF_GetError());
 	position.x = (WIDTH - title->w) / 2;
 	position.y = 350;
 	SDL_BlitSurface(title, NULL, screenSurface, &position);
+	position.y = 450;
+	SDL_BlitSurface(myips, NULL, screenSurface, &position);
 	SDL_FreeSurface(title);
+	SDL_FreeSurface(myips);
 }
 
 void SdlData::DrawJoinMenu()

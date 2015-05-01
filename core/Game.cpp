@@ -126,7 +126,7 @@ void	Game::UpdateMulti(eInput value)
 			snk->SetDirection(value);
 		if (value2 >= UP && value2 <= RIGHT)
 			snk2->SetDirection(value2);
-		
+
 		snk2->Move(wall);
 		snk2->IsColliding();
 		snk->Move(wall);
@@ -429,6 +429,7 @@ void	Game::Launch()
 	gameData->SetState(state);
 	gameData->SetWall(wall);
 	gameData->SetScore(hiScores);
+	gameData->SetIpInfo(multi.GetMyAccessPoint());
 	while (!shouldLeave)
 	{
 		timeval time;

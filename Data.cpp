@@ -122,6 +122,11 @@ char Data::GetChar()
 	return ch;
 }
 
+void Data::SetIpInfo(std::string info)
+{
+	myAccess = info;
+}
+
 void Data::SetScore(Score *score)
 {
 	hiScores = score;

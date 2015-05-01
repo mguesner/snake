@@ -24,7 +24,7 @@ DataEx& DataEx::operator=(DataEx const & src)
 
 DataEx::~DataEx()
 {
-	
+
 }
 
 Serializer DataEx::Serialize(Snake *first, Snake *second, Food *food)

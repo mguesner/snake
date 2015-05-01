@@ -23,6 +23,7 @@ public:
 	Multi(Multi const & src);
 	void Disconnect();
 	bool IsConnect();
+	std::string GetMyAccessPoint();
 	Multi& operator=(Multi const & rhs);
 	~Multi();
 
@@ -31,6 +32,7 @@ private:
 	bool	isListening;
 	int		sock;
 	int		cSock;
+	std::string	myAccessPoint;
 	t_sockaddr_in	sin;
 };
 

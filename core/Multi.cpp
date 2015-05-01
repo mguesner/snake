@@ -4,18 +4,44 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/select.h>
+#include <arpa/inet.h>
+#include <ifaddrs.h>
 #include <csignal>
 
 typedef struct protoent		t_protoent;
 typedef struct sockaddr		t_sockaddr;
 typedef struct hostent		t_hostent;
 typedef struct in_addr		t_in_addr;
+typedef struct ifaddrs 	t_addr_info;
 
 Multi::Multi()
 {
 	isConnect = false;
 	isListening = false;
 	signal(SIGPIPE, SIG_IGN);
+
+
+	t_addr_info *res, *p;
+	char ipstr[INET6_ADDRSTRLEN];
+	int status;
+
+	if ((status = getifaddrs(&res)) < 0)
+	{
+		fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(status));
+	}
+
+	for(p = res;p != NULL; p = p->ifa_next)
+	{
+		const void *addr;
+		if (p->ifa_addr->sa_family == AF_INET)
+		{
+			addr = &((struct sockaddr_in *)p->ifa_addr)->sin_addr;
+			inet_ntop(p->ifa_addr->sa_family, addr, ipstr, sizeof ipstr);
+			myAccessPoint += ipstr;
+			myAccessPoint += "|";
+		}
+	}
+	freeifaddrs(res);
 
 }
 
@@ -131,6 +157,11 @@ Serializer Multi::Rcv()
 bool Multi::IsConnect()
 {
 	return isConnect;
+}
+
+std::string Multi::GetMyAccessPoint()
+{
+	return myAccessPoint;
 }
 
 void Multi::Disconnect()
