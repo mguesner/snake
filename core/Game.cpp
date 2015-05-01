@@ -127,10 +127,12 @@ void	Game::UpdateMulti(eInput value)
 		if (value2 >= UP && value2 <= RIGHT)
 			snk2->SetDirection(value2);
 
-		snk2->Move(wall);
-		snk2->IsColliding();
-		snk->Move(wall);
-		snk->IsColliding();
+		if (snk2->Move(wall) || snk->Move(wall) || snk2->IsColliding() || snk->IsColliding())
+		{
+			multi.Disconnect();
+			Reset();
+			state = MAINMENU;
+		}
 		ObjectType ret = Collide();
 		if (ret == VOID)
 		{
