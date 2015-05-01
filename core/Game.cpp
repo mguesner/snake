@@ -162,11 +162,12 @@ void	Game::UpdateMulti(eInput value)
 		}
 		DataEx unseri;
 		unseri.UnSerialize(multi.Rcv());
-		first->SetSnake(unseri.GetSnake());
+		//first->SetSnake(unseri.GetSnake());
 		second->SetSnake(unseri.GetSecondSnake());
 		object->remove(food);
 		delete food;
 		food = unseri.GetFood();
+		object->push_front(food);
 
 	}
 }

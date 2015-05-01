@@ -29,7 +29,6 @@ DataEx::~DataEx()
 
 Serializer DataEx::Serialize(Snake *first, Snake *second, Food *food)
 {
-	(void)food;
 	Serializer serialize;
 	auto firstPlayer = first->GetSnake();
 
@@ -55,11 +54,11 @@ Serializer DataEx::Serialize(Snake *first, Snake *second, Food *food)
 		auto it2 = secondPlayer.begin();
 		while (it2 != secondPlayer.end())
 		{
-			serialize.data[total] = (*it).getX();
+			serialize.data[total] = (*it2).getX();
 			total += sizeof(double);
-			serialize.data[total] = (*it).getY();
+			serialize.data[total] = (*it2).getY();
 			total += sizeof(double);
-			serialize.data[total] = (*it).getZ();
+			serialize.data[total] = (*it2).getZ();
 			total += sizeof(double);
 			it2++;
 		}
