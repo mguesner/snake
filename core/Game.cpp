@@ -134,6 +134,10 @@ void	Game::UpdateMulti(eInput value)
 			state = MAINMENU;
 			return;
 		}
+		// Change to do here a new Collide
+		// easy  fix ->
+		//  food position == snake1 head ?
+		// food position == snake2 head ?
 		ObjectType ret = Collide();
 		if (ret == VOID)
 		{
