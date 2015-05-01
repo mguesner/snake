@@ -135,7 +135,7 @@ void	Game::UpdateMulti(eInput value)
 		if (ret == VOID)
 		{
 			snk->Back();
-			snkw->Back();
+			snk2->Back();
 		}
 		else
 		{
