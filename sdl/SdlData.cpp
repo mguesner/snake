@@ -360,7 +360,6 @@ void SdlData::DrawSnake(GameObject *it)
 {
 	auto snake = dynamic_cast<Snake *>(it)->GetSnake();
 	int color;
-	std::cout << " OFC" << std::endl;
 	for (auto i = snake.begin(); i != snake.end(); ++i)
 	{
 		if (i == snake.begin())
