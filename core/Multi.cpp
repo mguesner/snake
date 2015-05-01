@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 #include <arpa/inet.h>
 #include <ifaddrs.h>
 #include <csignal>
@@ -120,21 +122,25 @@ void Multi::Join(std::string ip)
 
 void Multi::Send(void *data, int size)
 {
-	char res[2];
-	write(cSock, data, size);
-	read(cSock, res, 1);
+	send(cSock, data, size, 0);
 }
 
-bool Multi::Rcv(char data[128])
+bool Multi::Rcv(char data[128], int size)
 {
 	if (!isConnect)
 		return false;
-	if (read(cSock, data, 127) == -1)
+	int offset = 0;
+	while (offset < size)
 	{
-		std::cout << "Multi.cpp error PIPE read" << std::endl;
-		exit(-1);
+		int tmp = 0;
+		if ((tmp = recv(cSock, &data[offset], 127, 0)) <= 0)
+		{
+			std::cout << "Connection closed Rcv" << std::endl;
+			Disconnect();
+			exit(-1);
+		}
+		offset += tmp;
 	}
-	write(cSock, "1", 1);
 	// std::cout << "rcv : " << data << std::endl;
 	return true;
 }
@@ -142,15 +148,22 @@ bool Multi::Rcv(char data[128])
 Serializer Multi::Rcv()
 {
 	Serializer data;
+	char		data2[sizeof(Serializer)];
+	int offset = 0;
 	if (!isConnect)
 		return data;
-	if (read(cSock, &data, sizeof(Serializer)) == -1)
+	while (offset < (int)sizeof(Serializer))
 	{
-		std::cout << "Multi.cpp error PIPE read" << std::endl;
-		exit(-1);
+		int tmp = 0;
+		if ((tmp = recv(cSock, &data2[offset], sizeof(Serializer) - offset, 0)) <= 0)
+		{
+			std::cout << "Connection closed Rcv" << std::endl;
+			Disconnect();
+			exit(-1);
+		}
+		offset += tmp;
 	}
-	write(cSock, "1", 1);
-	// std::cout << "rcv : " << data << std::endl;
+	std::memcpy(&data, &data2, sizeof(Serializer));
 	return data;
 }
 

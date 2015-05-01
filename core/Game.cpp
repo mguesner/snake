@@ -118,7 +118,7 @@ void	Game::UpdateMulti(eInput value)
 
 	if (isHost)
 	{
-		multi.Rcv(data);
+		multi.Rcv(data, sizeof(eInput));
 		eInput value2 = (eInput)*data;
 		Snake *snk = first->GetSnake();
 		Snake *snk2 = second->GetSnake();
@@ -245,7 +245,7 @@ void	Game::JoinMenu(eInput value)
 			second = new Player(object, width, height, 2);
 			state = MULTI;
 
-			if (!multi.Rcv(data))
+			if (!multi.Rcv(data, sizeof(bool)))
 				state = MAINMENU;
 			wall = *(bool *)data;
 			gameData->SetWall(wall);

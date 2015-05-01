@@ -18,7 +18,7 @@ public:
 	void Host();
 	void Join(std::string ip);
 	void Send(void *data, int size);
-	bool Rcv(char data[128]);
+	bool Rcv(char data[128], int size);
 	Serializer Rcv();
 	Multi(Multi const & src);
 	void Disconnect();
