@@ -132,6 +132,7 @@ void	Game::UpdateMulti(eInput value)
 			multi.Disconnect();
 			Reset();
 			state = MAINMENU;
+			return;
 		}
 		ObjectType ret = Collide();
 		if (ret == VOID)
