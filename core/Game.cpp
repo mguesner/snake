@@ -133,7 +133,10 @@ void	Game::UpdateMulti(eInput value)
 		snk->IsColliding();
 		ObjectType ret = Collide();
 		if (ret == VOID)
+		{
 			snk->Back();
+			snkw->Back();
+		}
 		else
 		{
 			food->Collision(object);
