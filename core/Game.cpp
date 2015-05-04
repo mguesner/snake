@@ -456,7 +456,8 @@ void	Game::Launch()
 	state = MAINMENU;
 	score = 0;
 	wall = true;
-	music = new Sound(5);
+	loader charge(5);
+	music = charge.GetMusic();
 	music->Play();
 
 	gameData->SetWall(wall);
