@@ -378,6 +378,13 @@ void SdlData::DrawFood(GameObject *it)
 	SDL_FillRect(screenSurface, &rect,color);
 }
 
+void SdlData::DrawPowerUp(GameObject *it)
+{
+	auto color = SDL_MapRGB(screenSurface->format, 119, 181, 254);
+	SDL_Rect rect = {x0 + (int)it->GetPosition().getX() * 10, y0 + (int)it->GetPosition().getY() * 10, 10, 10};
+	SDL_FillRect(screenSurface, &rect,color);
+}
+
 eInput SdlData::GetInput()
 {
 	SDL_Event event;

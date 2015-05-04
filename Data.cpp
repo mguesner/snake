@@ -16,6 +16,7 @@ Data::Data(int width, int height, std::list<GameObject*> *objects)
 
 	funcs2[SNAKE] = &Data::DrawSnake;
 	funcs2[FOOD] = &Data::DrawFood;
+	funcs2[POWERUP] = &Data::DrawPowerUp;
 
 	funcs[MAINMENU] = &Data::DrawMainMenu;
 	funcs[HISCOREMENU] = &Data::DrawHiScoreMenu;

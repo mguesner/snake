@@ -302,6 +302,19 @@ void SFMLData::DrawFood(GameObject *it)
 	win->draw(shape);
 }
 
+
+void SFMLData::DrawPowerUp(GameObject *it)
+{
+	sf::CircleShape shape(10);
+	shape.setFillColor(sf::Color(0, 0, 255));
+
+// set a 10-pixel wide orange outline
+	shape.setOutlineThickness(3);
+	shape.setOutlineColor(sf::Color(10, 10, 255));
+	shape.setPosition(x0 + (int)it->GetPosition().getX() * 20, y0 + (int)it->GetPosition().getY() * 20);
+	win->draw(shape);
+}
+
 eInput SFMLData::GetInput()
 {
 	sf::Event event;
