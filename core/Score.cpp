@@ -66,7 +66,7 @@ Score& Score::operator=(Score const & rhs)
 bool Score::CheckScore(int score, bool wall)
 {
 	int i = 0;
-	while (i < 5 && score < (wall ? std::get<1>(wallScores[i]) : std::get<1>(noWallScores[i])))
+	while (i < 5 && score <= (wall ? std::get<1>(wallScores[i]) : std::get<1>(noWallScores[i])))
 		i++;
 	if (i < 5)
 		return true;
@@ -117,7 +117,6 @@ Score::~Score()
 	i = 0;
 	while (std::get<1>(noWallScores[i]) && i < 5)
 	{
-		std::cout << "bite" << std::endl;
 		fs << std::get<0>(noWallScores[i]) << ":" << std::get<1>(noWallScores[i]) << std::endl;
 		i++;
 	}
