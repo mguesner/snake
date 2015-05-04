@@ -137,7 +137,23 @@ void SFMLData::DrawNormalMode()
 
 void SFMLData::DrawMultiMode()
 {
+	win->draw(*background);
+	for (auto i = objects->begin(); i != objects->end(); ++i)
+	{
+		(this->*funcs2[(*i)->GetType()])(*i);
+	}
+	// SFML_Rect position;
+	// SFML_Color text_color = {0xFF, 0xFF, 0xFF, 0xFF};
+	sf::Text scoreText;
 
+	scoreText.setFont(*font);
+	scoreText.setCharacterSize(45);
+	std::string s = std::to_string(score);
+	std::string tmp("score : " + s);
+	scoreText.setColor(sf::Color::White);
+	scoreText.setString(tmp);
+	scoreText.setPosition(1500, y0 - 60);
+	win->draw(scoreText);
 }
 
 void SFMLData::DrawHostMenu()
@@ -162,6 +178,19 @@ void SFMLData::DrawHostMenu()
 
 void SFMLData::DrawJoinMenu()
 {
+	sf::Text title;
+
+	title.setFont(*font);
+	title.setCharacterSize(35);
+	auto tmp = std::string(" Enter IP : ");
+	tmp += ip;
+
+
+	title.setColor(sf::Color::White);
+	title.setString(tmp);
+	title.setPosition(950, 500);
+	win->draw(title);
+
 }
 
 void SFMLData::DrawMulti()
