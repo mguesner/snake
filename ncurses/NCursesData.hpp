@@ -11,6 +11,7 @@
 #define CSNAKEBODY 5
 #define CFOOD 6
 #define CWALL 7
+#define CPOWERUP 8
 
 #define COLOR_MARRON 20
 
@@ -41,6 +42,7 @@ private:
 	void DrawBestEndMenu();
 	void DrawSnake(GameObject*);
 	void DrawFood(GameObject*);
+	void DrawPowerUp(GameObject*);
 	int xScreen;
 	int yScreen;
 };

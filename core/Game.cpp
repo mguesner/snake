@@ -277,7 +277,7 @@ void	Game::JoinMenu(eInput value)
 	else if (value == CHAR)
 	{
 		auto ch = gameData->GetChar();
-		std::cout << (int)ch << std::endl;
+		// std::cout << (int)ch << std::endl;
 		if (ch && ch == 127 && addr.size())
 			addr.pop_back();
 		else if (ch && ch != 127)

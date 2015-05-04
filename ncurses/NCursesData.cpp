@@ -19,6 +19,7 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	init_pair(CSNAKEHEAD, COLOR_BLACK, COLOR_RED);
 	init_pair(CSNAKEBODY, COLOR_BLACK, COLOR_GREEN);
 	init_pair(CFOOD, COLOR_RED, COLOR_WHITE);
+	init_pair(CPOWERUP, COLOR_BLUE, COLOR_WHITE);
 	init_pair(CWALL, COLOR_WHITE, COLOR_MARRON);
 	keypad(stdscr, TRUE);
 	shouldLeave = false;
@@ -35,6 +36,9 @@ NCursesData::NCursesData(int width, int height, std::list<GameObject*> *objects)
 	inputs[27] = PAUSE;
 	inputs[81] = F2;
 	inputs[82] = F3;
+	chars[127] = 127;
+	chars['.'] = '.';
+	// chars[] = '0';
 	inputs['2'] = F2;
 	inputs['3'] = F3;
 	inputs['\n'] = VALIDATE;
@@ -49,6 +53,7 @@ void NCursesData::Start()
 
 void NCursesData::Draw()
 {
+	// curs_set(0);
 	getmaxyx(stdscr, yScreen, xScreen);
 	clear();
 	if (yScreen < height || xScreen < (width + 15))
@@ -63,11 +68,19 @@ void NCursesData::Draw()
 
 eInput NCursesData::GetInput()
 {
-	int ch;
+	int tmp;
 	timeout(0);
-	ch = getch();
-	value = inputs[ch];
-	return value;
+	tmp = getch();
+	if (tmp == ERR)
+		return NONE;
+	value = inputs[tmp];
+	if (value != NONE)
+		return value;
+	else
+	{
+		ch = tmp;
+		return CHAR;
+	}
 }
 
 void NCursesData::DrawMainMenu()
@@ -199,16 +212,8 @@ void NCursesData::DrawHostMenu()
 
 void NCursesData::DrawJoinMenu()
 {
-	char tmp[16];
-	mvprintw(yScreen / 2, xScreen / 2, "enter ip : ");
-	echo();
-	curs_set(1);
-	timeout(-1);
-	getnstr(tmp, 15);
-	ip = std::string(tmp);
-	timeout(0);
-	noecho();
-	curs_set(0);
+	mvprintw(yScreen / 2, xScreen / 2, "enter ip : %s", ip.c_str());
+	// curs_set(1);
 }
 
 void NCursesData::DrawMulti()
@@ -307,6 +312,12 @@ void NCursesData::DrawSnake(GameObject *it)
 }
 
 void NCursesData::DrawFood(GameObject *it)
+{
+	attron(COLOR_PAIR(CFOOD));
+	mvprintw(it->GetPosition().getY() + (wall ? 1 : 0), it->GetPosition().getX() + (wall ? 1 : 0), "o");
+}
+
+void NCursesData::DrawPowerUp(GameObject *it)
 {
 	attron(COLOR_PAIR(CFOOD));
 	mvprintw(it->GetPosition().getY() + (wall ? 1 : 0), it->GetPosition().getX() + (wall ? 1 : 0), "o");
