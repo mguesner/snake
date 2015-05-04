@@ -13,6 +13,7 @@ public:
 	virtual void Collision(std::list<GameObject*> *object) = 0;
 	virtual	bool IsColliding() = 0;
 	virtual ~GameObject();
+	virtual bool IsActivate();
 	bool IsPhysical();
 	Point GetPosition();
 	ObjectType GetType();
@@ -24,6 +25,7 @@ protected:
 	int yMax;
 	int test;
 	bool	collider;
+	bool	isActivate;
 };
 
 #endif

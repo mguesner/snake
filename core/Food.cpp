@@ -3,6 +3,7 @@
 
 Food::Food(int width, int height)
 {
+	isActivate = true;
 	xMax = width;
 	yMax = height;
 	type = FOOD;

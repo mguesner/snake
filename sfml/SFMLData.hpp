@@ -38,6 +38,7 @@ private:
 	void		DrawSnake(GameObject*);
 	void		DrawFood(GameObject*);
 	void		DrawPowerUp(GameObject*);
+	void		DrawObstacle(GameObject*);
 
 	int			x0;
 	int			y0;

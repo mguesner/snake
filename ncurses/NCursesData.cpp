@@ -319,8 +319,18 @@ void NCursesData::DrawFood(GameObject *it)
 
 void NCursesData::DrawPowerUp(GameObject *it)
 {
-	attron(COLOR_PAIR(CFOOD));
+	if (!it->IsActivate())
+		return;
+	attron(COLOR_PAIR(CPOWERUP));
 	mvprintw(it->GetPosition().getY() + (wall ? 1 : 0), it->GetPosition().getX() + (wall ? 1 : 0), "o");
+}
+
+void NCursesData::DrawObstacle(GameObject *it)
+{
+	if (!wall)
+		return;
+	attron(COLOR_PAIR(CWALL));
+	mvprintw(it->GetPosition().getY() + (wall ? 1 : 0), it->GetPosition().getX() + (wall ? 1 : 0), " ");
 }
 
 NCursesData::~NCursesData()

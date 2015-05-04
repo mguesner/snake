@@ -31,7 +31,11 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	this->lib = lib;
 	first = new Player(object, width, height, 1);
 	food = new Food(width, height);
+	powerUp = new PowerUp(width, height);
+	obstacle = new Obstacle(width, height);
 	object->push_back(food);
+	object->push_back(powerUp);
+	object->push_back(obstacle);
 	shouldLeave = false;
 	progress = 100000;
 	entry = 0;
@@ -54,9 +58,13 @@ void	Game::Reset()
 	object->erase(object->begin(), object->end());
 	delete first;
 	delete food;
+	delete powerUp;
 	first = new Player(object, width, height, 1);
+	powerUp = new PowerUp(width, height);
 	food = new Food(width, height);
 	object->push_back(food);
+	object->push_back(powerUp);
+	object->push_back(obstacle);
 }
 
 ObjectType	Game::Collide()
@@ -70,7 +78,7 @@ ObjectType	Game::Collide()
 		current++;
 		if (current == last)
 			break;
-		if ((*first)->GetPosition() == (*current)->GetPosition())
+		if ((*first)->GetPosition() == (*current)->GetPosition() && (*current)->IsActivate())
 			return (*current)->GetType();
 	}
 	return VOID;
@@ -83,6 +91,8 @@ void	Game::Update(eInput value)
 		state = PAUSEMENU;
 		return;
 	}
+	if (!(rand() % 30) && !powerUp->IsActivate())
+		powerUp->Activate();
 	Snake *snk = first->GetSnake();
 	if (value >= UP && value <= RIGHT)
 		snk->SetDirection(value);
@@ -104,11 +114,23 @@ void	Game::Update(eInput value)
 	ObjectType ret = Collide();
 	if (ret == VOID)
 		snk->Back();
-	else
+	else if (ret == FOOD)
 	{
 		food->Collision(object);
 		progress -= 5000;
 		score += 1;
+	}
+	else if (ret == OBSTACLE)
+	{
+		if (hiScores->CheckScore(score, wall))
+			state = BESTENDMENU;
+		else
+			state = ENDMENU;
+	}
+	else
+	{
+		powerUp->Collision(object);
+		score += 5;
 	}
 }
 

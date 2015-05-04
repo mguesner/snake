@@ -7,8 +7,10 @@
 #include "../Sound.hpp"
 #include "Score.hpp"
 #include "Food.hpp"
+#include "PowerUp.hpp"
 #include "Multi.hpp"
 #include "DataEx.hpp"
+#include "Obstacle.hpp"
 #include <thread>
 
 class Game
@@ -55,6 +57,8 @@ private:
 	Player *first;
 	Player *second;
 	Food *food;
+	PowerUp	*powerUp;
+	Obstacle *obstacle;
 	eInput value;
 	Sound *music;
 };

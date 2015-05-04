@@ -14,6 +14,7 @@ enum ObjectType
 	SNAKE = 0,
 	FOOD,
 	POWERUP,
+	OBSTACLE,
 	VOID,
 	SIZETOBJ
 };
@@ -126,6 +127,7 @@ protected:
 	virtual void DrawSnake(GameObject*) = 0;
 	virtual void DrawFood(GameObject*) = 0;
 	virtual void DrawPowerUp(GameObject*) = 0;
+	virtual void DrawObstacle(GameObject*) = 0;
 
 	Func2 funcs2[SIZETOBJ];
 	Func funcs[SIZEGSTATE];

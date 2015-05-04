@@ -21,7 +21,9 @@ SRC = $(DIR)main.cpp\
 	$(DIR)Multi.cpp\
 	$(DIR)Score.cpp\
 	$(DIR)DataEx.cpp\
-	$(DIR)Serializer.cpp
+	$(DIR)Serializer.cpp\
+	$(DIR)PowerUp.cpp\
+	$(DIR)Obstacle.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

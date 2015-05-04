@@ -32,7 +32,7 @@ SFMLData::SFMLData(int width, int height, std::list<GameObject*> *objects) : Dat
 	texture->setRepeated(true);
 	texture->setSmooth(true);
 	background->setTexture(texture);
-	background->setFillColor(sf::Color(40,40,40));
+	background->setFillColor(sf::Color(80,80,80));
 
 	inputs[sf::Keyboard::Up] = UP;
 	inputs[sf::Keyboard::Down] = DOWN;
@@ -92,24 +92,30 @@ void SFMLData::DrawHiScoreMenu()
 
 void SFMLData::DrawNormalMode()
 {
-	// SFML_FillRect(screenSurface, NULL, SFML_MapRGB(screenSurface->format, 0x00, 0x00, 0x0));
-	// SFML_Rect bg = {x0, y0, width * 10, height * 10};
-	// SFML_FillRect(screenSurface, &bg, SFML_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
-	// if (wall)
-	// {
-	// 	auto noir = SFML_MapRGB(screenSurface->format, 178, 34, 34);
-	// 	SFML_Rect wall1 = {x0 - 3, y0 - 3, 3, height * 10 + 6};
-	// 	SFML_Rect wall2 = {x0, y0 - 3, width * 10 + 3, 3};
-	// 	SFML_Rect wall3 = {x0, y0 + height * 10, width * 10 + 3, 3};
-	// 	SFML_Rect wall4 = {x0 + width * 10, y0, 3, height * 10};
-	// 	SFML_FillRect(screenSurface, &wall1, noir);
-	// 	SFML_FillRect(screenSurface, &wall2, noir);
-	// 	SFML_FillRect(screenSurface, &wall3, noir);
-	// 	SFML_FillRect(screenSurface, &wall4, noir);
-	// }
 	win->draw(*background);
 
+	if (wall)
+	{
+		sf::RectangleShape rect(sf::Vector2f(3, height * 20 + 6));
+		rect.setFillColor(sf::Color(0x80, 0x80, 0x80));
+		rect.setPosition(x0 - 3, y0- 3);
+		win->draw(rect);
 
+		sf::RectangleShape rect2(sf::Vector2f(width * 20 + 3, 3));
+		rect2.setFillColor(sf::Color(0x80, 0x80, 0x80));
+		rect2.setPosition(x0, y0- 3);
+		win->draw(rect2);
+
+		sf::RectangleShape rect3(sf::Vector2f(width * 20 + 3, 3));
+		rect3.setFillColor(sf::Color(0x80, 0x80, 0x80));
+		rect3.setPosition(x0, y0 + height * 20);
+		win->draw(rect3);
+
+		sf::RectangleShape rect4(sf::Vector2f(3, height * 20));
+		rect4.setFillColor(sf::Color(0x80, 0x80, 0x80));
+		rect4.setPosition(x0 + width * 20, y0);
+		win->draw(rect4);
+	}
 
 	for (auto i = objects->begin(); i != objects->end(); ++i)
 	{
@@ -266,7 +272,32 @@ void SFMLData::DrawEndMenu()
 
 void SFMLData::DrawBestEndMenu()
 {
-
+	sf::Text menuEntry;
+	menuEntry.setFont(*font);
+	menuEntry.setCharacterSize(70);
+	menuEntry.setColor(sf::Color::White);
+	menuEntry.setString("Game Over");
+	menuEntry.setPosition(750, 300);
+	win->draw(menuEntry);
+	menuEntry.setCharacterSize(35);
+	std::string s = std::to_string(score);
+	std::string tmp("score : " + s);
+	menuEntry.setPosition(850, 400);
+	menuEntry.setString(tmp.c_str());
+	win->draw(menuEntry);
+	for (int i = 0; i < 3; i++)
+	{
+		char tmp[2];
+		tmp[0] = player[i];
+		tmp[1] = 0;
+		if (i == choice)
+			menuEntry.setColor(sf::Color::Red);
+		else
+			menuEntry.setColor(sf::Color::White);
+		menuEntry.setString(tmp);
+		menuEntry.setPosition((WIDTH - 120) / 2 + i * 40, 470);
+		win->draw(menuEntry);
+	}
 }
 
 void SFMLData::SetInput(int keycode)
@@ -292,7 +323,7 @@ void SFMLData::DrawSnake(GameObject *it)
 
 void SFMLData::DrawFood(GameObject *it)
 {
-	sf::CircleShape shape(10);
+	sf::CircleShape shape(8);
 	shape.setFillColor(sf::Color(220, 0, 0));
 
 // set a 10-pixel wide orange outline
@@ -305,12 +336,22 @@ void SFMLData::DrawFood(GameObject *it)
 
 void SFMLData::DrawPowerUp(GameObject *it)
 {
-	sf::CircleShape shape(10);
+	if (!it->IsActivate())
+		return;
+	sf::CircleShape shape(8);
 	shape.setFillColor(sf::Color(0, 0, 255));
-
-// set a 10-pixel wide orange outline
 	shape.setOutlineThickness(3);
 	shape.setOutlineColor(sf::Color(10, 10, 255));
+	shape.setPosition(x0 + (int)it->GetPosition().getX() * 20, y0 + (int)it->GetPosition().getY() * 20);
+	win->draw(shape);
+}
+
+void SFMLData::DrawObstacle(GameObject *it)
+{
+	if (!wall)
+		return;
+	sf::RectangleShape shape(sf::Vector2f(20, 20));
+	shape.setFillColor(sf::Color(0x80, 0x80, 0x80));
 	shape.setPosition(x0 + (int)it->GetPosition().getX() * 20, y0 + (int)it->GetPosition().getY() * 20);
 	win->draw(shape);
 }

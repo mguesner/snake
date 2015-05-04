@@ -15,7 +15,6 @@ public:
 	bool IsColliding();
 	void SetPosition(Point pos);
 	~Food();
-
 };
 
 #endif
