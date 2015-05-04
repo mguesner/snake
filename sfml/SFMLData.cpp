@@ -20,13 +20,13 @@ SFMLData::SFMLData(int width, int height, std::list<GameObject*> *objects) : Dat
 	// }
 	if (!font->loadFromFile("SPECIAL.TTF"))
 	{
-    	std::cerr << "WTF FONT CANT BE OPEN" << std::endl;
-    	exit(-1);
+		std::cerr << "WTF FONT CANT BE OPEN" << std::endl;
+		exit(-1);
 	}
 	if (!texture->loadFromFile("groundX.png"))
 	{
 		std::cerr << "WTF TExture CANT BE OPEN" << std::endl;
-    	exit(-1);
+		exit(-1);
 	}
 	background->setPosition(x0, y0);
 	texture->setRepeated(true);
@@ -65,24 +65,24 @@ void SFMLData::Draw()
 
 void SFMLData::DrawMainMenu()
 {
-       sf::Text menuEntry;
+	   sf::Text menuEntry;
 
-       menuEntry.setFont(*font);
-       menuEntry.setCharacterSize(35);
+	   menuEntry.setFont(*font);
+	   menuEntry.setCharacterSize(35);
 
 
-       int i = 0;
-       while (i < SIZEMENUCHOICES)
-       {
-       		if (i == choice)
-       			menuEntry.setColor(sf::Color::Red);
-       		else
-       			menuEntry.setColor(sf::Color::White);
-       		menuEntry.setString(mainMenu[i] + (i == WALL ? (wall ? "ON" : "OFF") : ""));
-       		menuEntry.setPosition(950, 500 + i * 100);
-       		win->draw(menuEntry);
-       		i++;
-       }
+	   int i = 0;
+	   while (i < SIZEMENUCHOICES)
+	   {
+			if (i == choice)
+				menuEntry.setColor(sf::Color::Red);
+			else
+				menuEntry.setColor(sf::Color::White);
+			menuEntry.setString(mainMenu[i] + (i == WALL ? (wall ? "ON" : "OFF") : ""));
+			menuEntry.setPosition(950, 500 + i * 100);
+			win->draw(menuEntry);
+			i++;
+	   }
 }
 
 void SFMLData::DrawHiScoreMenu()
@@ -119,8 +119,8 @@ void SFMLData::DrawNormalMode()
 	// SFML_Color text_color = {0xFF, 0xFF, 0xFF, 0xFF};
 	sf::Text scoreText;
 
-    scoreText.setFont(*font);
-    scoreText.setCharacterSize(45);
+	scoreText.setFont(*font);
+	scoreText.setCharacterSize(45);
 	std::string s = std::to_string(score);
 	std::string tmp("score : " + s);
 	scoreText.setColor(sf::Color::White);
@@ -142,7 +142,22 @@ void SFMLData::DrawMultiMode()
 
 void SFMLData::DrawHostMenu()
 {
+	sf::Text title;
 
+	title.setFont(*font);
+	title.setCharacterSize(35);
+	int i = 0;
+	auto tmp = std::string(" Waitings Player ");
+
+
+	title.setColor(sf::Color::White);
+	title.setString(tmp);
+	title.setPosition(950, 500 + i * 100);
+	win->draw(title);
+	i++;
+	title.setString(myAccess);
+	title.setPosition(950, 500 + i * 100);
+	win->draw(title);
 }
 
 void SFMLData::DrawJoinMenu()
@@ -156,50 +171,68 @@ void SFMLData::DrawMulti()
 
 void SFMLData::DrawMultiMenu()
 {
+	sf::Text menuEntry;
+
+	menuEntry.setFont(*font);
+	menuEntry.setCharacterSize(35);
+
+
+	int i = 0;
+	while (i < SIZEMULTIMENUCHOICES)
+	{
+		if (i == choice)
+			menuEntry.setColor(sf::Color::Red);
+		else
+			menuEntry.setColor(sf::Color::White);
+		menuEntry.setString(multiMenu[i]);
+		menuEntry.setPosition(950, 500 + i * 100);
+		win->draw(menuEntry);
+		i++;
+	}
 }
 
 void SFMLData::DrawPauseMenu()
 {
 	sf::Text menuEntry;
 
-       menuEntry.setFont(*font);
-       menuEntry.setCharacterSize(35);
+	   menuEntry.setFont(*font);
+	   menuEntry.setCharacterSize(35);
 
 
-       int i = 0;
-       while (i < NBACTIONPAUSE)
-       {
-       		if (i == choice)
-       			menuEntry.setColor(sf::Color::Red);
-       		else
-       			menuEntry.setColor(sf::Color::White);
-       		menuEntry.setString(pauseMenu[i]);
-       		menuEntry.setPosition(950, 500 + i * 100);
-       		win->draw(menuEntry);
-       		i++;
-       }
+	   int i = 0;
+	   while (i < NBACTIONPAUSE)
+	   {
+			if (i == choice)
+				menuEntry.setColor(sf::Color::Red);
+			else
+				menuEntry.setColor(sf::Color::White);
+			menuEntry.setString(pauseMenu[i]);
+			menuEntry.setPosition(950, 500 + i * 100);
+			win->draw(menuEntry);
+			i++;
+	   }
 }
 
 void SFMLData::DrawEndMenu()
 {
 	sf::Text menuEntry;
 
-       menuEntry.setFont(*font);
-       menuEntry.setCharacterSize(35);
+	   menuEntry.setFont(*font);
+	   menuEntry.setCharacterSize(35);
 
 
-       int i = 0;
-       while (i < NBACTIONEND)
-       {
-       		if (i == choice)
-       			menuEntry.setColor(sf::Color::Red);
-       		else
-       			menuEntry.setColor(sf::Color::White);
-       		menuEntry.setString(endMenu[i]);
-       		menuEntry.setPosition(950, 500 + i * 100);
-       		win->draw(menuEntry);
-       		i++;
-       }
+	   int i = 0;
+	   while (i < NBACTIONEND)
+	   {
+			if (i == choice)
+				menuEntry.setColor(sf::Color::Red);
+			else
+				menuEntry.setColor(sf::Color::White);
+			menuEntry.setString(endMenu[i]);
+			menuEntry.setPosition(950, 500 + i * 100);
+			win->draw(menuEntry);
+			i++;
+	   }
 }
 
 void SFMLData::DrawBestEndMenu()
@@ -244,20 +277,20 @@ eInput SFMLData::GetInput()
 {
 	sf::Event event;
 	eInput ret = NONE;
-    while (win->pollEvent(event))
-    {
-            if (event.type == sf::Event::Closed)
-            {
-            	//emergency close
-            	win->close();
-            	exit(0);
-            }
-            else if (event.type == sf::Event::KeyPressed)
-            {
-            	ret = inputs[event.key.code];
-            }
+	while (win->pollEvent(event))
+	{
+			if (event.type == sf::Event::Closed)
+			{
+				//emergency close
+				win->close();
+				exit(0);
+			}
+			else if (event.type == sf::Event::KeyPressed)
+			{
+				ret = inputs[event.key.code];
+			}
 
-    }
+	}
 	return ret;
 }
 

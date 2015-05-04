@@ -2,7 +2,7 @@
 #define SERIALIZER_HPP
 
 #include <cstring>
-
+#define BUFFERSERIALIZER 65536
 class Serializer
 {
 public:
@@ -10,7 +10,7 @@ public:
 	Serializer(Serializer const & src);
 	Serializer& operator=(Serializer const & rhs);
 	~Serializer();
-	char data[65536];
+	char data[BUFFERSERIALIZER];
 	int total;
 	int size[20];
 };

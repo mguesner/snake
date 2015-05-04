@@ -243,7 +243,7 @@ void SdlData::DrawJoinMenu()
 	SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
 	SDL_Rect position;
 	SDL_Color text_color = {0x0, 0x0, 0x0, 0xFF};
-	auto tmp = std::string("enter ip : ");
+	auto tmp = std::string(" Enter IP : ");
 	tmp += ip;
 	auto title = TTF_RenderText_Solid(font20, tmp.c_str(), text_color);
 	if (!title)
@@ -408,9 +408,11 @@ eInput SdlData::GetInput()
 
 SdlData::~SdlData()
 {
+
 	TTF_CloseFont(font20);
 	TTF_CloseFont(font70);
 	TTF_Quit();
 	SDL_DestroyWindow(win);
 	SDL_Quit();
+	std::cout << "SDL Closed" <<std::endl;
 }

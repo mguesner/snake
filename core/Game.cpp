@@ -147,10 +147,6 @@ void	Game::UpdateMulti(eInput value)
 			state = MAINMENU;
 			return;
 		}
-		// Change to do here a new Collide
-		// easy  fix ->
-		//  food position == snake1 head ?
-		// food position == snake2 head ?
 		int ret = CollideMulti();
 		if (ret == 0)
 		{
@@ -463,9 +459,9 @@ void	Game::Launch()
 	music = new Sound(5);
 	music->Play();
 
+	gameData->SetWall(wall);
 	gameData->SetScore(score);
 	gameData->SetState(state);
-	gameData->SetWall(wall);
 	gameData->SetScore(hiScores);
 	gameData->SetIpInfo(multi.GetMyAccessPoint());
 	while (!shouldLeave)
@@ -483,6 +479,8 @@ void	Game::Launch()
 			gameData = lib->GetData();
 			gameData->SetWall(wall);
 			gameData->SetChoice(entry);
+			gameData->SetState(state);
+			gameData->SetIpInfo(multi.GetMyAccessPoint());
 		}
 		else if (value == F2)
 		{
@@ -493,6 +491,8 @@ void	Game::Launch()
 			gameData = lib->GetData();
 			gameData->SetWall(wall);
 			gameData->SetChoice(entry);
+			gameData->SetState(state);
+			gameData->SetIpInfo(multi.GetMyAccessPoint());
 		}
 		else if (value == F3)
 		{
@@ -503,6 +503,8 @@ void	Game::Launch()
 			gameData = lib->GetData();
 			gameData->SetWall(wall);
 			gameData->SetChoice(entry);
+			gameData->SetState(state);
+			gameData->SetIpInfo(multi.GetMyAccessPoint());
 		}
 		else if (state == NM)
 			Update(value);
