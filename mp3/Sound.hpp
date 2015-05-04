@@ -5,8 +5,9 @@
 #include <csignal>
 #include <cstdlib>
 #include <cstdio>
+#include "../ISound.hpp"
 
-class Sound
+class Sound : public  ISound
 {
 public:
 	Sound(int);

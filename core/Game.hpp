@@ -4,7 +4,7 @@
 #include "loader.hpp"
 #include "Player.hpp"
 #include "../Data.hpp"
-#include "../Sound.hpp"
+#include "../ISound.hpp"
 #include "Score.hpp"
 #include "Food.hpp"
 #include "PowerUp.hpp"
@@ -60,7 +60,7 @@ private:
 	PowerUp	*powerUp;
 	Obstacle *obstacle;
 	eInput value;
-	Sound *music;
+	ISound *music;
 };
 
 #endif

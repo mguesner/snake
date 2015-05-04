@@ -8,10 +8,11 @@ DIRLSFML = sfml/
 
 DIRLSDL = sdl/
 
+DIRSOUND = mp3/
+
 SRC = $(DIR)main.cpp\
 	$(DIR)GameObject.cpp\
 	Data.cpp\
-	Sound.cpp\
 	$(DIR)Game.cpp\
 	$(DIR)Food.cpp\
 	$(DIR)loader.cpp\
@@ -29,10 +30,13 @@ OBJ = $(SRC:.cpp=.o)
 
 CC = clang++ -g -O3 -Wall -Wextra -Werror -std=c++11 -I .
 
-all: LCUR LSDL LSFML $(NAME)
+all: LCUR LSDL LSFML LSOUND $(NAME)
 
 LCUR:
 	make -C $(DIRLCUR)
+
+LSOUND:
+	make -C $(DIRSOUND)
 
 LSFML:
 	make -C $(DIRLSFML)
@@ -60,7 +64,9 @@ resfml:
 
 resdl:
 	make re -C $(DIRLSDL)
+resound:
+	make re -C $(DIRSOUND)
 
-re: resdl recur resfml fclean all
+re: resdl recur resound resfml fclean all
 
 .PHONY: clean all re fclean

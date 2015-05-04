@@ -233,7 +233,7 @@ void	Game::MultiMenu(eInput value)
 		else if (entry == JOIN)
 			state = JOINMENU;
 		else if (entry == MMEXIT)
-			shouldLeave = true;
+			state = MAINMENU;
 		entry = 0;
 	}
 	else if (value == UP)
@@ -252,7 +252,7 @@ void	Game::MultiMenu(eInput value)
 	}
 	else if (value == PAUSE)
 	{
-		shouldLeave = true;
+		state = MAINMENU;
 		entry = 0;
 	}
 	gameData->SetChoice(entry);
@@ -478,7 +478,8 @@ void	Game::Launch()
 	state = MAINMENU;
 	score = 0;
 	wall = true;
-	music = new Sound(5);
+	loader charge(5);
+	music = charge.GetMusic();
 	music->Play();
 
 	gameData->SetWall(wall);
@@ -549,8 +550,8 @@ void	Game::Launch()
 		else if (state == HISCOREMENU)
 			HiScoreMenu(value);
 		gameData->SetScore(score);
-		gameData->Draw();
 		gameData->SetState(state);
+		gameData->Draw();
 		gettimeofday(&time, NULL);
 		double end = (time.tv_usec + time.tv_sec * 1000000);
 		double wait = start + progress - end;
