@@ -112,6 +112,14 @@ void	Game::Update(eInput value)
 	}
 }
 
+int		Game::CollideMulti()
+{
+	Point foodPosition = food->GetPosition();
+	Point firstPosition = first->GetSnake()->GetPosition();
+	Point secondPosition = second->GetSnake()->GetPosition();
+	return (0);
+}
+
 void	Game::UpdateMulti(eInput value)
 {
 	char data[128] = {0};
@@ -138,8 +146,8 @@ void	Game::UpdateMulti(eInput value)
 		// easy  fix ->
 		//  food position == snake1 head ?
 		// food position == snake2 head ?
-		ObjectType ret = Collide();
-		if (ret == VOID)
+		int ret = CollideMulti();
+		if (ret == 0)
 		{
 			snk->Back();
 			snk2->Back();

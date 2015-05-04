@@ -29,6 +29,7 @@ public:
 	void HiScoreMenu(eInput value);
 	void Reset();
 	ObjectType Collide();
+	int CollideMulti();
 	~Game();
 	void Launch();
 	void Logic();
