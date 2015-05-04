@@ -117,7 +117,12 @@ int		Game::CollideMulti()
 	Point foodPosition = food->GetPosition();
 	Point firstPosition = first->GetSnake()->GetPosition();
 	Point secondPosition = second->GetSnake()->GetPosition();
-	return (0);
+	int ret = 0;
+	if (foodPosition == firstPosition)
+		ret += 1;
+	if (foodPosition == secondPosition)
+		ret += 2;
+	return ret;
 }
 
 void	Game::UpdateMulti(eInput value)
@@ -151,6 +156,20 @@ void	Game::UpdateMulti(eInput value)
 		{
 			snk->Back();
 			snk2->Back();
+		}
+		else if (ret == 1)
+		{
+			snk2->Back();
+			food->Collision(object);
+			progress -= 5000;
+			score += 1;
+		}
+		else if (ret == 2)
+		{
+			snk->Back();
+			food->Collision(object);
+			progress -= 5000;
+			score += 1;
 		}
 		else
 		{
