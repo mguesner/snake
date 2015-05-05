@@ -93,12 +93,12 @@ void SFMLData::DrawHiScoreMenu()
 	menuEntry.setCharacterSize(70);
 	menuEntry.setColor(sf::Color::White);
 	menuEntry.setString("Game Over");
-	menuEntry.setPosition(850, 350);
+	menuEntry.setPosition(850, 250);
 	win->draw(menuEntry);
 
 	menuEntry.setCharacterSize(35);
 	menuEntry.setString("With wall :");
-	menuEntry.setPosition(850, 420);
+	menuEntry.setPosition(850, 350);
 	win->draw(menuEntry);
 
 	for (int i = 0; i < 5; ++i)
@@ -107,12 +107,12 @@ void SFMLData::DrawHiScoreMenu()
 		s = std::string(" : " + s);
 		std::string tmp( hiScores->GetPseudo(i, true) + s);
 		menuEntry.setString(tmp.c_str());
-		menuEntry.setPosition(850, 430 + 20 * (i + 1));
+		menuEntry.setPosition(850, 350 + 40 * (i + 1));
 		win->draw(menuEntry);
 	}
 
 	menuEntry.setString("Without wall :");
-	menuEntry.setPosition(850, 560);
+	menuEntry.setPosition(850, 600);
 	win->draw(menuEntry);
 
 	for (int i = 0; i < 5; ++i)
@@ -121,7 +121,7 @@ void SFMLData::DrawHiScoreMenu()
 		s = std::string(" : " + s);
 		std::string tmp( hiScores->GetPseudo(i, false) + s);
 		menuEntry.setString(tmp.c_str());
-		menuEntry.setPosition(850, 570 + 20 * (i + 1));
+		menuEntry.setPosition(850, 600 + 40 * (i + 1));
 		win->draw(menuEntry);
 	}
 }

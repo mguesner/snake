@@ -499,6 +499,7 @@ void	Game::Launch()
 			gameData->SetWall(wall);
 			gameData->SetChoice(entry);
 			gameData->SetState(state);
+			gameData->SetScore(hiScores);
 			gameData->SetIpInfo(multi.GetMyAccessPoint());
 		}
 		else if (value == F2)
@@ -511,6 +512,7 @@ void	Game::Launch()
 			gameData->SetWall(wall);
 			gameData->SetChoice(entry);
 			gameData->SetState(state);
+			gameData->SetScore(hiScores);
 			gameData->SetIpInfo(multi.GetMyAccessPoint());
 		}
 		else if (value == F3)
@@ -523,6 +525,7 @@ void	Game::Launch()
 			gameData->SetWall(wall);
 			gameData->SetChoice(entry);
 			gameData->SetState(state);
+			gameData->SetScore(hiScores);
 			gameData->SetIpInfo(multi.GetMyAccessPoint());
 		}
 		else if (state == NM)

@@ -99,7 +99,7 @@ void SdlData::DrawHiScoreMenu()
 	if (!title)
 		throw SdlException(TTF_GetError());
 	position.x = (WIDTH - title->w) / 2;
-	position.y = 450;
+	position.y = 420;
 	SDL_BlitSurface(title, NULL, screenSurface, &position);
 	SDL_FreeSurface(title);
 	for (int i = 0; i < 5; ++i)
@@ -111,7 +111,7 @@ void SdlData::DrawHiScoreMenu()
 		if (!score)
 			throw SdlException(TTF_GetError());
 		position.x = (WIDTH - score->w) / 2;
-		position.y = 440 + 40 * (i + 1);
+		position.y = 430 + 20 * (i + 1);
 		SDL_BlitSurface(score, NULL, screenSurface, &position);
 		SDL_FreeSurface(score);
 	}
@@ -119,7 +119,7 @@ void SdlData::DrawHiScoreMenu()
 	if (!title)
 		throw SdlException(TTF_GetError());
 	position.x = (WIDTH - title->w) / 2;
-	position.y = 600;
+	position.y = 560;
 	SDL_BlitSurface(title, NULL, screenSurface, &position);
 	SDL_FreeSurface(title);
 	for (int i = 0; i < 5; ++i)
@@ -131,7 +131,7 @@ void SdlData::DrawHiScoreMenu()
 		if (!score)
 			throw SdlException(TTF_GetError());
 		position.x = (WIDTH - score->w) / 2;
-		position.y = 640 + 40 * (i + 1);
+		position.y = 570 + 20 * (i + 1);
 		SDL_BlitSurface(score, NULL, screenSurface, &position);
 		SDL_FreeSurface(score);
 	}
