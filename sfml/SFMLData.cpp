@@ -87,7 +87,43 @@ void SFMLData::DrawMainMenu()
 
 void SFMLData::DrawHiScoreMenu()
 {
+	sf::Text menuEntry;
 
+	menuEntry.setFont(*font);
+	menuEntry.setCharacterSize(70);
+	menuEntry.setColor(sf::Color::White);
+	menuEntry.setString("Game Over");
+	menuEntry.setPosition(850, 250);
+	win->draw(menuEntry);
+
+	menuEntry.setCharacterSize(35);
+	menuEntry.setString("With wall :");
+	menuEntry.setPosition(850, 350);
+	win->draw(menuEntry);
+
+	for (int i = 0; i < 5; ++i)
+	{
+		std::string s = std::to_string(hiScores->GetScore(i, true));
+		s = std::string(" : " + s);
+		std::string tmp( hiScores->GetPseudo(i, true) + s);
+		menuEntry.setString(tmp.c_str());
+		menuEntry.setPosition(850, 350 + 40 * (i + 1));
+		win->draw(menuEntry);
+	}
+
+	menuEntry.setString("Without wall :");
+	menuEntry.setPosition(850, 600);
+	win->draw(menuEntry);
+
+	for (int i = 0; i < 5; ++i)
+	{
+		std::string s = std::to_string(hiScores->GetScore(i, false));
+		s = std::string(" : " + s);
+		std::string tmp( hiScores->GetPseudo(i, false) + s);
+		menuEntry.setString(tmp.c_str());
+		menuEntry.setPosition(850, 600 + 40 * (i + 1));
+		win->draw(menuEntry);
+	}
 }
 
 void SFMLData::DrawNormalMode()

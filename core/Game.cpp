@@ -32,10 +32,8 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	first = new Player(object, width, height, 1);
 	food = new Food(width, height);
 	powerUp = new PowerUp(width, height);
-	obstacle = new Obstacle(width, height);
 	object->push_back(food);
 	object->push_back(powerUp);
-	object->push_back(obstacle);
 	shouldLeave = false;
 	progress = 100000;
 	entry = 0;
@@ -120,7 +118,7 @@ void	Game::Update(eInput value)
 		progress -= 5000;
 		score += 1;
 	}
-	else if (ret == OBSTACLE)
+	else if (ret == OBSTACLE && wall)
 	{
 		if (hiScores->CheckScore(score, wall))
 			state = BESTENDMENU;
@@ -204,10 +202,6 @@ void	Game::UpdateMulti(eInput value)
 			progress -= 5000;
 			score += 1;
 		}
-
-
-
-
 		DataEx seri;
 		auto serialize = seri.Serialize(snk, snk2, food);
 		multi.Send((void*)&serialize, sizeof(Serializer));
@@ -226,6 +220,7 @@ void	Game::UpdateMulti(eInput value)
 		try
 		{
 			auto tmp = multi.Rcv();
+			unseri.UnSerialize(tmp);
 		}
 		catch (std::exception *e)
 		{
@@ -233,7 +228,6 @@ void	Game::UpdateMulti(eInput value)
 			Reset();
 			return ;
 		}
-		unseri.UnSerialize(tmp);
 		first->SetSnake(unseri.GetSnake());
 		second->SetSnake(unseri.GetSecondSnake());
 		object->remove(food);
@@ -344,6 +338,8 @@ void Game::MainMenu(eInput value)
 	{
 		if (entry == NEWGAME)
 		{
+			obstacle = new Obstacle(width, height);
+			object->push_back(obstacle);
 			state = NM;
 			entry = 0;
 		}
@@ -529,6 +525,7 @@ void	Game::Launch()
 			gameData->SetWall(wall);
 			gameData->SetChoice(entry);
 			gameData->SetState(state);
+			gameData->SetScore(hiScores);
 			gameData->SetIpInfo(multi.GetMyAccessPoint());
 		}
 		else if (value == F2)
@@ -541,6 +538,7 @@ void	Game::Launch()
 			gameData->SetWall(wall);
 			gameData->SetChoice(entry);
 			gameData->SetState(state);
+			gameData->SetScore(hiScores);
 			gameData->SetIpInfo(multi.GetMyAccessPoint());
 		}
 		else if (value == F3)
@@ -553,6 +551,7 @@ void	Game::Launch()
 			gameData->SetWall(wall);
 			gameData->SetChoice(entry);
 			gameData->SetState(state);
+			gameData->SetScore(hiScores);
 			gameData->SetIpInfo(multi.GetMyAccessPoint());
 		}
 		else if (state == NM)
@@ -587,54 +586,4 @@ void	Game::Launch()
 	delete hiScores;
 	delete music;
 	delete gameData;
-}
-
-void Game::Logic()
-{
-	// value = NONE;
-	// state = MAINMENU;
-	// score = 0;
-	// wall = true;
-	// music = new Sound(5);
-	// music->Play();
-	// gameData->SetScore(score);
-	// gameData->SetState(state);
-	// gameData->SetWall(wall);
-	// while (!shouldLeave)
-	// {
-	// 	timeval time;
-	// 	gettimeofday(&time, NULL);
-	// 	auto start = time.tv_usec;
-	// 	value = gameData->GetInput();
-	// 	if (value == F1 || value == F2 || value == F3)
-	// 	{
-	// 		gameData->Close();
-	// 		libIsLoading.lock();
-	// 		libIsLoading.unlock();
-	// 	}
-	// 	else if (state == NM)
-	// 		Update(value);
-	// 	else if (state == MULTIMENU)
-	// 		MultiMenu(value);
-	// 	else if (state == PAUSEMENU)
-	// 		PauseMenu(value);
-	// 	else if (state == MAINMENU)
-	// 		MainMenu(value);
-	// 	else if (state == ENDMENU)
-	// 		EndMenu(value);
-	// 	else if (state == HOSTMENU)
-	// 		HostMenu(value);
-	// 	else if (state == JOINMENU)
-	// 		JoinMenu(value);
-	// 	gameData->SetState(state);
-	// 	gameData->SetScore(score);
-	// 	gameData->Draw();
-	// 	gameData->CleanInput();
-	// 	gettimeofday(&time, NULL);
-	// 	auto wait = start + progress - time.tv_usec;
-	// 	if (state == NM && wait > 0)
-	// 		usleep(wait);
-	// }
-	// delete music;
-	// delete gameData;
 }
