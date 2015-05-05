@@ -100,6 +100,8 @@ public:
 	int GetChoice();
 	void SetScore(int);
 	void SetWall(bool);
+	void SetWidth(int);
+	void SetHeight(int);
 	void SetPlayer(char[3]);
 	void SetScore(Score*);
 	int GetScore();

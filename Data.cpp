@@ -72,6 +72,16 @@ void Data::SetState(eGameState state)
 	this->state = state;
 }
 
+void Data::SetWidth(int update)
+{
+	width = update;
+}
+
+void Data::SetHeight(int update)
+{
+	height = update;
+}
+
 void Data::SetWall(bool value)
 {
 	wall = value;

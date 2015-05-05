@@ -122,7 +122,12 @@ void Multi::Join(std::string ip)
 
 void Multi::Send(void *data, int size)
 {
-	send(cSock, data, size, 0);
+	if (send(cSock, data, size, 0) == -1)
+	{
+		std::cout << "Connection closed Rcv" << std::endl;
+		Disconnect();
+		throw new std::exception();;
+	}
 }
 
 bool Multi::Rcv(char data[128], int size)

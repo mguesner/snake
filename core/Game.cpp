@@ -151,16 +151,7 @@ void	Game::UpdateMulti(eInput value)
 
 	if (isHost)
 	{
-		try
-		{
-			multi.Rcv(data, sizeof(eInput));
-		}
-		catch (std::exception *e)
-		{
-			state = ENDMENU;
-			Reset();
-			return ;
-		}
+		multi.Rcv(data, sizeof(eInput));
 		eInput value2 = (eInput)*data;
 		Snake *snk = first->GetSnake();
 		Snake *snk2 = second->GetSnake();
@@ -217,17 +208,9 @@ void	Game::UpdateMulti(eInput value)
 			return;
 		}
 		DataEx unseri;
-		try
-		{
-			auto tmp = multi.Rcv();
-			unseri.UnSerialize(tmp);
-		}
-		catch (std::exception *e)
-		{
-			state = MAINMENU;
-			Reset();
-			return ;
-		}
+		auto tmp = multi.Rcv();
+		unseri.UnSerialize(tmp);
+
 		first->SetSnake(unseri.GetSnake());
 		second->SetSnake(unseri.GetSecondSnake());
 		object->remove(food);
@@ -288,6 +271,8 @@ void	Game::HostMenu(eInput value)
 		state = MULTI;
 		second = new Player(object, width, height, 2);
 		multi.Send((void *)&wall, sizeof(bool));
+		multi.Send((void*)&height, sizeof(int));
+		multi.Send((void*)&width, sizeof(int));
 	}
 }
 
@@ -303,17 +288,21 @@ void	Game::JoinMenu(eInput value)
 			object->clear();
 			second = new Player(object, width, height, 2);
 			state = MULTI;
-			try
-			{
-					if (!multi.Rcv(data, sizeof(bool)))
-						state = MAINMENU;
-			}
-			catch(std::exception *e)
-			{
-
-			}
+			//GET WALL
+			if (!multi.Rcv(data, sizeof(bool)))
+				state = MAINMENU;
 			wall = *(bool *)data;
+
+			//GET HEIGHT
+			multi.Rcv(data, sizeof(int));
+			height = *(int*)data;
+			//GET WIDTH
+			multi.Rcv(data, sizeof(int));
+			width = *(int*)data;
+			//MAJ DATA
 			gameData->SetWall(wall);
+			gameData->SetWidth(width);
+			gameData->SetHeight(height);
 		}
 	}
 	else if (value == CHAR)
@@ -557,7 +546,18 @@ void	Game::Launch()
 		else if (state == NM)
 			Update(value);
 		else if (state == MULTI)
-			UpdateMulti(value);
+		{
+			try
+			{
+				UpdateMulti(value);
+			}
+			catch (std::exception *e)
+			{
+				state = MAINMENU;
+				Reset();
+				return ;
+			}
+		}
 		else if (state == MULTIMENU)
 			MultiMenu(value);
 		else if (state == PAUSEMENU)
@@ -567,9 +567,31 @@ void	Game::Launch()
 		else if (state == ENDMENU)
 			EndMenu(value);
 		else if (state == HOSTMENU)
-			HostMenu(value);
+		{
+			try
+			{
+				HostMenu(value);
+			}
+			catch (std::exception *e)
+			{
+				state = MAINMENU;
+				Reset();
+				return ;
+			}
+		}
 		else if (state == JOINMENU)
-			JoinMenu(value);
+		{
+			try
+			{
+				JoinMenu(value);
+			}
+			catch (std::exception *e)
+			{
+				state = MAINMENU;
+				Reset();
+				return ;
+			}
+		}
 		else if (state == BESTENDMENU)
 			BestEndMenu(value);
 		else if (state == HISCOREMENU)
