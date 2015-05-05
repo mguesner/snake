@@ -557,7 +557,6 @@ void	Game::Launch()
 			{
 				state = MAINMENU;
 				Reset();
-				return ;
 			}
 		}
 		else if (state == MULTIMENU)
@@ -591,7 +590,6 @@ void	Game::Launch()
 			{
 				state = MAINMENU;
 				Reset();
-				return ;
 			}
 		}
 		else if (state == BESTENDMENU)
