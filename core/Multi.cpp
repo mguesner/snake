@@ -138,7 +138,7 @@ bool Multi::Rcv(char data[128], int size)
 	while (offset < size)
 	{
 		int tmp = 0;
-		if ((tmp = recv(cSock, &data[offset], 127, 0)) <= 0)
+		if ((tmp = recv(cSock, &data[offset], size - offset, 0)) <= 0)
 		{
 			std::cout << "Connection closed Rcv" << std::endl;
 			Disconnect();
