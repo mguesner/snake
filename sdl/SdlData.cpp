@@ -154,8 +154,11 @@ void SdlData::DrawNormalMode()
 		SDL_FillRect(screenSurface, &wall3, noir);
 		SDL_FillRect(screenSurface, &wall4, noir);
 	}
+		std::cout << "bam : " << objects->size() << std::endl;
+		int j = 0;
 	for (auto i = objects->begin(); i != objects->end(); ++i)
 	{
+		j++;
 		(this->*funcs2[(*i)->GetType()])(*i);
 	}
 	SDL_Rect position;
