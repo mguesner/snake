@@ -224,7 +224,7 @@ void	Game::UpdateMulti(eInput value)
 		}
 		catch (std::exception *e)
 		{
-			state = ENDMENU;
+			state = MAINMENU;
 			Reset();
 			return ;
 		}
