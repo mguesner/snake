@@ -32,10 +32,8 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	first = new Player(object, width, height, 1);
 	food = new Food(width, height);
 	powerUp = new PowerUp(width, height);
-	obstacle = new Obstacle(width, height);
 	object->push_back(food);
 	object->push_back(powerUp);
-	object->push_back(obstacle);
 	shouldLeave = false;
 	progress = 100000;
 	entry = 0;
@@ -120,7 +118,7 @@ void	Game::Update(eInput value)
 		progress -= 5000;
 		score += 1;
 	}
-	else if (ret == OBSTACLE)
+	else if (ret == OBSTACLE && wall)
 	{
 		if (hiScores->CheckScore(score, wall))
 			state = BESTENDMENU;
@@ -195,10 +193,6 @@ void	Game::UpdateMulti(eInput value)
 			progress -= 5000;
 			score += 1;
 		}
-
-
-
-
 		DataEx seri;
 		auto serialize = seri.Serialize(snk, snk2, food);
 		multi.Send((void*)&serialize, sizeof(Serializer));
@@ -318,6 +312,8 @@ void Game::MainMenu(eInput value)
 	{
 		if (entry == NEWGAME)
 		{
+			obstacle = new Obstacle(width, height);
+			object->push_back(obstacle);
 			state = NM;
 			entry = 0;
 		}

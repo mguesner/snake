@@ -6,6 +6,7 @@ SRC = SFMLData.cpp\
 	  ../core/Point.cpp \
 	  ../core/Snake.cpp \
 	  ../Data.cpp \
+	  ../core/Score.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
