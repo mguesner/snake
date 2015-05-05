@@ -74,7 +74,6 @@ Serializer DataEx::Serialize(Snake *first, Snake *second, Food *food)
 		total += sizeof(double);
 	}
 	serialize.total = total;
-	std::cout << total << std::endl;
 	return serialize;
 
 }
@@ -130,8 +129,6 @@ void DataEx::UnSerialize(Serializer serialize)
 	Point test(x, y,z);
 	food = new Food();
 	food->SetPosition(test);
-	if (total != serialize.total)
-		std::cout << "WRONG DATA VALUE READ : " << total << std::endl;
 }
 
 Snake *DataEx::GetSnake()
