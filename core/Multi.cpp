@@ -137,7 +137,7 @@ bool Multi::Rcv(char data[128], int size)
 		{
 			std::cout << "Connection closed Rcv" << std::endl;
 			Disconnect();
-			exit(-1);
+			throw new std::exception();
 		}
 		offset += tmp;
 	}
@@ -159,7 +159,7 @@ Serializer Multi::Rcv()
 		{
 			std::cout << "Connection closed Rcv" << std::endl;
 			Disconnect();
-			exit(-1);
+			throw new std::exception();
 		}
 		offset += tmp;
 	}

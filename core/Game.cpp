@@ -153,7 +153,16 @@ void	Game::UpdateMulti(eInput value)
 
 	if (isHost)
 	{
-		multi.Rcv(data, sizeof(eInput));
+		try
+		{
+			multi.Rcv(data, sizeof(eInput));
+		}
+		catch (std::exception *e)
+		{
+			state = ENDMENU;
+			Reset();
+			return ;
+		}
 		eInput value2 = (eInput)*data;
 		Snake *snk = first->GetSnake();
 		Snake *snk2 = second->GetSnake();
@@ -209,11 +218,22 @@ void	Game::UpdateMulti(eInput value)
 		if (value == PAUSE)
 		{
 			multi.Disconnect();
+			Reset();
 			state = MAINMENU;
 			return;
 		}
 		DataEx unseri;
-		unseri.UnSerialize(multi.Rcv());
+		try
+		{
+			auto tmp = multi.Rcv();
+		}
+		catch (std::exception *e)
+		{
+			state = ENDMENU;
+			Reset();
+			return ;
+		}
+		unseri.UnSerialize(tmp);
 		first->SetSnake(unseri.GetSnake());
 		second->SetSnake(unseri.GetSecondSnake());
 		object->remove(food);
@@ -289,9 +309,15 @@ void	Game::JoinMenu(eInput value)
 			object->clear();
 			second = new Player(object, width, height, 2);
 			state = MULTI;
+			try
+			{
+					if (!multi.Rcv(data, sizeof(bool)))
+						state = MAINMENU;
+			}
+			catch(std::exception *e)
+			{
 
-			if (!multi.Rcv(data, sizeof(bool)))
-				state = MAINMENU;
+			}
 			wall = *(bool *)data;
 			gameData->SetWall(wall);
 		}
