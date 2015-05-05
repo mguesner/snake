@@ -32,6 +32,8 @@ Game::Game(Data* data, loader* lib, std::string cur, int width, int height, std:
 	first = new Player(object, width, height, 1);
 	food = new Food(width, height);
 	powerUp = new PowerUp(width, height);
+			obstacle = new Obstacle(width, height);
+			object->push_back(obstacle);
 	object->push_back(food);
 	object->push_back(powerUp);
 	shouldLeave = false;
@@ -151,7 +153,9 @@ void	Game::UpdateMulti(eInput value)
 
 	if (isHost)
 	{
+
 		multi.Rcv(data, sizeof(eInput));
+
 		eInput value2 = (eInput)*data;
 		Snake *snk = first->GetSnake();
 		Snake *snk2 = second->GetSnake();
@@ -327,8 +331,6 @@ void Game::MainMenu(eInput value)
 	{
 		if (entry == NEWGAME)
 		{
-			obstacle = new Obstacle(width, height);
-			object->push_back(obstacle);
 			state = NM;
 			entry = 0;
 		}
