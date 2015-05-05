@@ -47,6 +47,18 @@ SFMLData::SFMLData(int width, int height, std::list<GameObject*> *objects) : Dat
 	inputs[sf::Keyboard::Num1] = F1;
 	inputs[sf::Keyboard::Num3] = F3;
 	inputs[sf::Keyboard::Return] = VALIDATE;
+	chars[sf::Keyboard::Numpad0] = '0';
+	chars[sf::Keyboard::Numpad1] = '1';
+	chars[sf::Keyboard::Numpad2] = '2';
+	chars[sf::Keyboard::Numpad3] = '3';
+	chars[sf::Keyboard::Numpad4] = '4';
+	chars[sf::Keyboard::Numpad5] = '5';
+	chars[sf::Keyboard::Numpad6] = '6';
+	chars[sf::Keyboard::Numpad7] = '7';
+	chars[sf::Keyboard::Numpad8] = '8';
+	chars[sf::Keyboard::Numpad9] = '9';
+	chars[sf::Keyboard::Period ] = '.';
+	chars[sf::Keyboard::BackSpace] = 127;
 
 	shouldDraw = false;
 
@@ -406,7 +418,15 @@ eInput SFMLData::GetInput()
 			}
 			else if (event.type == sf::Event::KeyPressed)
 			{
-				ret = inputs[event.key.code];
+
+		auto tmp = inputs[event.key.code];
+		if (tmp != NONE)
+			return tmp;
+		else
+		{
+			ch = chars[event.key.code];
+			return CHAR;
+		}
 			}
 
 	}
